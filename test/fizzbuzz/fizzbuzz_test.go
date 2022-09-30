@@ -9,19 +9,20 @@ import (
 
 func TestFizzBuzz(t *testing.T) {
 	tests := []struct {
-		name string
-		i    int
-		want string
+		description string
+		i           int
+		want        string
 	}{
-		{name: "get String of number if number doesn't match /3 or /5", i: 1, want: "1"},
-		{name: "get buzz if number matches /5", i: 5, want: "buzz"},
-		{name: "get fizz if number matches /3", i: 6, want: "fizz"},
-		{name: "get fizzbuzz if number matches /3 and /5", i: 15, want: "fizzbuzz"},
+		{description: "get String of number if number doesn't match /3 or /5", i: 1, want: "1"},
+		{description: "get buzz if number matches /5", i: 5, want: "buzz"},
+		{description: "get fizz if number matches /3", i: 6, want: "fizz"},
+		{description: "get fizzbuzz if number matches /3 and /5", i: 15, want: "fizzbuzz"},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := fizzbuzz.Calculate(tt.i); got != tt.want {
-				t.Errorf("FizzBuzz() = %v, want %v", got, tt.want)
+	for _, test := range tests {
+		t.Run(test.description, func(t *testing.T) {
+			got := fizzbuzz.Calculate(test.i)
+			if got != test.want {
+				t.Errorf("got %q, want %q", got, test.want)
 			}
 		})
 	}
