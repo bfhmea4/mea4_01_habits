@@ -1,11 +1,15 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz"
 )
 
 func main() {
-	fmt.Println(fizzbuzz.Calculate(0))
+	app := fizzbuzz.ServeHTTP()
+
+	if err := app.Listen(":8000"); err != nil {
+		log.Fatal(err)
+	}
 }
