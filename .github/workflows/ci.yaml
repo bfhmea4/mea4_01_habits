@@ -9,7 +9,7 @@ on:
 jobs:
 
   go-build:
-    name: Backend Build
+    name: Backend CI
     runs-on: ubuntu-latest
     strategy:
       matrix:
