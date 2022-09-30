@@ -34,10 +34,5 @@ jobs:
       run: |
         go build -v ./cmd/fizzbuzz
 
-    - name: Lint
-      run: |
-        wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.49.0
-        golangci-lint run
-
     - name: Test
       run: go test -v ./...
