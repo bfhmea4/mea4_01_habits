@@ -1,6 +1,7 @@
 package fizzbuzz
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -36,5 +37,17 @@ func ServeHTTP() fiber.App {
 }
 
 func Calculate(i int) string {
-	return "not implemented"
+	fizz := "fizz"
+	buzz := "buzz"
+
+	if i%3 == 0 && i%5 == 0 {
+		return fizz + buzz
+	}
+	if i%3 == 0 {
+		return fizz
+	}
+	if i%5 == 0 {
+		return buzz
+	}
+	return fmt.Sprintf("%d", i)
 }
