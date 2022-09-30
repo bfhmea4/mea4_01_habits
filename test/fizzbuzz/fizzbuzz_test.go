@@ -46,7 +46,7 @@ func TestHttpController(t *testing.T) {
 		// Second test case
 		{
 			description:  "get HTTP status 404, when route is not exists",
-			route:        "/not-found",
+			route:        "/non-route/not-found",
 			expectedCode: 404,
 		},
 		// Third test case
@@ -67,7 +67,7 @@ func TestHttpController(t *testing.T) {
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("Accept", "application/json")
 		if test.param != "" {
-			req.URL.RawQuery = test.param
+			req = httptest.NewRequest("GET", test.route+test.param, nil)
 		}
 		res, err := app.Test(req)
 		if err != nil {
