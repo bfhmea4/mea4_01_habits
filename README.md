@@ -1,2 +1,2 @@
 # mea4_01_habits
-Habits Journalling Platform
+BFH Project 1 Habit Journalling Platform
