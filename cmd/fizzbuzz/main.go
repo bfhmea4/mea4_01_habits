@@ -1,7 +1,11 @@
 package main
 
-import "github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz"
+import (
+	"fmt"
+
+	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz"
+)
 
 func main() {
-	fizzbuzz.Calculate()
+	fmt.Println(fizzbuzz.Calculate(0))
 }

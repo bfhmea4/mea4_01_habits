@@ -1,7 +1,5 @@
 package fizzbuzz
 
-import "fmt"
-
-func Calculate() {
-	fmt.Println("Hello, world!")
+func Calculate(i int) string {
+	return "not implemented"
 }
