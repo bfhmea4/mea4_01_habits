@@ -1,8 +1,7 @@
 name: Mkdocs CI
 on:
   push:
-    branches:
-      - develop
+    branches: [ main, develop ]
 jobs:
   docs:
     name: Docs Build
