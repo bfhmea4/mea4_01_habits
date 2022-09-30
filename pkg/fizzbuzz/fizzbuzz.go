@@ -9,7 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-func ServeHTTP() fiber.App {
+func ServeHTTP() *fiber.App {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
@@ -33,7 +33,7 @@ func ServeHTTP() fiber.App {
 		return c.SendString(Calculate(number))
 	})
 
-	return *app
+	return app
 }
 
 func Calculate(i int) string {
