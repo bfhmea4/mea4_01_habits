@@ -1,0 +1,90 @@
+# Project information
+site_name: Habitsus Docs
+site_author: Jan Lauber, Jan Fuhrer, Andy Bigler
+site_description: >-
+  Documentation and guides for the BFH Project 1 Habit Journalling Platform.
+
+# Repository
+repo_url: https://github.com/natrongmbh/mea4_01_habits
+repo_name: natrongmbh/mea4_01_habits
+edit_uri: ""
+
+# Copyright
+copyright: Copyright &copy; 2022 Jan Lauber, Jan Fuhrer, Andy Bigler
+
+# Configuration
+theme:
+  logo: assets/habitsus_example_logo.png
+  name: material
+  language: en
+  font:
+    text: Roboto
+    code: Roboto Mono
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - content.code.annotate
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: natron-light
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+# Plugins
+plugins:
+  - search:
+      lang: de
+
+# Customization
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/natrongmbh
+
+# Page tree
+nav:
+  - Home:
+    - Getting Started: index.md
+    - Requirements: requirements.md
+  - Architecture:
+    - Overview: architecture/overview.md
+    - Backend: architecture/backend.md
+    - Frontend: architecture/frontend.md
+
+# Markdown extensions
+markdown_extensions:
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - attr_list
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js

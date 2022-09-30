@@ -1,0 +1,18 @@
+# Requirements
+To find your way around the environment, you need certain know-how but also requirements for the client device so that you can connect at all.
+
+## :books: Know-How
+| topic | requirement |
+| -- | -- |
+| **Git** | Knows the most important Git commands |
+| | GPG `signed commits` are **enforced** |
+| **GitHub** | Knows the most important GitHub functions: |
+| - `GitHub Issues` |
+| - `GitHub Pull Requests` |
+| - `GitHub Workflows` |
+| | - `GitHub Releases` |
+| | - `GitHub Repositories` |
+| **Docker** | The application is dockerized and stateless |
+| | Knows the most important `docker` commands |
+| **Kubernetes** | Knows the concept of Kubernetes |
+| | Knows the most important `kubectl` commands |
