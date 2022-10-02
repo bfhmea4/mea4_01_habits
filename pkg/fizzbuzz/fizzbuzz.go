@@ -37,17 +37,16 @@ func ServeHTTP() *fiber.App {
 }
 
 func Calculate(i int) string {
-	fizz := "fizz"
-	buzz := "buzz"
+	res := ""
 
-	if i%3 == 0 && i%5 == 0 {
-		return fizz + buzz
-	}
 	if i%3 == 0 {
-		return fizz
+		res += "fizz"
 	}
 	if i%5 == 0 {
-		return buzz
+		res += "buzz"
 	}
-	return fmt.Sprintf("%d", i)
+	if res == "" {
+		res += fmt.Sprintf("%d", i)
+	}
+	return res
 }
