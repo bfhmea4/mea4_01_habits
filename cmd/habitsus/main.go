@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz/env"
-	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz/server"
+	"github.com/bfhmea4/mea4_01_habits/pkg/env"
+	"github.com/bfhmea4/mea4_01_habits/pkg/server"
 )
 
 func init() {

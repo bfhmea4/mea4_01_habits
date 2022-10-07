@@ -32,17 +32,17 @@ pre-commit installed at .git/hooks/pre-commit
 ```
 
 ## Test backend locally
-Start the backend directly:
+Start the backend directly (remember to set the POCKETBASE_DATA_DIR env variable):
 
 ```bash
-go run cmd/fizzbuzz/main.go
+go run cmd/habitsus/main.go serve
 ```
 
 ### Docker
 Build docker container of the backend:
 
 ```bash
-docker build -f ./build/package/fizzbuzz/Dockerfile . -t fizzbuzz:local
+docker build -f ./build/package/habitsus/Dockerfile . -t habitsus:local
 ```
 
 Use following docker-compose file:
@@ -51,7 +51,7 @@ Use following docker-compose file:
 version: '3.8'
 services:
   backend:
-    image: fizzbuzz:local
+    image: habitsus:local
     restart: unless-stopped
     container_name: backend
     networks:
@@ -61,7 +61,7 @@ services:
 networks:
   net:
     driver_opts:
-      com.docker.network.bridge.name: fizzbuzz
+      com.docker.network.bridge.name: habitsus
 ```
 
 Create and start container:

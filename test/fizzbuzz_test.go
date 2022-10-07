@@ -3,8 +3,8 @@ package test
 import (
 	"testing"
 
-	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz"
-	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz/server"
+	"github.com/bfhmea4/mea4_01_habits/pkg/server"
+	"github.com/bfhmea4/mea4_01_habits/pkg/util"
 	"github.com/pocketbase/pocketbase/tests"
 )
 
@@ -21,7 +21,7 @@ func TestFizzBuzz(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.description, func(t *testing.T) {
-			got := fizzbuzz.Calculate(test.i)
+			got := util.CalculateFizzbuzz(test.i)
 			if got != test.want {
 				t.Errorf("got %q, want %q", got, test.want)
 			}

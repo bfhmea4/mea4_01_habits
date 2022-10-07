@@ -1,8 +1,8 @@
-package fizzbuzz
+package util
 
 import "fmt"
 
-func Calculate(i int) string {
+func CalculateFizzbuzz(i int) string {
 	res := ""
 
 	if i%3 == 0 {

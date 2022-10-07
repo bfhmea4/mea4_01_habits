@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz"
-	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz/env"
-	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz/migrations"
+	"github.com/bfhmea4/mea4_01_habits/pkg/env"
+	"github.com/bfhmea4/mea4_01_habits/pkg/migrations"
+	"github.com/bfhmea4/mea4_01_habits/pkg/util"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
@@ -14,6 +14,7 @@ import (
 
 func BindAppHooks(app core.App) {
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		//nolint:errcheck
 		e.Router.AddRoute(echo.Route{
 			Method: http.MethodGet,
 			Path:   "/api/:number",
@@ -22,7 +23,7 @@ func BindAppHooks(app core.App) {
 				if err != nil {
 					return c.String(400, "Invalid number")
 				}
-				return c.String(200, fizzbuzz.Calculate(number))
+				return c.String(200, util.CalculateFizzbuzz(number))
 			},
 		})
 

@@ -3,7 +3,7 @@ services:
   pocketbase:
     build:
       context: ./
-      dockerfile: ./build/package/fizzbuzz/Dockerfile
+      dockerfile: ./build/package/habitsus/Dockerfile
     ports:
       - "8090:8090"
     volumes:
