@@ -17,8 +17,6 @@ RUN apk --no-cache add ca-certificates
 
 COPY --from=build --chown=fizzbuzz:fizzbuzz /go/src/github.com/bfhmea4/mea4_01_habits/fizzbuzz ./
 
-USER 1001
+EXPOSE 8090
 
-EXPOSE 8000
-
-CMD ["./fizzbuzz"]
+CMD ["./fizzbuzz", "serve", "--http=0.0.0.0:8090"]

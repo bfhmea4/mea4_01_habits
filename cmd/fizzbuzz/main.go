@@ -3,13 +3,24 @@ package main
 import (
 	"log"
 
-	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz"
+	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz/env"
+	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz/server"
 )
 
-func main() {
-	app := fizzbuzz.ServeHTTP()
+func init() {
+	err := env.Init()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
-	if err := app.Listen(":8000"); err != nil {
+func main() {
+	app := server.Setup()
+
+	server.BindAppHooks(app)
+
+	// start the pocketbase server
+	if err := app.Start(); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -1,10 +1,11 @@
 package test
 
 import (
-	"net/http/httptest"
 	"testing"
 
 	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz"
+	"github.com/bfhmea4/mea4_01_habits/pkg/fizzbuzz/server"
+	"github.com/pocketbase/pocketbase/tests"
 )
 
 func TestFizzBuzz(t *testing.T) {
@@ -29,54 +30,48 @@ func TestFizzBuzz(t *testing.T) {
 }
 
 func TestHttpController(t *testing.T) {
-	tests := []struct {
-		description  string // description of the test case
-		route        string // route path to test
-		param        string // route parameter to test
-		expectedCode int    // expected HTTP status code
-		expectedBody string // expected HTTP response body
-	}{
+	// setup the test app instance
+	setupTestApp := func() (*tests.TestApp, error) {
+		app, err := tests.NewTestApp()
+		if err != nil {
+			return nil, err
+		}
+
+		server.BindAppHooks(app)
+
+		return app, nil
+	}
+
+	scenarios := []tests.ApiScenario{
 		// First test case
 		{
-			description:  "get HTTP status 200, and body returns the number 1 with parameter 1",
-			route:        "/",
-			param:        "1",
-			expectedCode: 200,
-			expectedBody: "1",
+			Name:            "get HTTP status 200, and body returns the number 1 with parameter 1",
+			Url:             "/api/1",
+			ExpectedStatus:  200,
+			ExpectedContent: []string{"1"},
+			TestAppFactory:  setupTestApp,
 		},
 		// Second test case
 		{
-			description:  "get HTTP status 404, when route is not exists",
-			route:        "/non-route/not-found",
-			expectedCode: 404,
+			Name:            "get HTTP status 404, when route does not exists",
+			Url:             "/non-route/not-found",
+			ExpectedStatus:  404,
+			ExpectedContent: []string{"\"data\":{}"},
+			TestAppFactory:  setupTestApp,
 		},
 		// Third test case
 		{
-			description:  "get HTTP status 400, when param is not a number",
-			route:        "/",
-			param:        "not-a-number",
-			expectedCode: 400,
+			Name:            "get HTTP status 400, when param is not a number",
+			Url:             "/api/not-a-number",
+			ExpectedStatus:  400,
+			ExpectedContent: []string{"Invalid number"},
+			TestAppFactory:  setupTestApp,
 		},
 	}
 
-	// Register the http server from main function
-	app := fizzbuzz.ServeHTTP()
-
 	// Run the test cases
-	for _, test := range tests {
-		req := httptest.NewRequest("GET", test.route, nil)
-		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Accept", "application/json")
-		if test.param != "" {
-			req = httptest.NewRequest("GET", test.route+test.param, nil)
-		}
-		res, err := app.Test(req)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if res.StatusCode != test.expectedCode {
-			t.Errorf("Test case %s failed, expected status code %d, got %d", test.description, test.expectedCode, res.StatusCode)
-		}
+	for _, scenario := range scenarios {
+		scenario.Test(t)
 	}
 
 }
