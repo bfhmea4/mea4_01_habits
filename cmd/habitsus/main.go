@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	_ "github.com/bfhmea4/mea4_01_habits/migrations"
 	"github.com/bfhmea4/mea4_01_habits/pkg/env"
 	"github.com/bfhmea4/mea4_01_habits/pkg/logger"
 	"github.com/bfhmea4/mea4_01_habits/pkg/server"
