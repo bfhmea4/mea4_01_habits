@@ -1,6 +1,7 @@
 package server
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -19,6 +20,7 @@ func BindAppHooks(app core.App) {
 			Method: http.MethodGet,
 			Path:   "/api/:number",
 			Handler: func(c echo.Context) error {
+				log.Println("Fizzbuzz endpoint hit - Path parameter:", c.PathParam("number"))
 				number, err := strconv.Atoi(c.PathParam("number"))
 				if err != nil {
 					return c.String(400, "Invalid number")
