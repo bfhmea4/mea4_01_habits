@@ -1,6 +1,9 @@
 package util
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 func CalculateFizzbuzz(i int) string {
 	res := ""
@@ -14,5 +17,6 @@ func CalculateFizzbuzz(i int) string {
 	if res == "" {
 		res += fmt.Sprintf("%d", i)
 	}
+	log.Println("Fizzbuzz - Input:", i, "Output:", res)
 	return res
 }

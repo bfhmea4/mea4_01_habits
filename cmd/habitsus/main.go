@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/bfhmea4/mea4_01_habits/pkg/env"
+	"github.com/bfhmea4/mea4_01_habits/pkg/logger"
 	"github.com/bfhmea4/mea4_01_habits/pkg/server"
 )
 
@@ -15,8 +16,9 @@ func init() {
 }
 
 func main() {
-	app := server.Setup()
+	logger.SetupLogger()
 
+	app := server.Setup()
 	server.BindAppHooks(app)
 
 	// start the pocketbase server
