@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  pocketbase:
+    build:
+      context: ./
+      dockerfile: ./build/package/habitsus/Dockerfile
+    ports:
+      - "8090:8090"
+    volumes:
+      - pb_data:/pb_data
+
+volumes:
+  pb_data: {}

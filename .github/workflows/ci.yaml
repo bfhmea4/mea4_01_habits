@@ -32,7 +32,7 @@ jobs:
 
     - name: Build
       run: |
-        go build -v ./cmd/fizzbuzz
+        go build -v ./cmd/habitsus
 
     - name: Test
       run: go test -v ./...
