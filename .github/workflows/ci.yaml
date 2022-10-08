@@ -36,3 +36,23 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+  ui-build:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: install yarn
+        run: |
+          npm install -g yarn
+      - uses: actions/checkout@v1
+      - name: yarn install
+        run: |
+          cd ./ui/app
+          yarn install
+      - name: build
+        run: |
+          cd ./ui/app
+          echo "ENV_API_URL=${{ secrets.ENV_API_URL }}" >> .env.production
