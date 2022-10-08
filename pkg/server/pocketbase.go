@@ -1,6 +1,8 @@
 package server
 
 import (
+	"bytes"
+	"encoding/json"
 	"log"
 	"net/http"
 	"strconv"
@@ -24,6 +26,18 @@ func BindAppHooks(app core.App) {
 				if err != nil {
 					return c.String(400, "Invalid number")
 				}
+
+				// ToDo remove after we start on the real thing
+				values := map[string]interface{}{"input": number}
+				json_data, err := json.Marshal(values)
+
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				http.Post("http://127.0.0.1:8090/api/collections/fizzbuzz/records", "application/json",
+					bytes.NewBuffer(json_data))
+
 				return c.String(200, util.CalculateFizzbuzz(number))
 			},
 		})
