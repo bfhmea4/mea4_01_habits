@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/bfhmea4/mea4_01_habits/pkg/env"
-	"github.com/bfhmea4/mea4_01_habits/pkg/migrations"
 	"github.com/bfhmea4/mea4_01_habits/pkg/util"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase"
@@ -35,10 +34,6 @@ func BindAppHooks(app core.App) {
 
 // Setup initializes the pocketbase server
 func Setup() *pocketbase.PocketBase {
-
-	// initialize pocketbase collections
-	migrations.InitCollections()
-
 	// initialize pocketbase server
 	app := pocketbase.NewWithConfig(pocketbase.Config{
 		DefaultDataDir:       env.POCKETBASE_DATA_DIR,

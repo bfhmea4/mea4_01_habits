@@ -10,24 +10,21 @@ import (
 )
 
 // Auto generated migration with the most recent collections configuration.
-func InitCollections() {
+func init() {
 	m.Register(func(db dbx.Builder) error {
 		jsonData := `[
 			{
 				"id": "systemprofiles0",
+				"created": "2022-10-07 09:48:48.129",
+				"updated": "2022-10-07 09:48:48.132",
 				"name": "profiles",
 				"system": true,
-				"listRule": "userId = @request.user.id",
-				"viewRule": "userId = @request.user.id",
-				"createRule": "userId = @request.user.id",
-				"updateRule": "userId = @request.user.id",
-				"deleteRule": null,
 				"schema": [
 					{
+						"system": true,
 						"id": "pbfielduser",
 						"name": "userId",
 						"type": "user",
-						"system": true,
 						"required": true,
 						"unique": true,
 						"options": {
@@ -36,10 +33,10 @@ func InitCollections() {
 						}
 					},
 					{
+						"system": false,
 						"id": "pbfieldname",
 						"name": "name",
 						"type": "text",
-						"system": false,
 						"required": false,
 						"unique": false,
 						"options": {
@@ -49,10 +46,10 @@ func InitCollections() {
 						}
 					},
 					{
+						"system": false,
 						"id": "pbfieldavatar",
 						"name": "avatar",
 						"type": "file",
-						"system": false,
 						"required": false,
 						"unique": false,
 						"options": {
@@ -68,36 +65,25 @@ func InitCollections() {
 							"thumbs": null
 						}
 					}
-				]
+				],
+				"listRule": "userId = @request.user.id",
+				"viewRule": "userId = @request.user.id",
+				"createRule": "userId = @request.user.id",
+				"updateRule": "userId = @request.user.id",
+				"deleteRule": null
 			},
 			{
-				"id": "74o5ynevh4a1vml",
-				"name": "tests",
+				"id": "7ge5qq2bzel81as",
+				"created": "2022-10-08 18:33:53.902",
+				"updated": "2022-10-08 18:45:38.921",
+				"name": "fizzbuzz",
 				"system": false,
-				"listRule": null,
-				"viewRule": null,
-				"createRule": null,
-				"updateRule": null,
-				"deleteRule": null,
 				"schema": [
 					{
-						"id": "9ddpluzl",
-						"name": "name",
-						"type": "text",
 						"system": false,
-						"required": true,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null,
-							"pattern": ""
-						}
-					},
-					{
-						"id": "qhg888db",
-						"name": "version",
+						"id": "k5hbhmyh",
+						"name": "input",
 						"type": "number",
-						"system": false,
 						"required": true,
 						"unique": false,
 						"options": {
@@ -105,7 +91,12 @@ func InitCollections() {
 							"max": null
 						}
 					}
-				]
+				],
+				"listRule": "",
+				"viewRule": "",
+				"createRule": "",
+				"updateRule": "",
+				"deleteRule": ""
 			}
 		]`
 
