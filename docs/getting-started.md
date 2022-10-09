@@ -2,6 +2,7 @@
 
 This chapter shows the various ways to run/ deploy the application.
 After the application is running (locally), you can access it under the following URLs:
+
 - Backend Admin-Interface (PocketBase): [http://localhost:8090/_/](http://localhost:8090/_/)
 - Frontend: [http://localhost:3000](http://localhost:3000)
 - The REST-API: [http://localhost:8090/api](http://localhost:8090/api)

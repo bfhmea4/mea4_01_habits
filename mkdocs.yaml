@@ -47,21 +47,21 @@ theme:
 # Plugins
 plugins:
   - search:
-      lang: de
+      lang: en
 
 # Customization
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/natrongmbh
+      link: https://github.com/bfhmea4/mea4_01_habits
 
 # Page tree
 nav:
   - Home:
     - Index: index.md
     - Getting Started: getting-started.md
-    - Requirements: requirements.md
     - Create users: create-users.md
+    - Development requirements: requirements.md
   - Architecture:
     - Overview: architecture/overview.md
     - Backend: architecture/backend.md
