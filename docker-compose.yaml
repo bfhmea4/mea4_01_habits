@@ -9,5 +9,10 @@ services:
     volumes:
       - pb_data:/pb_data
 
+  ui:
+    build: ./ui/app/
+    ports:
+      - "3000:3000"
+
 volumes:
   pb_data: {}
