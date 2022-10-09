@@ -1,6 +1,7 @@
 # Create users
 
 There are two types of users:
+
 - **Admin user**: can login in to the admin interface (PocketBase) and create *normal users* for the frontend
 - **Normal user**: can login in to the frontend, end-user of the application
 
