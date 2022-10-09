@@ -1,18 +1,30 @@
-version: "3.9"
+version: '3.9'
 services:
-  pocketbase:
+
+  backend:
     build:
       context: ./
       dockerfile: ./build/package/habitsus/Dockerfile
+    container_name: habitsus_backend
     ports:
       - "8090:8090"
     volumes:
       - pb_data:/pb_data
+    networks:
+      - net
 
   ui:
     build: ./ui/app/
+    container_name: habitsus_frontend
     ports:
       - "3000:3000"
+    environment:
+      - ENV_API_URL=http://127.0.0.1:8090
 
 volumes:
   pb_data: {}
+
+networks:
+  net:
+    driver_opts:
+      com.docker.network.bridge.name: habitsus
