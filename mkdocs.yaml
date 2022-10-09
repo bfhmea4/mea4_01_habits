@@ -58,8 +58,10 @@ extra:
 # Page tree
 nav:
   - Home:
-    - Getting Started: index.md
+    - Index: index.md
+    - Getting Started: getting-started.md
     - Requirements: requirements.md
+    - Create users: create-users.md
   - Architecture:
     - Overview: architecture/overview.md
     - Backend: architecture/backend.md
