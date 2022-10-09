@@ -11,6 +11,7 @@ export interface InputFieldProps {
   type: string
   value?: string
   disabled?: boolean
+  min?: number
 }
 
 const InputField = (props: InputFieldProps) => {
@@ -44,6 +45,7 @@ const InputField = (props: InputFieldProps) => {
         type={props.type}
         onChange={props.onChange}
         required={props.required}
+        min={props.min}
       />
     </div>
   )
