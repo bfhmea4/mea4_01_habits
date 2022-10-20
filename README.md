@@ -1,9 +1,9 @@
 <p align="center">
     <a href="https://github.com/bfhmea4/mea4_01_habits">
-        <img height="120px" src="./assets/habitsus_example_logo.png" />
+        <img height="120px" src="./assets/habitsad_example_logo.png" />
     </a>
     <h1 align="center">
-        Habitsus - Tracking your habits
+        Habitsad - Tracking your habits
     </h1>
 </p>
 

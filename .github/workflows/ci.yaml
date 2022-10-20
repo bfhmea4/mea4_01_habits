@@ -32,7 +32,7 @@ jobs:
 
     - name: Build
       run: |
-        go build -v ./cmd/habitsus
+        go build -v ./cmd/habitsad
 
     - name: Test
       run: go test -v ./...

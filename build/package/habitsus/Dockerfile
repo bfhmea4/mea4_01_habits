@@ -3,20 +3,20 @@ FROM golang:1.19 as build
 WORKDIR /go/src/github.com/bfhmea4/mea4_01_habits
 # RUN go get -d -v golang.org/x/net/html
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o habitsus ./cmd/habitsus
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o habitsad ./cmd/habitsad
 
 # Production build
 FROM alpine:latest
 
 WORKDIR /app
 
-RUN addgroup -g 1001 -S habitsus
-RUN adduser -S habitsus -u 1001
+RUN addgroup -g 1001 -S habitsad
+RUN adduser -S habitsad -u 1001
 
 RUN apk --no-cache add ca-certificates
 
-COPY --from=build --chown=habitsus:habitsus /go/src/github.com/bfhmea4/mea4_01_habits/habitsus ./
+COPY --from=build --chown=habitsad:habitsad /go/src/github.com/bfhmea4/mea4_01_habits/habitsad ./
 
 EXPOSE 8090
 
-CMD ["./habitsus", "serve", "--http=0.0.0.0:8090"]
+CMD ["./habitsad", "serve", "--http=0.0.0.0:8090"]
