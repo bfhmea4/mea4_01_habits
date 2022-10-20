@@ -17,7 +17,7 @@ repos:
       - id: go-fmt
       - id: no-go-testing
       - id: golangci-lint
-      - id: go-unit-tests
+      # - id: go-unit-tests
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: "v8.25.0"
     hooks:

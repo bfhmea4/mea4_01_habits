@@ -22,7 +22,7 @@ Start the backend directly (remember to set the `POCKETBASE_DATA_DIR` env variab
 
 ```bash
 export POCKETBASE_DATA_DIR="./pb-data"
-go run cmd/habitsus/main.go serve
+go run cmd/habitsad/main.go serve
 ```
 
 ### Frontend
@@ -45,8 +45,8 @@ version: '3.9'
 services:
 
   backend:
-    image: ghcr.io/bfhmea4/habitsus-backend:latest
-    container_name: habitsus_backend
+    image: ghcr.io/bfhmea4/habitsad-backend:latest
+    container_name: habitsad_backend
     ports:
       - "8090:8090"
     volumes:
@@ -55,8 +55,8 @@ services:
       - net
 
   ui:
-    image: ghcr.io/bfhmea4/habitsus-ui:latest
-    container_name: habitsus_frontend
+    image: ghcr.io/bfhmea4/habitsad-ui:latest
+    container_name: habitsad_frontend
     ports:
       - "3000:3000"
     environment:
@@ -68,7 +68,7 @@ volumes:
 networks:
   net:
     driver_opts:
-      com.docker.network.bridge.name: habitsus
+      com.docker.network.bridge.name: habitsad
 ```
 
 Create and start container:
@@ -79,15 +79,15 @@ docker-compose up -d
 
 ### Build docker container manually
 
-You can build the docker container images manually with the included Dockerfiles under `./build/package/habitsus` and `./ui/app`.
+You can build the docker container images manually with the included Dockerfiles under `./build/package/habitsad` and `./ui/app`.
 This step can be done automatically through a docker-compose file (see next chaptre).
 
 ```bash
 ## build backend manually
-docker build -f ./build/package/habitsus/Dockerfile . -t habitsus-backend:local
+docker build -f ./build/package/habitsad/Dockerfile . -t habitsad-backend:local
 
 ## build frontend manually
-docker build -f ./ui/app/Dockerfile . -t habitsus-ui:local
+docker build -f ./ui/app/Dockerfile . -t habitsad-ui:local
 ```
 
 ### Build docker container using docker-compose
@@ -101,8 +101,8 @@ services:
   backend:
     build:
       context: ./
-      dockerfile: ./build/package/habitsus/Dockerfile
-    container_name: habitsus_backend
+      dockerfile: ./build/package/habitsad/Dockerfile
+    container_name: habitsad_backend
     ports:
       - "8090:8090"
     volumes:
@@ -112,7 +112,7 @@ services:
 
   ui:
     build: ./ui/app/
-    container_name: habitsus_frontend
+    container_name: habitsad_frontend
     ports:
       - "3000:3000"
     environment:
@@ -124,7 +124,7 @@ volumes:
 networks:
   net:
     driver_opts:
-      com.docker.network.bridge.name: habitsus
+      com.docker.network.bridge.name: habitsad
 ```
 
 Build and start container (this take some time):
@@ -135,7 +135,7 @@ docker-compose up -d
 
 ### Kubernetes
 
-You can deploy Habitsus in your Kubernetes cluster, but you have to set all the env variables.
+You can deploy Habitsad in your Kubernetes cluster, but you have to set all the env variables.
 
 #### Environment Variables
 
@@ -148,4 +148,4 @@ You need to set the following environment:
 
 **UI**
 
-- `ENV_API_URL` - The URL of the API, e.g. `https://template.habitsus.io` (without trailing slash, but /api at the end, must be accessible from the webclient)
+- `ENV_API_URL` - The URL of the API, e.g. `https://template.habitsad.io` (without trailing slash, but /api at the end, must be accessible from the webclient)

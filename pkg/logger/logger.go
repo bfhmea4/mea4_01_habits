@@ -17,7 +17,7 @@ func openLogFile(path string) (*os.File, error) {
 }
 
 func SetupLogger() {
-	file, err := openLogFile(env.HABITSUS_LOG_FILE_PATH)
+	file, err := openLogFile(env.HABITSAD_LOG_FILE_PATH)
 	if err != nil {
 		log.Fatal(err)
 	}

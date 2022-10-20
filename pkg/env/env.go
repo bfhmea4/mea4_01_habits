@@ -9,8 +9,8 @@ var (
 	POCKETBASE_DATA_DIR string
 	// POCKETBASE_ENCRYPTION_KEY is the default encryption key
 	POCKETBASE_ENCRYPTION_KEY string
-	// HABITSUS_LOG_FILE_PATH is the default path to the log file
-	HABITSUS_LOG_FILE_PATH string
+	// HABITSAD_LOG_FILE_PATH is the default path to the log file
+	HABITSAD_LOG_FILE_PATH string
 )
 
 // Init initializes the environment variables
@@ -23,8 +23,8 @@ func Init() error {
 		POCKETBASE_ENCRYPTION_KEY = "POCKETBASE_ENCRYPTION_KEY"
 	}
 
-	if HABITSUS_LOG_FILE_PATH = os.Getenv("HABITSUS_LOG_FILE_PATH"); HABITSUS_LOG_FILE_PATH == "" {
-		HABITSUS_LOG_FILE_PATH = "./habitsus.log"
+	if HABITSAD_LOG_FILE_PATH = os.Getenv("HABITSAD_LOG_FILE_PATH"); HABITSAD_LOG_FILE_PATH == "" {
+		HABITSAD_LOG_FILE_PATH = "./habitsad.log"
 	}
 
 	return nil

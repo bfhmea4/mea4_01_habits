@@ -1,5 +1,5 @@
 # Project information
-site_name: Habitsus Docs
+site_name: Habitsad Docs
 site_author: Jan Lauber, Jan Fuhrer, Andy Bigler
 site_description: >-
   Documentation and guides for the BFH Project 1 Habit Journalling Platform.
@@ -14,7 +14,7 @@ copyright: Copyright &copy; 2022 Jan Lauber, Jan Fuhrer, Andy Bigler
 
 # Configuration
 theme:
-  logo: assets/habitsus_example_logo.png
+  logo: assets/habitsad_example_logo.png
   name: material
   language: en
   font:
