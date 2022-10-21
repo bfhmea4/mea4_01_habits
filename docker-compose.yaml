@@ -4,8 +4,8 @@ services:
   backend:
     build:
       context: ./
-      dockerfile: ./build/package/habitsad/Dockerfile
-    container_name: habitsad_backend
+      dockerfile: ./build/package/habits/Dockerfile
+    container_name: habits_backend
     ports:
       - "8090:8090"
     volumes:
@@ -15,7 +15,7 @@ services:
 
   ui:
     build: ./ui/app/
-    container_name: habitsad_frontend
+    container_name: habits_frontend
     ports:
       - "3000:3000"
     environment:
@@ -27,4 +27,4 @@ volumes:
 networks:
   net:
     driver_opts:
-      com.docker.network.bridge.name: habitsad
+      com.docker.network.bridge.name: habits
