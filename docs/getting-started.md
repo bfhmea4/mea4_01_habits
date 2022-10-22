@@ -3,26 +3,37 @@
 This chapter shows the various ways to run/ deploy the application.
 After the application is running (locally), you can access it under the following URLs:
 
-- Backend Admin-Interface (PocketBase): [http://localhost:8090/_/](http://localhost:8090/_/)
+- Backend: [http://localhost:8080](http://localhost:8080)
 - Frontend: [http://localhost:3000](http://localhost:3000)
-- The REST-API: [http://localhost:8090/api](http://localhost:8090/api)
-
-**Next steps**
-
-After the application is started, you have to create some users to test the application. See the following [guide](https://bfhmea4.github.io/mea4_01_habits/create-users/).
+- The REST-API: [http://localhost:8080/api](http://localhost:8080/api)
 
 ## Test application locally
 
-If you want to test some new code without building docker images, you can run the backend and frontend directly with `go` and `yarn`.
-This is only recommended for testing and development purposes as to the performance isn't as good as built binaries.
+### Build Local Image
+
+```
+mvn spring-boot:build-image -DskipTests=True -Dspring-boot.build-image.imageName=bfh/habits
+```
+
+### Run Local Image
+
+```
+docker run -p 8080:8080 -t bfh/habits
+```
+
+Run test suite against localhost
+
+```
+mvn test -Dhabits.test.localhost=true
+```
 
 ### Backend
 
-Start the backend directly (remember to set the `POCKETBASE_DATA_DIR` env variable):
+The application uses kotlin, maven and java version 17.
 
-```bash
-export POCKETBASE_DATA_DIR="./pb-data"
-go run cmd/habitsad/main.go serve
+Start application by using maven:
+```
+mvn spring-boot:run
 ```
 
 ### Frontend
@@ -45,8 +56,8 @@ version: '3.9'
 services:
 
   backend:
-    image: ghcr.io/bfhmea4/habitsad-backend:latest
-    container_name: habitsad_backend
+    image: ghcr.io/bfhmea4/habits-backend:latest
+    container_name: habits_backend
     ports:
       - "8090:8090"
     volumes:
@@ -55,8 +66,8 @@ services:
       - net
 
   ui:
-    image: ghcr.io/bfhmea4/habitsad-ui:latest
-    container_name: habitsad_frontend
+    image: ghcr.io/bfhmea4/habits-ui:latest
+    container_name: habits_frontend
     ports:
       - "3000:3000"
     environment:
@@ -68,7 +79,7 @@ volumes:
 networks:
   net:
     driver_opts:
-      com.docker.network.bridge.name: habitsad
+      com.docker.network.bridge.name: habits
 ```
 
 Create and start container:
@@ -79,15 +90,15 @@ docker-compose up -d
 
 ### Build docker container manually
 
-You can build the docker container images manually with the included Dockerfiles under `./build/package/habitsad` and `./ui/app`.
+You can build the docker container images manually with the included Dockerfiles under `./build/package/habits` and `./ui/app`.
 This step can be done automatically through a docker-compose file (see next chaptre).
 
 ```bash
 ## build backend manually
-docker build -f ./build/package/habitsad/Dockerfile . -t habitsad-backend:local
+docker build -f ./build/package/habits/Dockerfile . -t habits-backend:local
 
 ## build frontend manually
-docker build -f ./ui/app/Dockerfile . -t habitsad-ui:local
+docker build -f ./ui/app/Dockerfile . -t habits-ui:local
 ```
 
 ### Build docker container using docker-compose
@@ -101,8 +112,8 @@ services:
   backend:
     build:
       context: ./
-      dockerfile: ./build/package/habitsad/Dockerfile
-    container_name: habitsad_backend
+      dockerfile: ./build/package/habits/Dockerfile
+    container_name: habits_backend
     ports:
       - "8090:8090"
     volumes:
@@ -112,7 +123,7 @@ services:
 
   ui:
     build: ./ui/app/
-    container_name: habitsad_frontend
+    container_name: habits_frontend
     ports:
       - "3000:3000"
     environment:
@@ -124,7 +135,7 @@ volumes:
 networks:
   net:
     driver_opts:
-      com.docker.network.bridge.name: habitsad
+      com.docker.network.bridge.name: habits
 ```
 
 Build and start container (this take some time):
@@ -135,17 +146,12 @@ docker-compose up -d
 
 ### Kubernetes
 
-You can deploy Habitsad in your Kubernetes cluster, but you have to set all the env variables.
+You can deploy Habits in your Kubernetes cluster, but you have to set all the env variables.
 
 #### Environment Variables
 
 You need to set the following environment:
 
-**Backend**
-
-- `POCKETBASE_DATA_DIR` - The directory where the PocketBase data is stored. Default: `/pb_data`
-- `POCKETBASE_ENCRYPTION_KEY` - The encryption key for the PocketBase database. Must be 32 characters long.
-
 **UI**
 
-- `ENV_API_URL` - The URL of the API, e.g. `https://template.habitsad.io` (without trailing slash, but /api at the end, must be accessible from the webclient)
+- `ENV_API_URL` - The URL of the API, e.g. `https://template.habits.io` (without trailing slash, but /api at the end, must be accessible from the webclient)
