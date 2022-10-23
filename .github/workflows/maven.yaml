@@ -28,7 +28,3 @@ jobs:
 
       - name: Build and Test with Maven
         run: mvn -B package --file pom.xml
-
-      - name: Build Docker Image for Main Only
-        if: github.ref == 'refs/heads/main'
-        run: mvn -B spring-boot:build-image -DskipTests=True -Dspring-boot.build-image.imageName=bfh/habits
