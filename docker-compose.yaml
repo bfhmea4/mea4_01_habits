@@ -32,8 +32,8 @@ services:
       POSTGRES_DB: 'habits'
       POSTGRES_PASSWORD: 'habits'
       POSTGRES_USER: 'habits'
-    #volumes:
-    #- ./data:/var/lib/postgresql/data
+    volumes:
+    - ./data:/var/lib/postgresql/data
 
 networks:
   net:

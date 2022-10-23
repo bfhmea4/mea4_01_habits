@@ -60,7 +60,6 @@ nav:
   - Home:
     - Index: index.md
     - Getting Started: getting-started.md
-    - Create users: create-users.md
     - Development requirements: requirements.md
   - Architecture:
     - Overview: architecture/overview.md

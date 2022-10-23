@@ -11,19 +11,21 @@ After the application is running (locally), you can access it under the followin
 
 ### Build Local Image
 
-```
-mvn spring-boot:build-image -DskipTests=True -Dspring-boot.build-image.imageName=bfh/habits
+```bash
+docker build -f ./build/package/habits/Dockerfile . -t habits-backend:local
 ```
 
 ### Run Local Image
 
-```
-docker run -p 8080:8080 -t bfh/habits
+Start docker image of backend:
+
+```bash
+docker run -p 8080:8080 -t habits-backend:local
 ```
 
-Run test suite against localhost
+Run test suite against localhost:
 
-```
+```bash
 mvn test -Dhabits.test.localhost=true
 ```
 
@@ -32,7 +34,8 @@ mvn test -Dhabits.test.localhost=true
 The application uses kotlin, maven and java version 17.
 
 Start application by using maven:
-```
+
+```bash
 mvn spring-boot:run
 ```
 
@@ -59,22 +62,33 @@ services:
     image: ghcr.io/bfhmea4/habits-backend:latest
     container_name: habits_backend
     ports:
-      - "8090:8090"
-    volumes:
-      - pb_data:/pb_data
+      - "8080:8080"
     networks:
       - net
 
-  ui:
-    image: ghcr.io/bfhmea4/habits-ui:latest
+  frontend:
+    image: ghcr.io/bfhmea4/habits-frontend:latest
     container_name: habits_frontend
     ports:
       - "3000:3000"
+    networks:
+    - net
     environment:
-      - ENV_API_URL=http://127.0.0.1:8090
+      - ENV_API_URL=http://127.0.0.1:8080
 
-volumes:
-  pb_data: {}
+  postgresql:
+    image: postgres:13-alpine
+    container_name: postgres
+    networks:
+    - net
+    ports:
+    - '5432:5432'
+    environment:
+      POSTGRES_DB: 'habits'
+      POSTGRES_PASSWORD: 'habits'
+      POSTGRES_USER: 'habits'
+    volumes:
+    - ./data:/var/lib/postgresql/data
 
 networks:
   net:
@@ -98,7 +112,7 @@ This step can be done automatically through a docker-compose file (see next chap
 docker build -f ./build/package/habits/Dockerfile . -t habits-backend:local
 
 ## build frontend manually
-docker build -f ./ui/app/Dockerfile . -t habits-ui:local
+docker build -f ./ui/app/Dockerfile . -t habits-frontend:local
 ```
 
 ### Build docker container using docker-compose
@@ -115,22 +129,33 @@ services:
       dockerfile: ./build/package/habits/Dockerfile
     container_name: habits_backend
     ports:
-      - "8090:8090"
-    volumes:
-      - pb_data:/pb_data
+      - "8080:8080"
     networks:
       - net
 
-  ui:
+  frontend:
     build: ./ui/app/
     container_name: habits_frontend
     ports:
       - "3000:3000"
+    networks:
+    - net
     environment:
-      - ENV_API_URL=http://127.0.0.1:8090
+      - ENV_API_URL=http://127.0.0.1:8080
 
-volumes:
-  pb_data: {}
+  postgresql:
+    image: postgres:13-alpine
+    container_name: postgres
+    networks:
+    - net
+    ports:
+    - '5432:5432'
+    environment:
+      POSTGRES_DB: 'habits'
+      POSTGRES_PASSWORD: 'habits'
+      POSTGRES_USER: 'habits'
+    volumes:
+    - ./data:/var/lib/postgresql/data
 
 networks:
   net:
