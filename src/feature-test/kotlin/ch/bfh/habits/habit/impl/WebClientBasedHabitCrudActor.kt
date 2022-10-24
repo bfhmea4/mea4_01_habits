@@ -14,7 +14,7 @@ import org.springframework.test.web.reactive.server.returnResult
 import reactor.core.publisher.Mono
 
 class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : HabitCrudActor {
-    override fun getAllHabits(): HabitListDTO {
+    override fun getsAllHabits(): HabitListDTO {
         val result = webClient.get()
             .uri("/api/habits/")
             .accept(MediaType.APPLICATION_JSON)
@@ -26,7 +26,7 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
         return result.responseBody!!
     }
 
-    override fun newHabit(habitDTO: HabitDTO): Long {
+    override fun createsHabit(habitDTO: HabitDTO): Long {
         val result = webClient.post()
             .uri("/api/habit")
             .body(Mono.just(habitDTO), HabitDTO::class.java)
@@ -72,5 +72,19 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
             throw EntityNotFoundException("Habit id = $habitId")
 
         Assertions.assertThat(result.status).isEqualTo(HttpStatus.NO_CONTENT)
+    }
+
+    override fun updatesHabit(habitId: Long, habitDTO: HabitDTO) {
+        val result = webClient.put()
+            .uri("/api/habit/$habitId")
+            .body(Mono.just(habitDTO), HabitDTO::class.java)
+            .exchange()
+            .expectBody()
+            .returnResult()
+
+        if (result.status == HttpStatus.NOT_FOUND)
+            throw EntityNotFoundException("Habit id = $habitId")
+
+        Assertions.assertThat(result.status.is2xxSuccessful).isTrue
     }
 }
