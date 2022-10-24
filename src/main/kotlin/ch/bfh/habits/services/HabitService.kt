@@ -1,7 +1,9 @@
 package ch.bfh.habits.services
 
+import ch.bfh.habits.dtos.ObjectIdDTO
 import ch.bfh.habits.dtos.habit.HabitDTO
 import ch.bfh.habits.dtos.habit.HabitDtoBuilder
+import ch.bfh.habits.dtos.habit.HabitEntityBuilder
 import ch.bfh.habits.dtos.habit.HabitListDTO
 import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.repositories.HabitDAO
@@ -17,6 +19,16 @@ class HabitService(private val habitDAO: HabitDAO) {
         return HabitListDTO(habits = habits)
     }
 
+    @Transactional
+    fun newHabit(habitDTO: HabitDTO): ObjectIdDTO {
+        val newHabit = createHabitEntityFromDTO(habitDTO)
+        habitDAO.save(newHabit)
+        return ObjectIdDTO(newHabit.id!!)
+    }
+
     private fun createHabitDtoFromEntity(habit: Habit) =
         HabitDtoBuilder.createHabitDtoFromEntity(habit)
+
+    private fun createHabitEntityFromDTO(habitDTO: HabitDTO): Habit =
+        HabitEntityBuilder.createHabitEntityFromDTO(habitDTO)
 }
