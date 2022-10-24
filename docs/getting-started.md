@@ -88,7 +88,10 @@ services:
       POSTGRES_PASSWORD: 'habits'
       POSTGRES_USER: 'habits'
     volumes:
-    - ./data:/var/lib/postgresql/data
+    - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data: {}
 
 networks:
   net:
@@ -155,7 +158,10 @@ services:
       POSTGRES_PASSWORD: 'habits'
       POSTGRES_USER: 'habits'
     volumes:
-    - ./data:/var/lib/postgresql/data
+    - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data: {}
 
 networks:
   net:
