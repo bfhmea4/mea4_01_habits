@@ -3,6 +3,7 @@ package ch.bfh.habits.controllers
 import ch.bfh.habits.dtos.ObjectIdDTO
 import ch.bfh.habits.dtos.habit.HabitDTO
 import ch.bfh.habits.dtos.habit.HabitListDTO
+import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.services.HabitService
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.every
@@ -18,8 +19,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 
@@ -86,5 +86,25 @@ internal class HabitControllerTests {
 
         assertEquals(mapper.writeValueAsString(habit), result.response.contentAsString)
         verify { service.getHabitById(1) }
+    }
+
+    @Test
+    fun controller_invokes_deleteHabit_function() {
+        every { service.deleteHabitById(1) } returns Unit
+
+        mockMvc.perform(delete("/api/habit/1"))
+            .andExpect(status().isNoContent)
+
+        verify { service.deleteHabitById(1) }
+    }
+
+    @Test
+    fun controller_invokes_deleteHabit_function_on_non_existent_id() {
+        every { service.deleteHabitById(2) } throws EntityNotFoundException("Habit not found")
+
+        mockMvc.perform(delete("/api/habit/2"))
+            .andExpect(status().is4xxClientError)
+
+        verify { service.deleteHabitById(2) }
     }
 }

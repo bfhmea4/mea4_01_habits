@@ -60,6 +60,17 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
 
         Assertions.assertThat(result.status.is2xxSuccessful).isTrue
         return result.responseBody!!
+    }
 
+    override fun deletesHabit(habitId: Long) {
+        val result = webClient.delete()
+            .uri("/api/habit/$habitId")
+            .exchange()
+            .returnResult<Any>()
+
+        if (result.status == HttpStatus.NOT_FOUND)
+            throw EntityNotFoundException("Habit id = $habitId")
+
+        Assertions.assertThat(result.status).isEqualTo(HttpStatus.NO_CONTENT)
     }
 }

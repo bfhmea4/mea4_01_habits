@@ -8,4 +8,5 @@ interface HabitCrudActor {
     fun newHabit(habitDTO: HabitDTO): Long
     fun seesHabitExists(habitId: Long): Boolean
     fun getsHabit(habitId: Long): HabitDTO
+    fun deletesHabit(habitId: Long)
 }
