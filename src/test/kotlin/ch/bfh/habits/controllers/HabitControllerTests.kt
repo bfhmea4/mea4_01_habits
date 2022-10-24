@@ -72,4 +72,19 @@ internal class HabitControllerTests {
         assertEquals(mapper.writeValueAsString(ObjectIdDTO(1)), result.response.contentAsString)
         verify { service.newHabit(any()) }
     }
+
+    @Test
+    fun controller_invokes_getHabit_function() {
+        val habit = HabitDTO("Gym", "Go to the Gym more often", false, 1)
+
+        every { service.getHabitById(1) } returns habit
+
+        val result = mockMvc.perform(get("/api/habit/1"))
+            .andExpect(status().isOk)
+            .andDo(print())
+            .andReturn()
+
+        assertEquals(mapper.writeValueAsString(habit), result.response.contentAsString)
+        verify { service.getHabitById(1) }
+    }
 }

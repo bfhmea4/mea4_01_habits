@@ -6,10 +6,7 @@ import ch.bfh.habits.services.HabitService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class HabitController @Autowired constructor(private val service: HabitService) {
@@ -21,5 +18,10 @@ class HabitController @Autowired constructor(private val service: HabitService) 
     @PostMapping("/api/habit", consumes = ["application/json"])
     fun newHabit(@RequestBody habitDTO: HabitDTO): ResponseEntity<Any> {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.newHabit(habitDTO))
+    }
+
+    @GetMapping("/api/habit/{id}")
+    fun getHabit(@PathVariable id: Long): ResponseEntity<HabitDTO> {
+        return ResponseEntity.ok().body(service.getHabitById(id))
     }
 }
