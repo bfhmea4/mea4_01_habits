@@ -6,6 +6,7 @@ import ch.bfh.habits.dtos.habit.HabitDtoBuilder
 import ch.bfh.habits.dtos.habit.HabitEntityBuilder
 import ch.bfh.habits.dtos.habit.HabitListDTO
 import ch.bfh.habits.entities.Habit
+import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.repositories.HabitDAO
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,6 +25,14 @@ class HabitService(private val habitDAO: HabitDAO) {
         val newHabit = createHabitEntityFromDTO(habitDTO)
         habitDAO.save(newHabit)
         return ObjectIdDTO(newHabit.id!!)
+    }
+
+    @Transactional
+    fun getHabitById(id: Long): HabitDTO {
+        val habit = habitDAO.findById(id).orElseThrow {
+            EntityNotFoundException("Habit id = $id not found")
+        }
+        return createHabitDtoFromEntity(habit)
     }
 
     private fun createHabitDtoFromEntity(habit: Habit) =
