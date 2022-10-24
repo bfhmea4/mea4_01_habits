@@ -1,13 +1,20 @@
 package ch.bfh.habits.entities
 
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.sql.Timestamp
 import javax.persistence.*
 
 @Entity
 class JournalEntry (
-    val description: String,
+    var description: String,
     @ManyToOne
-    val belongsTo: Habit,
+    var belongsTo: Habit? = null,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
+    @CreationTimestamp
+    var createdAt: Timestamp? = null,
+    @UpdateTimestamp
+    var editedAt: Timestamp? = null
 )
