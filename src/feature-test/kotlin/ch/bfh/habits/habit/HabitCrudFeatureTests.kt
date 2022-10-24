@@ -24,20 +24,20 @@ class HabitCrudFeatureTests {
     inner class GivenNoHabitExists {
         @Test
         fun `get an empty list for get all`() {
-            assertThat(habitActor.getAllHabits()).isEqualTo(HabitListDTO(arrayListOf()))
+            assertThat(habitActor.getsAllHabits()).isEqualTo(HabitListDTO(arrayListOf()))
         }
     }
 
     @Nested
     @DisplayName("Given we have created a habit THEN we ...")
     inner class GivenNewHabitCreated {
-        private var habitId = habitActor.newHabit(createHabitDTO("Gym", "Go to the Gym more often"))
+        private var habitId = habitActor.createsHabit(createHabitDTO("Gym", "Go to the Gym more often"))
 
         @Test
         fun `can find it amongst all habits`() {
             // when
-            habitActor.newHabit(createHabitDTO("Running", "Go run"))
-            val allHabits = habitActor.getAllHabits().habits
+            habitActor.createsHabit(createHabitDTO("Running", "Go run"))
+            val allHabits = habitActor.getsAllHabits().habits
 
             // then
             assertThat(allHabits.size).isGreaterThan(1)
@@ -60,6 +60,16 @@ class HabitCrudFeatureTests {
             assertThat(habitActor.seesHabitExists(habitId)).isFalse
         }
 
+        @Test
+        fun `can update it`() {
+            // given
+            val originalHabit = habitActor.getsHabit(habitId)
+            // when
+            habitActor.updatesHabit(habitId, originalHabit.copy(title = "Gym_Old"))
+            // then
+            val updatedHabit = habitActor.getsHabit(habitId)
+            assertThat(updatedHabit.title).isEqualTo("Gym_Old")
+        }
     }
 
     @Nested
@@ -83,6 +93,13 @@ class HabitCrudFeatureTests {
         fun `delete throws not found`() {
             assertThrows<EntityNotFoundException> {
                 habitActor.deletesHabit(nonExistingHabitId)
+            }
+        }
+
+        @Test
+        fun `update throws not found`() {
+            assertThrows<EntityNotFoundException> {
+                habitActor.updatesHabit(nonExistingHabitId, createHabitDTO())
             }
         }
     }

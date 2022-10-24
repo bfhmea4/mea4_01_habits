@@ -30,4 +30,10 @@ class HabitController @Autowired constructor(private val service: HabitService) 
         service.deleteHabitById(id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
+
+    @PutMapping("/api/habit/{id}")
+    fun updateHabit(@RequestBody habit: HabitDTO, @PathVariable id: Long): ResponseEntity<Any> {
+        service.updateHabitById(id, habit)
+        return ResponseEntity.ok().build()
+    }
 }

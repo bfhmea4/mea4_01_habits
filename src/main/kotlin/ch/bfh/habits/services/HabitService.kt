@@ -45,6 +45,14 @@ class HabitService(private val habitDAO: HabitDAO) {
         }
     }
 
+    @Transactional
+    fun updateHabitById(id: Long, habitDTO: HabitDTO) {
+        val currentHabit = habitDAO.findById(id).orElseThrow {
+            EntityNotFoundException("Habit id = $id not found")
+        }
+        HabitEntityBuilder.applyHabitDtoToEntity(habitDTO, currentHabit)
+    }
+
     private fun createHabitDtoFromEntity(habit: Habit) =
         HabitDtoBuilder.createHabitDtoFromEntity(habit)
 

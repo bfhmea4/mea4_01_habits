@@ -107,4 +107,27 @@ internal class HabitControllerTests {
 
         verify { service.deleteHabitById(2) }
     }
+
+    @Test
+    fun controller_invokes_updateHabit_function() {
+        val habit = HabitDTO("Gym_Old", "Go to the Gym more often", true)
+        val habitReturned = HabitDTO("Gym_Old", "Go to the Gym more often", true, 1)
+
+        every { service.updateHabitById(1, any()) } returns Unit
+        every { service.getHabitById(1) } returns habitReturned
+
+        mockMvc.perform(put("/api/habit/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(habit)))
+            .andExpect(status().isOk)
+
+        val result = mockMvc.perform(get("/api/habit/1"))
+            .andExpect(status().isOk)
+            .andDo(print())
+            .andReturn()
+
+        assertEquals(mapper.writeValueAsString(habitReturned), result.response.contentAsString)
+        verify { service.updateHabitById(1, any()) }
+        verify { service.getHabitById(1) }
+    }
 }
