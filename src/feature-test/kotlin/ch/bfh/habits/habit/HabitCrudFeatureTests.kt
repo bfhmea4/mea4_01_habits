@@ -29,18 +29,19 @@ class HabitCrudFeatureTests {
     }
 
     @Nested
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("Given we have created a habit THEN we ...")
     inner class GivenNewHabitCreated {
-        private var habitId = -1L
-        @BeforeAll
-        fun setup() {
-            habitId = habitActor.newHabit(createHabitDTO("Gym", "Go to the Gym more often"))
-        }
+        private var habitId = habitActor.newHabit(createHabitDTO("Gym", "Go to the Gym more often"))
 
         @Test
-        fun `get it in the list of habits`() {
-            assertThat(habitActor.getAllHabits()).isEqualTo(HabitListDTO(arrayListOf(HabitDTO("Gym", "Go to the Gym more often", false, habitId))))
+        fun `can find it amongst all habits`() {
+            // when
+            habitActor.newHabit(createHabitDTO("Running", "Go run"))
+            val allHabits = habitActor.getAllHabits().habits
+
+            // then
+            assertThat(allHabits.size).isGreaterThan(1)
+            assertThat(allHabits.filter { i -> i.id == habitId }).isNotEmpty
         }
 
         @Test
@@ -52,6 +53,13 @@ class HabitCrudFeatureTests {
         fun `can get it`() {
             assertThat(habitActor.getsHabit(habitId).id).isEqualTo(habitId)
         }
+
+        @Test
+        fun `can delete it`() {
+            habitActor.deletesHabit(habitId)
+            assertThat(habitActor.seesHabitExists(habitId)).isFalse
+        }
+
     }
 
     @Nested
@@ -68,6 +76,13 @@ class HabitCrudFeatureTests {
         fun `get throws not found`() {
             assertThrows<EntityNotFoundException> {
                 habitActor.getsHabit(nonExistingHabitId)
+            }
+        }
+
+        @Test
+        fun `delete throws not found`() {
+            assertThrows<EntityNotFoundException> {
+                habitActor.deletesHabit(nonExistingHabitId)
             }
         }
     }

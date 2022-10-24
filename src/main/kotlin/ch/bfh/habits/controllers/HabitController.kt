@@ -24,4 +24,10 @@ class HabitController @Autowired constructor(private val service: HabitService) 
     fun getHabit(@PathVariable id: Long): ResponseEntity<HabitDTO> {
         return ResponseEntity.ok().body(service.getHabitById(id))
     }
+
+    @DeleteMapping("/api/habit/{id}")
+    fun deleteHabit(@PathVariable id: Long): ResponseEntity<Any> {
+        service.deleteHabitById(id)
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+    }
 }

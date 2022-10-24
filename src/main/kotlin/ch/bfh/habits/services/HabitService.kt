@@ -8,6 +8,7 @@ import ch.bfh.habits.dtos.habit.HabitListDTO
 import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.repositories.HabitDAO
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -33,6 +34,15 @@ class HabitService(private val habitDAO: HabitDAO) {
             EntityNotFoundException("Habit id = $id not found")
         }
         return createHabitDtoFromEntity(habit)
+    }
+
+    @Transactional
+    fun deleteHabitById(id: Long) {
+        try {
+            habitDAO.deleteById(id)
+        } catch (e: EmptyResultDataAccessException) {
+            throw EntityNotFoundException("Habit id = $id not found")
+        }
     }
 
     private fun createHabitDtoFromEntity(habit: Habit) =
