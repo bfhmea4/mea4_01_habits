@@ -65,6 +65,8 @@ nav:
     - Overview: architecture/overview.md
     - Backend: architecture/backend.md
     - Frontend: architecture/frontend.md
+  - Project:
+    - Decisions: project/project-decisions.md
 
 # Markdown extensions
 markdown_extensions:
