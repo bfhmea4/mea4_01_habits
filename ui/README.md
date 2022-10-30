@@ -1,10 +1,15 @@
 ## Getting Started
 
-First, run the development server:
+> **yarn** must be installed on your machine
+
+Add all npm packages to your project
+```bash
+yarn install
+```
+
+Run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 

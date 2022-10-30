@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
