@@ -47,6 +47,13 @@ Start the frontend directly:
 yarn --cwd ui/app dev
 ```
 
+### Database
+
+By default, we use PostgreSQL as our database.
+You have to configure the database connection settings in the following file: `src/main/kotlin/resources/application.properties`.
+The default connection string is `jdbc:postgresql://postgres:5432/habits`, which works with the local docker-compose file (this includes the postgres deployment).
+
+
 ## Docker
 
 ### Use pre-builded docker images
