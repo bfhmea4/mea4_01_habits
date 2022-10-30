@@ -1,3 +1,4 @@
+"use client";
 import { Habit } from "../lib/interfaces";
 import HabitCard from "./habits/habitcard";
 
