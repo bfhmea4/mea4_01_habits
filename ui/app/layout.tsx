@@ -1,4 +1,3 @@
-import Head from "next/head";
 import "../styles/globals.css";
 
 export default function RootLayout({
@@ -7,8 +6,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <Head>
+    <html lang="en">
+      <head>
         <title>Habits</title>
         <meta name="description" content="Track your habits" />
         <link rel="icon" href="/favicon.ico" />
@@ -22,8 +21,8 @@ export default function RootLayout({
           content="default"
         ></meta>
         <meta name="theme-color" content="#FFFFFF"></meta>
-      </Head>
+      </head>
       <body>{children}</body>
-    </>
+    </html>
   );
 }

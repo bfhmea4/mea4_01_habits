@@ -8,10 +8,10 @@ import {
   useState,
 } from "react";
 
-export const ModalSkeleton = forwardRef(({ children }: any, ref) => {
+export const PopUpModal = forwardRef(({ children }: any, ref) => {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
-  ModalSkeleton.displayName = "ModalSkeleton";
+  PopUpModal.displayName = "PopUpModal";
 
   useImperativeHandle(ref, () => ({
     open: () => {
