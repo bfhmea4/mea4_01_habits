@@ -18,13 +18,14 @@ const sampleHabits: Habit[] = [
 
 export default function Home() {
   return (
-    <div>
-      <h1 className="text-xl">Home</h1>
-      <div>
+    <div className="flex flex-col items-center justify-center min-h-screen px-2">
+      <div className="mx-auto">
         <h1>Testing Area Components</h1>
-        {sampleHabits.map((habit, index) => (
-          <HabitCard habit={habit} key={index} />
-        ))}
+        <div className="">
+          {sampleHabits.map((habit, index) => (
+            <HabitCard habit={habit} key={index} />
+          ))}
+        </div>
       </div>
     </div>
   );
