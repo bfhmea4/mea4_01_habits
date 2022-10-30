@@ -1,6 +1,7 @@
 "use client";
 import { Habit } from "../lib/interfaces";
-import HabitCard from "./habits/habitcard";
+import { HabitCard } from "./habits/HabitCard";
+import { NewHabit } from "./habits/NewHabit";
 
 const sampleHabits: Habit[] = [
   {
@@ -26,6 +27,7 @@ export default function Home() {
           {sampleHabits.map((habit, index) => (
             <HabitCard habit={habit} key={index} />
           ))}
+          <NewHabit />
         </div>
       </div>
     </div>

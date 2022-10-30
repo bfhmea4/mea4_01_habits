@@ -56,7 +56,7 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
   };
 
   return (
-    <div className="habit-card bg-primary rounded-lg max-w-lg py-2 pr-5 my-4 text-white shadow-lg select-none cursor-pointer">
+    <div className="habit-card bg-primary rounded-lg sm:max-w-lg w-full py-2 pr-5 my-4 text-white shadow-lg select-none cursor-pointer">
       <div className="flex h-full">
         <div className="w-32 rounded-full bg-secondary flex items-center justify-center">
           {journalEntries.length > 0 ? (
@@ -91,5 +91,3 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
     </div>
   );
 };
-
-export default HabitCard;
