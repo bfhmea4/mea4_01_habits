@@ -11,8 +11,8 @@ export const dateToString = (date: Date | undefined): string => {
         } else if (isToday(date)) {
             return "today";
         }
-        // convert date to mm.dd.yyyy hh:mm (local time string)
-        return date.toLocaleString();
+        // convert date to mm.dd.yyyy without time and return
+        return "";
     } else {
         return '';
     }

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Habit, JournalEntry } from "../../lib/interfaces";
 import { dateToString } from "../../lib/parse";
@@ -83,7 +85,7 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
         </div>
         <PencilIcon
           className="w-7 h-7 ml-auto my-auto active:hover:scale-105 transition-all duration-200 ease-in-out"
-          onClick={() => handleEdit()}
+          onClick={handleEdit}
         />
       </div>
     </div>
