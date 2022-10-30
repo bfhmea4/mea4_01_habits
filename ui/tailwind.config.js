@@ -21,6 +21,7 @@ module.exports = {
         'black': '#1A1A1A',
         'white': '#FFFFFF',
         'primary': '#B27092',
+        'primary-dark': '#66364F'
       },
       fontSize: {
         '4b5': ['2.9rem', '1'],
