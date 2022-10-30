@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Habit, JournalEntry } from "../../lib/interfaces";
 import { dateToString } from "../../lib/parse";
+import { PencilIcon } from "@heroicons/react/24/outline";
 
 export interface HabitCardProps {
   habit: Habit;
@@ -47,6 +48,11 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
     (prev, current) => (prev.created_at > current.created_at ? prev : current)
   );
 
+  // TODO: implement handleEdit
+  const handleEdit = () => {
+    console.log("Edit");
+  };
+
   return (
     <div className="habit-card bg-primary rounded-lg max-w-lg py-2 pr-5 my-4 text-white shadow-lg select-none cursor-pointer">
       <div className="flex h-full">
@@ -66,7 +72,7 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
             <div>No entries yet</div>
           )}
         </div>
-        <div className="font-light my-auto">
+        <div className="font-light my-auto mr-5">
           <h2 className="font-normal text-2xl">{habit.title}</h2>
           <p className="text-sm">
             <>
@@ -75,7 +81,10 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
             </>
           </p>
         </div>
-        <div></div>
+        <PencilIcon
+          className="w-7 h-7 ml-auto my-auto active:hover:scale-105 transition-all duration-200 ease-in-out"
+          onClick={() => handleEdit()}
+        />
       </div>
     </div>
   );
