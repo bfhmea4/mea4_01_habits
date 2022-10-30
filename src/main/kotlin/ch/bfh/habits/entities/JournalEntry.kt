@@ -9,7 +9,8 @@ import javax.persistence.*
 class JournalEntry (
     var description: String,
     @ManyToOne
-    var belongsTo: Habit? = null,
+    var habit: Habit? = null,
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,

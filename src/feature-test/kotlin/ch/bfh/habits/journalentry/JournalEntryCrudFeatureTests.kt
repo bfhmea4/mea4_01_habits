@@ -38,7 +38,7 @@ class JournalEntryCrudFeatureTests {
     @Nested
     @DisplayName("Given we have created a journal entry THEN we ...")
     inner class GivenNewJournalEntryCreated {
-        private var habitId = habitActor.createsHabit(createHabitDTO("Gym", "Go to the Gym more often"))
+        private var habitId = habitActor.createsHabit(createHabitDTO("Gym"))
         private var journalEntryId = journalEntryActor.createsJournalEntry(createJournalEntryDTO("Done", habitId))
 
         @Test
@@ -113,7 +113,7 @@ class JournalEntryCrudFeatureTests {
         }
     }
 
-    private fun createHabitDTO(title: String = "", description: String = "") = HabitDTO(title = title, description = description, completed = false)
+    private fun createHabitDTO(title: String = "") = HabitDTO(title = title)
 
-    private fun createJournalEntryDTO(description: String = "", belongsToId: Long? = null) = JournalEntryDTO(description = description, belongsToId = belongsToId)
+    private fun createJournalEntryDTO(description: String = "", habitId: Long? = null) = JournalEntryDTO(description = description, habitId = habitId)
 }

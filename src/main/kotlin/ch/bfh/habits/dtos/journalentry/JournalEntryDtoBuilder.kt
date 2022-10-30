@@ -9,7 +9,7 @@ class JournalEntryDtoBuilder private constructor() {
             return JournalEntryDTO(
                 id = journalEntryEntity.id,
                 description = journalEntryEntity.description,
-                belongsTo = journalEntryEntity.belongsTo,
+                habit = journalEntryEntity.habit,
                 createdAt = journalEntryEntity.createdAt,
                 editedAt = journalEntryEntity.editedAt
             )

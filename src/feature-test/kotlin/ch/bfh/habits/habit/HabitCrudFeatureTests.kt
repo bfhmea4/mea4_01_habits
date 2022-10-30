@@ -33,12 +33,12 @@ class HabitCrudFeatureTests {
     @Nested
     @DisplayName("Given we have created a habit THEN we ...")
     inner class GivenNewHabitCreated {
-        private var habitId = habitActor.createsHabit(createHabitDTO("Gym", "Go to the Gym more often"))
+        private var habitId = habitActor.createsHabit(createHabitDTO("Gym"))
 
         @Test
         fun `can find it amongst all habits`() {
             // when
-            habitActor.createsHabit(createHabitDTO("Running", "Go run"))
+            habitActor.createsHabit(createHabitDTO("Running"))
             val allHabits = habitActor.getsAllHabits().habits
 
             // then
@@ -106,5 +106,5 @@ class HabitCrudFeatureTests {
         }
     }
 
-    private fun createHabitDTO(title: String = "", description: String = "") = HabitDTO(title = title, description = description, completed = false)
+    private fun createHabitDTO(title: String = "") = HabitDTO(title = title)
 }
