@@ -1,7 +1,4 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+.DS_Store
 
 ### IntelliJ IDEA ###
 .idea
@@ -12,8 +9,15 @@ target/
 ### VS Code ###
 .vscode/
 
-.DS_Store
+## Backend ##
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 *.log
-data/
 create.sql
 update.sql
+
+## Frontend ##
+.next/
+node_modules/
