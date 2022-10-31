@@ -43,7 +43,7 @@ internal class HabitControllerTests {
 
     @Test
     fun controller_invokes_getAllHabits_function() {
-        val habit = HabitDTO("Gym",1)
+        val habit = HabitDTO("Gym", "Go to the gym",1)
 
         every { service.getAllHabits() } returns HabitListDTO(arrayListOf(habit))
 
@@ -75,7 +75,7 @@ internal class HabitControllerTests {
 
     @Test
     fun controller_invokes_getHabit_function() {
-        val habit = HabitDTO("Gym", 1)
+        val habit = HabitDTO("Gym", "Go to the gym",1)
 
         every { service.getHabitById(1) } returns habit
 
@@ -110,8 +110,8 @@ internal class HabitControllerTests {
 
     @Test
     fun controller_invokes_updateHabit_function() {
-        val habit = HabitDTO("Gym_Old")
-        val habitReturned = HabitDTO("Gym_Old",1)
+        val habit = HabitDTO("Gym_Old", "Go to the gym")
+        val habitReturned = HabitDTO("Gym_Old","Go to the gym",1)
 
         every { service.updateHabitById(1, any()) } returns Unit
         every { service.getHabitById(1) } returns habitReturned

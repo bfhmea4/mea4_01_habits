@@ -44,7 +44,7 @@ internal class JournalEntryControllerTests {
 
     @Test
     fun controller_invokes_getAllJournalEntriesForHabit_function() {
-        val habit = Habit("Gym",1)
+        val habit = Habit("Gym", "Go to the gym",1)
         val journalEntry = JournalEntryDTO("Done", habit = habit)
 
         // ToDo test service layer also. This logic is not tested here
@@ -64,7 +64,7 @@ internal class JournalEntryControllerTests {
 
     @Test
     fun controller_invokes_getAllJournalEntries_function() {
-        val habit = Habit("Gym", 1)
+        val habit = Habit("Gym", "Go to the gym", 1)
         val journalEntry = JournalEntryDTO("Done", habit = habit)
 
         every { service.getAllJournalEntries() } returns JournalEntryListDTO(arrayListOf(journalEntry))
@@ -100,7 +100,7 @@ internal class JournalEntryControllerTests {
 
     @Test
     fun controller_invokes_getJournalEntry_function() {
-        val habit = Habit("Gym", 1)
+        val habit = Habit("Gym", "Go to the gym", 1)
         val journalEntry = JournalEntryDTO("Done", habit = habit, id = 1)
 
         every { service.getJournalEntryById(1) } returns journalEntry
@@ -136,7 +136,7 @@ internal class JournalEntryControllerTests {
 
     @Test
     fun controller_invokes_updateJournalEntry_function() {
-        val habit = Habit("Gym", 1)
+        val habit = Habit("Gym", "Go to the gym", 1)
         val journalEntry = JournalEntryDTO("Done_Old", habitId = 1)
         val journalEntryReturned = JournalEntryDTO("Done_Old", habit = habit, id = 1)
 

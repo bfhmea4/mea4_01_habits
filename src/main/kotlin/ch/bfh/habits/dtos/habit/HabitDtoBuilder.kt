@@ -9,6 +9,7 @@ class HabitDtoBuilder private constructor() {
             return HabitDTO(
                 id = habitEntity.id,
                 title = habitEntity.title,
+                description = habitEntity.description,
                 createdAt = habitEntity.createdAt,
                 editedAt = habitEntity.editedAt
             )

@@ -8,6 +8,7 @@ import javax.persistence.*
 @Entity
 class Habit (
     var title: String,
+    var description: String,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

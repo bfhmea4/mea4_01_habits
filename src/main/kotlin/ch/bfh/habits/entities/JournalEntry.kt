@@ -13,7 +13,7 @@ class JournalEntry (
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+    val id: Long? = null,
     @CreationTimestamp
     var createdAt: Timestamp? = null,
     @UpdateTimestamp

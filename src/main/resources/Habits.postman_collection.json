@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"Gym\"\n}",
+					"raw": "{\n    \"title\": \"Gym\",\n    \"description\": \"Go to the Gym more often\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -85,7 +85,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"Go to the Gym\"\n}",
+					"raw": "{\n    \"title\": \"Go to the Gym\",\n    \"description\": \"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
