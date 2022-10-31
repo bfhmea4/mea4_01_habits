@@ -3,10 +3,10 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    fontFamily: {
-      sans: ["Roboto", "sans-serif"],
-    },
     extend: {
+      fontFamily: {
+        sans: ["Roboto", "sans-serif"],
+      },
       animation: {
         wiggle: 'wiggle 1s ease-in-out infinite',
       },
@@ -21,6 +21,7 @@ module.exports = {
         'black': '#1A1A1A',
         'white': '#FFFFFF',
         'primary': '#B27092',
+        'primary-dark': '#66364F'
       },
       fontSize: {
         '4b5': ['2.9rem', '1'],
