@@ -25,8 +25,8 @@ const sampleJournalEntries: JournalEntry[] = [
     id: 2,
     note: "I did it again!",
     belongs_to_id: 1,
-    created_at: new Date("2022-10-29T00:00:00.000Z"),
-    updated_at: new Date("2022-01-30T00:00:00.000Z"),
+    created_at: new Date(),
+    updated_at: new Date(),
   },
   {
     id: 1,
