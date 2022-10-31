@@ -44,8 +44,8 @@ internal class JournalEntryControllerTests {
 
     @Test
     fun controller_invokes_getAllJournalEntriesForHabit_function() {
-        val habit = Habit("Gym", "Go to the Gym more often", false, 1)
-        val journalEntry = JournalEntryDTO("Done", belongsTo = habit)
+        val habit = Habit("Gym", "Go to the gym",1)
+        val journalEntry = JournalEntryDTO("Done", habit = habit)
 
         // ToDo test service layer also. This logic is not tested here
         every { service.getAllJournalEntriesForHabit(1) } returns JournalEntryListDTO(arrayListOf(journalEntry))
@@ -64,8 +64,8 @@ internal class JournalEntryControllerTests {
 
     @Test
     fun controller_invokes_getAllJournalEntries_function() {
-        val habit = Habit("Gym", "Go to the Gym more often", false, 1)
-        val journalEntry = JournalEntryDTO("Done", belongsTo = habit)
+        val habit = Habit("Gym", "Go to the gym", 1)
+        val journalEntry = JournalEntryDTO("Done", habit = habit)
 
         every { service.getAllJournalEntries() } returns JournalEntryListDTO(arrayListOf(journalEntry))
 
@@ -83,7 +83,7 @@ internal class JournalEntryControllerTests {
 
     @Test
     fun controller_invokes_newJournalEntry_function() {
-        val journalEntry = JournalEntryDTO("Done", belongsToId = 1)
+        val journalEntry = JournalEntryDTO("Done", habitId = 1)
 
         every { service.newJournalEntry(any()) } returns ObjectIdDTO(1)
 
@@ -100,8 +100,8 @@ internal class JournalEntryControllerTests {
 
     @Test
     fun controller_invokes_getJournalEntry_function() {
-        val habit = Habit("Gym", "Go to the Gym more often", false, 1)
-        val journalEntry = JournalEntryDTO("Done", belongsTo = habit, id = 1)
+        val habit = Habit("Gym", "Go to the gym", 1)
+        val journalEntry = JournalEntryDTO("Done", habit = habit, id = 1)
 
         every { service.getJournalEntryById(1) } returns journalEntry
 
@@ -136,9 +136,9 @@ internal class JournalEntryControllerTests {
 
     @Test
     fun controller_invokes_updateJournalEntry_function() {
-        val habit = Habit("Gym", "Go to the Gym more often", false, 1)
-        val journalEntry = JournalEntryDTO("Done_Old", belongsToId = 1)
-        val journalEntryReturned = JournalEntryDTO("Done_Old", belongsTo = habit, id = 1)
+        val habit = Habit("Gym", "Go to the gym", 1)
+        val journalEntry = JournalEntryDTO("Done_Old", habitId = 1)
+        val journalEntryReturned = JournalEntryDTO("Done_Old", habit = habit, id = 1)
 
         every { service.updateJournalEntryById(1, any()) } returns Unit
         every { service.getJournalEntryById(1) } returns journalEntryReturned

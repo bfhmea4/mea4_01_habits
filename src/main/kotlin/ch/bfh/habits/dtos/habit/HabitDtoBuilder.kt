@@ -10,7 +10,8 @@ class HabitDtoBuilder private constructor() {
                 id = habitEntity.id,
                 title = habitEntity.title,
                 description = habitEntity.description,
-                completed = habitEntity.completed
+                createdAt = habitEntity.createdAt,
+                editedAt = habitEntity.editedAt
             )
         }
     }

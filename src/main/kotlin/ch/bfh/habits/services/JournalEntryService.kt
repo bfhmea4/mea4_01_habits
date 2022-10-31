@@ -19,7 +19,7 @@ class JournalEntryService(private val journalEntryDAO: JournalEntryDAO, private 
     fun getAllJournalEntriesForHabit(id: Long): JournalEntryListDTO {
         val journalEntries =  ArrayList<JournalEntryDTO>()
         journalEntryDAO.findAll().forEach { i ->
-            if (i.belongsTo?.id == id) {
+            if (i.habit?.id == id) {
                 journalEntries.add(createJournalEntryDtoFromEntity(i))
             }
         }
@@ -39,11 +39,11 @@ class JournalEntryService(private val journalEntryDAO: JournalEntryDAO, private 
 
         // ToDO Do we probably need two DTOs. One as input and one as output
         // Is there a better way. Using the HabitService somehow
-        if (journalEntryDTO.belongsToId != null) {
-            val habit = habitDAO.findById(journalEntryDTO.belongsToId!!).orElseThrow {
-                EntityNotFoundException("Habit id = ${journalEntryDTO.belongsToId!!} not found")
+        if (journalEntryDTO.habitId != null) {
+            val habit = habitDAO.findById(journalEntryDTO.habitId!!).orElseThrow {
+                EntityNotFoundException("Habit id = ${journalEntryDTO.habitId!!} not found")
             }
-            newJournalEntry.belongsTo = habit
+            newJournalEntry.habit = habit
         }
 
         journalEntryDAO.save(newJournalEntry)
@@ -73,16 +73,16 @@ class JournalEntryService(private val journalEntryDAO: JournalEntryDAO, private 
             EntityNotFoundException("Journal Entry id = $id not found")
         }
 
-        if (currentJournalEntry.belongsTo?.id != journalEntryDTO.belongsToId) {
-            val habitId = if (journalEntryDTO.belongsToId != null) journalEntryDTO.belongsToId else null
+        if (currentJournalEntry.habit?.id != journalEntryDTO.habitId) {
+            val habitId = if (journalEntryDTO.habitId != null) journalEntryDTO.habitId else null
 
             if (habitId != null) {
                 val habit = habitDAO.findById(habitId).orElseThrow {
                     EntityNotFoundException("Habit id = $habitId not found")
                 }
-                currentJournalEntry.belongsTo = habit
+                currentJournalEntry.habit = habit
             } else {
-                currentJournalEntry.belongsTo = null
+                currentJournalEntry.habit = null
             }
         }
 
