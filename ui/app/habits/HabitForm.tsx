@@ -96,13 +96,13 @@ export const HabitForm = (props: Props) => {
 
       <div className="mt-4 grid sm:grid-cols-2 gap-2">
         <StyledButton
-          name="Speichern"
+          name="Save"
           type={StyledButtonType.Primary}
           onClick={handleSave}
           small
         />
         <StyledButton
-          name="Abbrechen"
+          name="Cancel"
           type={StyledButtonType.Secondary}
           onClick={() => {
             props.modalRef.current.close();
