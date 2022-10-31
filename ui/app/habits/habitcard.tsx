@@ -55,7 +55,6 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
     (prev, current) => (prev.created_at > current.created_at ? prev : current)
   );
 
-  // TODO: implement handleEdit
   const handleEdit = () => {
     editModalRef.current.open();
   };

@@ -35,7 +35,9 @@ export const HabitForm = (props: Props) => {
 
   return (
     <div className="">
-      <h1 className="text-2xl font-medium">New Habit</h1>
+      <h1 className="text-2xl font-medium">
+        {props.type === "create" ? "Create" : "Edit"} Habit
+      </h1>
       <div className="mt-2">
         <InputField
           label="Title"
