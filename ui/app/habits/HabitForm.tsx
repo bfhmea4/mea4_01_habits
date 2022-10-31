@@ -44,18 +44,21 @@ export const HabitForm = (props: Props) => {
           placeholder="Enter a title"
           name="title"
           type="text"
+          defaultValue={props.habit?.title}
           required
         />
         <TextAreaField
           label="Description"
           placeholder="Enter a description"
           name="description"
+          defaultValue={props.habit?.description}
           required
         />
       </div>
 
       {/* Weight Radio Select */}
 
+      {/* // TODO: implement in the backend
       <div className="border-gray-200 border-4 rounded-lg p-3">
         <div className="flex items-center justify-between">
           <h2 className="block  text-xs font-medium text-gray-600 uppercase">
@@ -89,6 +92,7 @@ export const HabitForm = (props: Props) => {
           </div>
         </RadioGroup>
       </div>
+      */}
 
       <div className="mt-4 grid sm:grid-cols-2 gap-2">
         <StyledButton
