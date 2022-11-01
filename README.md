@@ -1,9 +1,9 @@
 <p align="center">
     <a href="https://github.com/bfhmea4/mea4_01_habits">
-        <img height="120px" src="./assets/habitsus_example_logo.png" />
+        <img height="120px" src="./assets/habits_logo.png" />
     </a>
     <h1 align="center">
-        Habitsus - Tracking your habits
+        Habits - Tracking your habits
     </h1>
 </p>
 
@@ -23,8 +23,7 @@
   Track your habits in a journal, get motivated and analyse your progress to get event better! :rocket:
 </p>
 
-<h2></h2>
-<p>&nbsp;</p>
+<br>
 
 ## Overview
 ### Getting started and documentation
@@ -36,17 +35,16 @@ For more information, go to the [documentation](https://bfhmea4.github.io/mea4_0
 ### Open Source
 
 Trust me, I'm open source.
-You can find the source code on [Github](https://github.com/bfhmea4/mea4_01_habits).  
+You can find the source code on [Github](https://github.com/bfhmea4/mea4_01_habits).
 License: GPL 3
 
 ### Backend
 
-The backend is written in GoLang using the open source [PocketBase](https://github.com/pocketbase/pocketbase) framework.
+The backend is written with Kotlin Spring Boot and uses Flyware as an SQL migration framework.
+The data is persisted in a PostgreSQL database. 
 
 ### Frontend
 
-The frontend is written in TypeScript and uses Next.js.  
-It uses [Tailwind CSS](https://tailwindcss.com/) for styling with [Flowbite React](https://flowbite-react.com) as a design system.  
-There are also some self-written components in the `components` folder.  
-These are mostly inspired by the ui of [PocketBase](https://pocketbase.io).    
-They are similar to the PocketBase UI Components.
+The frontend is written in TypeScript and uses Next.js.
+It uses [Tailwind CSS](https://tailwindcss.com/) for styling with [Flowbite React](https://flowbite-react.com) as a design system.
+There are also some self-written components in the `components` folder.

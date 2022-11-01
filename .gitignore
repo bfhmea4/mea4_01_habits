@@ -1,3 +1,23 @@
-*.log
 .DS_Store
-*.db*
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/
+
+## Backend ##
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+*.log
+create.sql
+update.sql
+
+## Frontend ##
+.next/
+node_modules/

@@ -4,27 +4,41 @@ services:
   backend:
     build:
       context: ./
-      dockerfile: ./build/package/habitsus/Dockerfile
-    container_name: habitsus_backend
+      dockerfile: ./build/package/habits/Dockerfile
+    container_name: habits_backend
     ports:
-      - "8090:8090"
-    volumes:
-      - pb_data:/pb_data
+      - "8080:8080"
     networks:
       - net
 
-  ui:
+  frontend:
     build: ./ui/app/
-    container_name: habitsus_frontend
+    container_name: habits_frontend
     ports:
       - "3000:3000"
+    networks:
+    - net
     environment:
-      - ENV_API_URL=http://127.0.0.1:8090
+      - ENV_API_URL=http://127.0.0.1:8080
+
+  postgresql:
+    image: postgres:13-alpine
+    container_name: postgres
+    networks:
+    - net
+    ports:
+    - '5432:5432'
+    environment:
+      POSTGRES_DB: 'habits'
+      POSTGRES_PASSWORD: 'habits'
+      POSTGRES_USER: 'habits'
+    volumes:
+    - db-data:/var/lib/postgresql/data
 
 volumes:
-  pb_data: {}
+  db-data: {}
 
 networks:
   net:
     driver_opts:
-      com.docker.network.bridge.name: habitsus
+      com.docker.network.bridge.name: habits

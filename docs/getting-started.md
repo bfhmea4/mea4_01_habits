@@ -3,26 +3,40 @@
 This chapter shows the various ways to run/ deploy the application.
 After the application is running (locally), you can access it under the following URLs:
 
-- Backend Admin-Interface (PocketBase): [http://localhost:8090/_/](http://localhost:8090/_/)
+- Backend: [http://localhost:8080](http://localhost:8080)
 - Frontend: [http://localhost:3000](http://localhost:3000)
-- The REST-API: [http://localhost:8090/api](http://localhost:8090/api)
-
-**Next steps**
-
-After the application is started, you have to create some users to test the application. See the following [guide](https://bfhmea4.github.io/mea4_01_habits/create-users/).
+- The REST-API: [http://localhost:8080/api](http://localhost:8080/api)
 
 ## Test application locally
 
-If you want to test some new code without building docker images, you can run the backend and frontend directly with `go` and `yarn`.
-This is only recommended for testing and development purposes as to the performance isn't as good as built binaries.
+### Build Local Image
+
+```bash
+docker build -f ./build/package/habits/Dockerfile . -t habits-backend:local
+```
+
+### Run Local Image
+
+Start docker image of backend:
+
+```bash
+docker run -p 8080:8080 -t habits-backend:local
+```
+
+Run test suite against localhost:
+
+```bash
+mvn test -Dhabits.test.localhost=true
+```
 
 ### Backend
 
-Start the backend directly (remember to set the `POCKETBASE_DATA_DIR` env variable):
+The application uses kotlin, maven and java version 17.
+
+Start application by using maven:
 
 ```bash
-export POCKETBASE_DATA_DIR="./pb-data"
-go run cmd/habitsus/main.go serve
+mvn spring-boot:run
 ```
 
 ### Frontend
@@ -32,6 +46,13 @@ Start the frontend directly:
 ```bash
 yarn --cwd ui/app dev
 ```
+
+### Database
+
+By default, we use PostgreSQL as our database.
+You have to configure the database connection settings in the following file: `src/main/kotlin/resources/application.properties`.
+The default connection string is `jdbc:postgresql://postgres:5432/habits`, which works with the local docker-compose file (this includes the postgres deployment).
+
 
 ## Docker
 
@@ -45,30 +66,44 @@ version: '3.9'
 services:
 
   backend:
-    image: ghcr.io/bfhmea4/habitsus-backend:latest
-    container_name: habitsus_backend
+    image: ghcr.io/bfhmea4/habits-backend:latest
+    container_name: habits_backend
     ports:
-      - "8090:8090"
-    volumes:
-      - pb_data:/pb_data
+      - "8080:8080"
     networks:
       - net
 
-  ui:
-    image: ghcr.io/bfhmea4/habitsus-ui:latest
-    container_name: habitsus_frontend
+  frontend:
+    image: ghcr.io/bfhmea4/habits-frontend:latest
+    container_name: habits_frontend
     ports:
       - "3000:3000"
+    networks:
+    - net
     environment:
-      - ENV_API_URL=http://127.0.0.1:8090
+      - ENV_API_URL=http://127.0.0.1:8080
+
+  postgresql:
+    image: postgres:13-alpine
+    container_name: postgres
+    networks:
+    - net
+    ports:
+    - '5432:5432'
+    environment:
+      POSTGRES_DB: 'habits'
+      POSTGRES_PASSWORD: 'habits'
+      POSTGRES_USER: 'habits'
+    volumes:
+    - db-data:/var/lib/postgresql/data
 
 volumes:
-  pb_data: {}
+  db-data: {}
 
 networks:
   net:
     driver_opts:
-      com.docker.network.bridge.name: habitsus
+      com.docker.network.bridge.name: habits
 ```
 
 Create and start container:
@@ -79,15 +114,15 @@ docker-compose up -d
 
 ### Build docker container manually
 
-You can build the docker container images manually with the included Dockerfiles under `./build/package/habitsus` and `./ui/app`.
+You can build the docker container images manually with the included Dockerfiles under `./build/package/habits` and `./ui/app`.
 This step can be done automatically through a docker-compose file (see next chaptre).
 
 ```bash
 ## build backend manually
-docker build -f ./build/package/habitsus/Dockerfile . -t habitsus-backend:local
+docker build -f ./build/package/habits/Dockerfile . -t habits-backend:local
 
 ## build frontend manually
-docker build -f ./ui/app/Dockerfile . -t habitsus-ui:local
+docker build -f ./ui/app/Dockerfile . -t habits-frontend:local
 ```
 
 ### Build docker container using docker-compose
@@ -101,30 +136,44 @@ services:
   backend:
     build:
       context: ./
-      dockerfile: ./build/package/habitsus/Dockerfile
-    container_name: habitsus_backend
+      dockerfile: ./build/package/habits/Dockerfile
+    container_name: habits_backend
     ports:
-      - "8090:8090"
-    volumes:
-      - pb_data:/pb_data
+      - "8080:8080"
     networks:
       - net
 
-  ui:
+  frontend:
     build: ./ui/app/
-    container_name: habitsus_frontend
+    container_name: habits_frontend
     ports:
       - "3000:3000"
+    networks:
+    - net
     environment:
-      - ENV_API_URL=http://127.0.0.1:8090
+      - ENV_API_URL=http://127.0.0.1:8080
+
+  postgresql:
+    image: postgres:13-alpine
+    container_name: postgres
+    networks:
+    - net
+    ports:
+    - '5432:5432'
+    environment:
+      POSTGRES_DB: 'habits'
+      POSTGRES_PASSWORD: 'habits'
+      POSTGRES_USER: 'habits'
+    volumes:
+    - db-data:/var/lib/postgresql/data
 
 volumes:
-  pb_data: {}
+  db-data: {}
 
 networks:
   net:
     driver_opts:
-      com.docker.network.bridge.name: habitsus
+      com.docker.network.bridge.name: habits
 ```
 
 Build and start container (this take some time):
@@ -135,17 +184,12 @@ docker-compose up -d
 
 ### Kubernetes
 
-You can deploy Habitsus in your Kubernetes cluster, but you have to set all the env variables.
+You can deploy Habits in your Kubernetes cluster, but you have to set all the env variables.
 
 #### Environment Variables
 
 You need to set the following environment:
 
-**Backend**
-
-- `POCKETBASE_DATA_DIR` - The directory where the PocketBase data is stored. Default: `/pb_data`
-- `POCKETBASE_ENCRYPTION_KEY` - The encryption key for the PocketBase database. Must be 32 characters long.
-
 **UI**
 
-- `ENV_API_URL` - The URL of the API, e.g. `https://template.habitsus.io` (without trailing slash, but /api at the end, must be accessible from the webclient)
+- `ENV_API_URL` - The URL of the API, e.g. `https://template.habits.io` (without trailing slash, but /api at the end, must be accessible from the webclient)

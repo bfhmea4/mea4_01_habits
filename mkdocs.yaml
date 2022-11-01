@@ -1,5 +1,5 @@
 # Project information
-site_name: Habitsus Docs
+site_name: Habits Docs
 site_author: Jan Lauber, Jan Fuhrer, Andy Bigler
 site_description: >-
   Documentation and guides for the BFH Project 1 Habit Journalling Platform.
@@ -14,7 +14,7 @@ copyright: Copyright &copy; 2022 Jan Lauber, Jan Fuhrer, Andy Bigler
 
 # Configuration
 theme:
-  logo: assets/habitsus_example_logo.png
+  logo: assets/habits_example_logo.png
   name: material
   language: en
   font:
@@ -60,12 +60,15 @@ nav:
   - Home:
     - Index: index.md
     - Getting Started: getting-started.md
-    - Create users: create-users.md
     - Development requirements: requirements.md
   - Architecture:
     - Overview: architecture/overview.md
     - Backend: architecture/backend.md
     - Frontend: architecture/frontend.md
+  - Project:
+    - Decisions: project/project-decisions.md
+    - Impediment Backlog: project/impediment-backlog.md
+    - Setup: project/project-setup.md
 
 # Markdown extensions
 markdown_extensions:
