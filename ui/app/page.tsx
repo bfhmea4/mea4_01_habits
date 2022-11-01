@@ -1,6 +1,6 @@
 "use client";
 import { Habit } from "../lib/interfaces";
-import { HabitCard } from "./habits/HabitCard";
+import { HabitCard } from "./habits/habitcard";
 import { NewHabit } from "./habits/NewHabit";
 
 const sampleHabits: Habit[] = [
