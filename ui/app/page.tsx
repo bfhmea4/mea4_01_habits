@@ -7,12 +7,14 @@ const sampleHabits: Habit[] = [
   {
     id: 1,
     title: "Gym",
+    description: "Go to the gym",
     created_at: new Date(),
     updated_at: new Date(),
   },
   {
     id: 2,
     title: "Reading",
+    description: "Read a book",
     created_at: new Date(),
     updated_at: new Date(),
   },

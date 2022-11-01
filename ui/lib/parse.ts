@@ -12,7 +12,7 @@ export const dateToString = (date: Date | undefined): string => {
             return "today";
         }
         // convert date to mm.dd.yyyy without time and return
-        return "";
+        return formatDate(date);
     } else {
         return '';
     }
@@ -27,4 +27,16 @@ export const isYesterday = (date: Date): boolean => {
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     return date.toDateString() === yesterday.toDateString();
+}
+
+const padTo2Digits = (num: number): string => {
+    return num.toString().padStart(2, '0');
+}
+
+export const formatDate = (date: Date): string => {
+    return [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth() + 1),
+        date.getFullYear()
+    ].join('.');
 }

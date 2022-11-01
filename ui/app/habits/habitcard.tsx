@@ -4,6 +4,9 @@ import Image from "next/image";
 import { Habit, JournalEntry } from "../../lib/interfaces";
 import { dateToString } from "../../lib/parse";
 import { PencilIcon } from "@heroicons/react/24/outline";
+import { useRef } from "react";
+import { PopUpModal } from "../general/modals/PopUpModal";
+import { HabitForm } from "./HabitForm";
 
 export interface HabitCardProps {
   habit: Habit;
@@ -22,8 +25,8 @@ const sampleJournalEntries: JournalEntry[] = [
     id: 2,
     note: "I did it again!",
     belongs_to_id: 1,
-    created_at: new Date("2022-10-29T00:00:00.000Z"),
-    updated_at: new Date("2022-01-30T00:00:00.000Z"),
+    created_at: new Date(),
+    updated_at: new Date(),
   },
   {
     id: 1,
@@ -42,6 +45,8 @@ const sampleJournalEntries: JournalEntry[] = [
 ];
 
 export const HabitCard = ({ habit }: HabitCardProps) => {
+  const editModalRef = useRef<any>(null);
+
   const journalEntries: JournalEntry[] = sampleJournalEntries.filter(
     (entry) => entry.belongs_to_id === habit.id
   );
@@ -50,13 +55,15 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
     (prev, current) => (prev.created_at > current.created_at ? prev : current)
   );
 
-  // TODO: implement handleEdit
   const handleEdit = () => {
-    console.log("Edit");
+    editModalRef.current.open();
   };
 
   return (
     <div className="habit-card bg-primary rounded-lg sm:max-w-lg w-full py-2 pr-5 my-4 text-white shadow-lg select-none cursor-pointer">
+      <PopUpModal ref={editModalRef}>
+        <HabitForm modalRef={editModalRef} type="edit" habit={habit} />
+      </PopUpModal>
       <div className="flex h-full">
         <div className="w-32 rounded-full bg-secondary flex items-center justify-center">
           {journalEntries.length > 0 ? (
