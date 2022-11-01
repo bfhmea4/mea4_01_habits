@@ -67,6 +67,8 @@ nav:
     - Frontend: architecture/frontend.md
   - Project:
     - Decisions: project/project-decisions.md
+    - Impediment Backlog: project/impediment-backlog.md
+    - Setup: project/project-setup.md
 
 # Markdown extensions
 markdown_extensions:

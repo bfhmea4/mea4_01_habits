@@ -13,7 +13,7 @@ This document keeps track of important decisions about this project
 ### decisions
 - Use Kotlin instead of Go & the PocketBase framework
 - Rewrite the backend in Kotlin
-- Made a frist Figma prototype of the UI
+- Made a first Figma prototype of the UI
 
 
 ## 26.10.2022
