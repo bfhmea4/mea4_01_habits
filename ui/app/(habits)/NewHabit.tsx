@@ -12,7 +12,7 @@ export const NewHabit = () => {
 
   return (
     <div
-      className="habit-card bg-white border-4 border-primary rounded-lg max-w-lg py-2 pr-5 my-4 text-primary shadow-lg select-none cursor-pointer active:hover:scale-105 transition-all duration-200"
+      className="habit-card bg-white border-4 border-primary rounded-lg max-w-lg h-24 py-2 pr-5 my-4 text-primary shadow-lg select-none cursor-pointer active:hover:scale-105 transition-all duration-200"
       onClick={handleOnClick}
     >
       <PopUpModal ref={createModalRef}>

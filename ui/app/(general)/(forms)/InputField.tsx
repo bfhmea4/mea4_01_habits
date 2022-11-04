@@ -13,6 +13,7 @@ export interface InputFieldProps {
   defaultValue?: any;
   disabled?: boolean;
   multiple?: boolean;
+  maxlength?: number;
 }
 
 const InputField = (props: InputFieldProps) => {
@@ -51,6 +52,7 @@ const InputField = (props: InputFieldProps) => {
         required={props.required}
         multiple={props.multiple}
         defaultValue={props.defaultValue}
+        maxLength={props.maxlength}
       />
     </div>
   );

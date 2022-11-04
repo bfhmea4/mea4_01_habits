@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { Nav } from "./(general)/Nav";
 
 export default function RootLayout({
   children,
@@ -22,7 +23,12 @@ export default function RootLayout({
         ></meta>
         <meta name="theme-color" content="#FFFFFF"></meta>
       </head>
-      <body>{children}</body>
+      <body>
+        <div className="h-screen">
+          {children}
+          <Nav />
+        </div>
+      </body>
     </html>
   );
 }

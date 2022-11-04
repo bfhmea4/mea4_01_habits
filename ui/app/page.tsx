@@ -1,5 +1,6 @@
 "use client";
 import { Habit } from "../lib/interfaces";
+import { Dashboard } from "./(habits)/Dashboard";
 import { HabitCard } from "./(habits)/HabitCard";
 import { NewHabit } from "./(habits)/NewHabit";
 
@@ -22,15 +23,14 @@ const sampleHabits: Habit[] = [
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-2">
-      <div className="mx-auto">
-        <h1>Testing Area Components</h1>
-        <div className="">
+    <div className="">
+      <div className="mx-auto sm:max-w-lg">
+        <Dashboard>
           {sampleHabits.map((habit, index) => (
             <HabitCard habit={habit} key={index} />
           ))}
           <NewHabit />
-        </div>
+        </Dashboard>
       </div>
     </div>
   );
