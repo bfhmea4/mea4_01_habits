@@ -4,6 +4,21 @@ import { Dashboard } from "./(habits)/Dashboard";
 import { HabitCard } from "./(habits)/HabitCard";
 import { NewHabit } from "./(habits)/NewHabit";
 
+const getHabits = async () => {
+  const res = await fetch("/api/habits");
+  const habits = await res.json();
+  // parse habits to Habit interface
+  return habits.map((habit: Habit) => {
+    return {
+      id: habit.id,
+      title: habit.title,
+      description: habit.description,
+      created_at: habit.created_at,
+      updated_at: habit.updated_at,
+    };
+  });
+};
+
 const sampleHabits: Habit[] = [
   {
     id: 1,
