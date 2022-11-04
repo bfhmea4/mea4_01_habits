@@ -52,20 +52,27 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
     editModalRef.current.open();
   };
 
+  const handleAddJournalEntry = () => {
+    console.log("Add journal entry");
+  };
+
   return (
-    <div className="habit-card bg-primary rounded-lg sm:max-w-lg w-full py-4 pr-5 my-4 text-white shadow-lg select-none cursor-pointer">
+    <div className="habit-card bg-primary rounded-lg sm:max-w-lg w-full py-4 pr-5 my-4 text-white shadow-lg select-none">
       <PopUpModal ref={editModalRef}>
         <HabitForm modalRef={editModalRef} type="edit" habit={habit} />
       </PopUpModal>
       <div className="flex h-full">
         <div className="w-24 rounded-full bg-secondary flex items-center justify-center">
-          <PlusIcon className="w-12 h-12 text-white" />
+          <PlusIcon
+            className="w-12 h-12 text-white active:hover:scale-105 transition-all duration-200 ease-in-out cursor-pointer"
+            onClick={handleAddJournalEntry}
+          />
         </div>
         <div className="font-light my-auto mr-5">
           <h2 className="font-normal text-2xl">{habit.title}</h2>
         </div>
         <PencilIcon
-          className="w-7 h-7 ml-auto my-auto active:hover:scale-105 transition-all duration-200 ease-in-out"
+          className="w-7 h-7 ml-auto my-auto active:hover:scale-105 transition-all duration-200 ease-in-out cursor-pointer"
           onClick={handleEdit}
         />
       </div>
