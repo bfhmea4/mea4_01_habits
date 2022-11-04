@@ -57,7 +57,7 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
   };
 
   return (
-    <div className="habit-card bg-primary rounded-lg sm:max-w-lg w-full py-4 pr-5 my-4 text-white shadow-lg select-none">
+    <div className="habit-card bg-primary rounded-lg sm:max-w-lg w-full py-4 pr-5 my-4 h-24 text-white shadow-lg select-none">
       <PopUpModal ref={editModalRef}>
         <HabitForm modalRef={editModalRef} type="edit" habit={habit} />
       </PopUpModal>
