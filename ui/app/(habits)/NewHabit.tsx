@@ -1,6 +1,6 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useRef } from "react";
-import { PopUpModal } from "../general/modals/PopUpModal";
+import { PopUpModal } from "../(general)/(modals)/PopUpModal";
 import { HabitForm } from "./HabitForm";
 
 export const NewHabit = () => {
@@ -18,13 +18,12 @@ export const NewHabit = () => {
       <PopUpModal ref={createModalRef}>
         <HabitForm modalRef={createModalRef} type="create" />
       </PopUpModal>
-      <div className="flex flex-row justify-between items-center px-4">
-        <div className="flex flex-row items-center">
-          <PlusIcon className="w-6 h-6" />
-          <div className="flex flex-col ml-4">
-            <h1 className="text-xl font-bold">New Habit</h1>
-            <p className="text-sm">Add a new habit</p>
-          </div>
+      <div className="flex h-full">
+        <div className="w-24 rounded-full bg-secondary flex items-center justify-center">
+          <PlusIcon className="w-12 h-12 text-primary" />
+        </div>
+        <div className="font-light my-auto mr-5">
+          <h2 className="font-normal text-2xl">add a habit</h2>
         </div>
       </div>
     </div>

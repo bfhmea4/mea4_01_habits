@@ -33,7 +33,7 @@ const StyledButton = (props: StyledButtonProps) => {
   const defaultStyleClasses = classNames(
     props.type === StyledButtonType.Primary ? "bg-primary text-white" : "",
     props.type === StyledButtonType.Secondary
-      ? "border-2 bg-white border-primary text-gray-700"
+      ? "border-2 bg-white border-primary text-primary"
       : "",
     props.type === StyledButtonType.Danger ? "bg-red-600 text-white" : "",
     props.small ? "h-9 text-xs py-2" : "h-14 py-4 text-sm px-11",
