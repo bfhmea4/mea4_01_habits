@@ -65,11 +65,12 @@ export const HabitForm = (props: Props) => {
       </PopUpModal>
       <div className="mt-2">
         <InputField
-          label="Title"
+          label="Title (max. 16 characters)"
           placeholder="Enter a title"
           name="title"
           type="text"
           defaultValue={props.habit?.title}
+          maxlength={16}
           required
         />
         <TextAreaField
