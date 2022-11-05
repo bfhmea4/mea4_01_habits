@@ -1,6 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import "~react-image-gallery/styles/css/image-gallery.css";
 
 html {
     margin: 0;
@@ -9,6 +10,48 @@ html {
     transition: all 0.2s ease-in-out;
 }
 
+body {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    color: #1A1A1A;
+    background-color: #FFFFFF;
+}
+
 * {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.outlined-text {
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+}
+
+.inlined-text {
+    text-shadow: none;
+}
+
+strong {
+    font-family: Gilroy-Bold;
+}
+
+input:checked~.dot {
+    transform: translateX(100%);
+}
+
+input:checked~ {
+    background-color: green;
+}
+
+.fahrzeug-image-gallery .image-gallery-swipe .image-gallery-slides,
+.fahrzeug-image-gallery .image-gallery-content .image-gallery-slide-wrapper .image-gallery-slides
+{
+    height: 200px;
+}
+
+.image-gallery-slide,
+.image-gallery-image {
+    max-height: unset;
+    height: 100%;
+    object-fit: accordingly;
 }

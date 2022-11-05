@@ -1,12 +1,13 @@
-"use client";
-import { useEffect, useState } from "react";
-import Api from "../config/Api";
-import { Habit } from "../lib/interfaces";
-import { Dashboard } from "./(habits)/Dashboard";
-import { HabitCard } from "./(habits)/HabitCard";
-import { NewHabit } from "./(habits)/NewHabit";
+import type { NextPage } from 'next'
+import { useEffect, useState } from 'react';
+import { Dashboard } from '../components/habits/Dashboard';
+import { HabitCard } from '../components/habits/HabitCard';
+import { NewHabit } from '../components/habits/NewHabit';
+import Api from '../config/Api';
+import { Habit } from '../lib/interfaces';
 
-export default function Home() {
+const Home: NextPage = () => {
+
   const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -39,3 +40,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home

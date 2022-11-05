@@ -1,24 +1,14 @@
 import { useRef, useState } from "react";
 import { Habit } from "../../lib/interfaces";
-import StyledButton, {
-  StyledButtonType,
-} from "../(general)/(buttons)/StyledButton";
-import InputField from "../(general)/(forms)/InputField";
-import TextAreaField from "../(general)/(forms)/TextAreaField";
-import { PopUpModal } from "../(general)/(modals)/PopUpModal";
-
+import StyledButton, { StyledButtonType } from "../general/buttons/StyledButton";
+import InputField from "../general/forms/InputField";
+import TextAreaField from "../general/forms/TextAreaField";
+import { PopUpModal } from "../general/modals/PopUpModal";
 interface Props {
   modalRef: any;
   type: "create" | "edit";
   habit?: Habit;
 }
-
-const weightOptions = [
-  { value: 1, label: "*" },
-  { value: 2, label: "**" },
-  { value: 3, label: "***" },
-  { value: 4, label: "****" },
-];
 
 export const HabitForm = (props: Props) => {
   const deleteModalRef = useRef<any>(null);
