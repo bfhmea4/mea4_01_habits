@@ -1,25 +1,25 @@
 version: '3.9'
 services:
 
-  backend:
-    build:
-      context: ./
-      dockerfile: ./build/package/habits/Dockerfile
-    container_name: habits_backend
-    ports:
-      - "8080:8080"
-    networks:
-      - net
+  # backend:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./build/package/habits/Dockerfile
+  #   container_name: habits_backend
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - net
 
-  frontend:
-    build: ./ui
-    container_name: habits_frontend
-    ports:
-      - "3000:3000"
-    networks:
-    - net
-    environment:
-      - ENV_API_URL=http://127.0.0.1:8080
+  # frontend:
+  #   build: ./ui
+  #   container_name: habits_frontend
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #   - net
+  #   environment:
+  #     - ENV_API_URL=http://127.0.0.1:8080
 
   postgresql:
     image: postgres:13-alpine

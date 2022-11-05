@@ -16,7 +16,7 @@ target/
 !**/src/test/**/target/
 *.log
 create.sql
-update.sql
+update
 
 ## Frontend ##
 .next/

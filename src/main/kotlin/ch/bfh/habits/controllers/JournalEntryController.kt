@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@CrossOrigin(origins = ["http://localhost:3000"])
 class JournalEntryController @Autowired constructor(private val journalEntryService: JournalEntryService) {
     @GetMapping("/api/habit/{id}/journal_entries")
     fun getAllJournalEntriesForHabit(@PathVariable id: Long): ResponseEntity<JournalEntryListDTO> {
