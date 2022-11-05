@@ -1,8 +1,4 @@
-"use client";
-
-import Image from "next/image";
-import { Habit, JournalEntry } from "../../lib/interfaces";
-import { dateToString } from "../../lib/parse";
+import { Habit } from "../../lib/interfaces";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { useRef } from "react";
 import { HabitForm } from "./HabitForm";

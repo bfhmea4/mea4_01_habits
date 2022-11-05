@@ -25,48 +25,50 @@ export const HabitForm = (props: Props) => {
 
     if (props.type === "create") {
       // Create habit
-      try {
-        const body = {
-          title: title.value,
-          description: description.value,
-        }
-        Api.post("/habit", body);
-        Toast("Habit created", ToastType.success);
-      } catch (error) {
-        Toast("Something went wrong", ToastType.error);
-      } finally {
-        props.modalRef.current.close();
+      const body = {
+        title: title.value,
+        description: description.value,
       }
-      setReload(!reload);
+      Api.post("/habit", body)
+        .then(() => {
+          Toast("Habit created", ToastType.success);
+          props.modalRef.current.close();
+          setReload(!reload);
+        })
+        .catch(() => {
+          Toast("Something went wrong", ToastType.error);
+        })
     } else {
       // Update habit
-      try {
-        const body = {
-          title: title.value,
-          description: description.value,
-        }
-        if (props.habit) {
-          Api.put(`/habit/${props.habit.id}`, body);
-        }
-        Toast("Habit updated", ToastType.success);
-        props.modalRef.current.close();
-      } catch (error) {
-        Toast("Something went wrong", ToastType.error);
+      const body = {
+        title: title.value,
+        description: description.value,
       }
-      setReload(!reload);
+      if (props.habit) {
+        Api.put(`/habit/${props.habit.id}`, body)
+          .then(() => {
+            Toast("Habit updated", ToastType.success);
+            props.modalRef.current.close();
+            setReload(!reload);
+          })
+          .catch(() => {
+            Toast("Something went wrong", ToastType.error);
+          })
+      }
     }
   };
 
   const handleDelete = () => {
     if (props.habit) {
-      try {
-        Api.delete(`/habit/${props.habit.id}`);
-        Toast("Habit deleted", ToastType.success);
-        props.modalRef.current.close();
-      } catch (error) {
-        Toast("Something went wrong", ToastType.error);
-      }
-      setReload(!reload);
+      Api.delete(`/habit/${props.habit.id}`)
+        .then(() => {
+          Toast("Habit deleted", ToastType.success);
+          props.modalRef.current.close();
+          setReload(!reload);
+        })
+        .catch(() => {
+          Toast("Something went wrong", ToastType.error);
+        })
     }
   };
 

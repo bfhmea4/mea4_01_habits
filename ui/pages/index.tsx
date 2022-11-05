@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Dashboard } from '../components/habits/Dashboard';
 import { HabitCard } from '../components/habits/HabitCard';
 import { NewHabit } from '../components/habits/NewHabit';
+import Loading from '../components/Loading';
 import Api from '../config/Api';
 import { useLoadingContext } from '../context/loadingContext';
 import { Habit } from '../lib/interfaces';
@@ -14,18 +15,38 @@ const Home: NextPage = () => {
   const { reload }: any = useLoadingContext();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await Api.get("/habits");
-        if (data) {
-          setHabits(data.habits);
+    (
+      async () => {
+        try {
+          const { data } = await Api.get("/habits");
+          if (data.habits) {
+            // validate data.habits if its object of Habit[]
+            if (data.habits) {
+              try {
+                const habits = data.habits.map((habit: Habit) => {
+                  return {
+                    ...habit,
+                    createdAt: new Date(habit.createdAt),
+                    editedAt: new Date(habit.editedAt),
+                  }
+                });
+                // sort habits by createdAt latest first
+                habits.sort((a: any, b: any ) => {
+                  return b.createdAt.getTime() - a.createdAt.getTime();
+                });
+                setHabits(habits);
+              } catch (error) {
+                console.log(error);
+              }
+            }
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
       }
-    })();
+    )();
   }, [reload]);
 
   return (
@@ -35,7 +56,7 @@ const Home: NextPage = () => {
           {!loading &&
             habits &&
             habits.map((habit) => <HabitCard key={habit.id} habit={habit} />)}
-          {loading && <p>Loading...</p>}
+          {loading && <Loading />}
           <NewHabit />
         </Dashboard>
       </div>
