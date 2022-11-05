@@ -1,38 +1,75 @@
 import { useRef, useState } from "react";
+import Api from "../../config/Api";
+import { useLoadingContext } from "../../context/loadingContext";
 import { Habit } from "../../lib/interfaces";
-import StyledButton, {
-  StyledButtonType,
-} from "../(general)/(buttons)/StyledButton";
-import InputField from "../(general)/(forms)/InputField";
-import TextAreaField from "../(general)/(forms)/TextAreaField";
-import { PopUpModal } from "../(general)/(modals)/PopUpModal";
-
+import { Toast, ToastType } from "../alerts/Toast";
+import StyledButton, { StyledButtonType } from "../general/buttons/StyledButton";
+import InputField from "../general/forms/InputField";
+import TextAreaField from "../general/forms/TextAreaField";
+import { PopUpModal } from "../general/modals/PopUpModal";
 interface Props {
   modalRef: any;
   type: "create" | "edit";
   habit?: Habit;
 }
 
-const weightOptions = [
-  { value: 1, label: "*" },
-  { value: 2, label: "**" },
-  { value: 3, label: "***" },
-  { value: 4, label: "****" },
-];
-
 export const HabitForm = (props: Props) => {
   const deleteModalRef = useRef<any>(null);
+  const { reload, setReload }: any = useLoadingContext();
 
   const handleSave = () => {
     const title = document.getElementById("title") as HTMLInputElement;
     const description = document.getElementById(
       "description"
     ) as HTMLInputElement;
-    props.modalRef.current.close();
+
+    if (props.type === "create") {
+      // Create habit
+      const body = {
+        title: title.value,
+        description: description.value,
+      }
+      Api.post("/habit", body)
+        .then(() => {
+          Toast("Habit created", ToastType.success);
+          props.modalRef.current.close();
+          setReload(!reload);
+        })
+        .catch(() => {
+          Toast("Something went wrong", ToastType.error);
+        })
+    } else {
+      // Update habit
+      const body = {
+        title: title.value,
+        description: description.value,
+      }
+      if (props.habit) {
+        Api.put(`/habit/${props.habit.id}`, body)
+          .then(() => {
+            Toast("Habit updated", ToastType.success);
+            props.modalRef.current.close();
+            setReload(!reload);
+          })
+          .catch(() => {
+            Toast("Something went wrong", ToastType.error);
+          })
+      }
+    }
   };
 
   const handleDelete = () => {
-    deleteModalRef.current.open();
+    if (props.habit) {
+      Api.delete(`/habit/${props.habit.id}`)
+        .then(() => {
+          Toast("Habit deleted", ToastType.success);
+          props.modalRef.current.close();
+          setReload(!reload);
+        })
+        .catch(() => {
+          Toast("Something went wrong", ToastType.error);
+        })
+    }
   };
 
   return (

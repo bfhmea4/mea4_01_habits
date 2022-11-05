@@ -1,49 +1,14 @@
-"use client";
-
-import Image from "next/image";
-import { Habit, JournalEntry } from "../../lib/interfaces";
-import { dateToString } from "../../lib/parse";
+import { Habit } from "../../lib/interfaces";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { useRef } from "react";
-import { PopUpModal } from "../(general)/(modals)/PopUpModal";
 import { HabitForm } from "./HabitForm";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { PopUpModal } from "../general/modals/PopUpModal";
 
 export interface HabitCardProps {
   habit: Habit;
   onClick?: () => void;
 }
-
-const sampleJournalEntries: JournalEntry[] = [
-  {
-    id: 1,
-    note: "I did it!",
-    belongs_to_id: 1,
-    created_at: new Date("2021-01-01T00:00:00.000Z"),
-    updated_at: new Date("2021-01-01T00:00:00.000Z"),
-  },
-  {
-    id: 2,
-    note: "I did it again!",
-    belongs_to_id: 1,
-    created_at: new Date(),
-    updated_at: new Date(),
-  },
-  {
-    id: 1,
-    note: "I did it!",
-    belongs_to_id: 2,
-    created_at: new Date("2021-01-01T00:00:00.000Z"),
-    updated_at: new Date("2021-01-01T00:00:00.000Z"),
-  },
-  {
-    id: 2,
-    note: "I did it again!",
-    belongs_to_id: 2,
-    created_at: new Date("2021-01-02T00:00:00.000Z"),
-    updated_at: new Date("2021-01-02T00:00:00.000Z"),
-  },
-];
 
 export const HabitCard = ({ habit }: HabitCardProps) => {
   const editModalRef = useRef<any>(null);

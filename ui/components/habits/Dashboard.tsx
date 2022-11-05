@@ -30,6 +30,7 @@ export const Dashboard = (props: DashboardProps) => {
             alt="Personal Goals"
             width={300}
             height={300}
+            unoptimized
           />
         </div>
       </div>

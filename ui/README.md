@@ -1,7 +1,6 @@
 ## Getting Started
 
-> **yarn** and **node 18.x.x** must be installed on your machine
-
+> **yarn** and **node 16.x.x** must be installed on your machine
 Add all npm packages to your project
 ```bash
 yarn install

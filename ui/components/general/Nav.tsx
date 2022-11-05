@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 
 export const Nav = () => {
@@ -16,7 +15,8 @@ export const Nav = () => {
           src="/images/icons/notebook.svg"
           alt="Personal Goals"
           width={40}
-          height={40}
+          height={35}
+          unoptimized
         />
       </button>
     </div>

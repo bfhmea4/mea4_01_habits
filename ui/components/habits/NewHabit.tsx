@@ -1,6 +1,6 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useRef } from "react";
-import { PopUpModal } from "../(general)/(modals)/PopUpModal";
+import { PopUpModal } from "../general/modals/PopUpModal";
 import { HabitForm } from "./HabitForm";
 
 export const NewHabit = () => {
