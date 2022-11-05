@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import Api from "../../config/Api";
 import { useLoadingContext } from "../../context/loadingContext";
 import { Habit } from "../../lib/interfaces";
+import { Toast, ToastType } from "../alerts/Toast";
 import StyledButton, { StyledButtonType } from "../general/buttons/StyledButton";
 import InputField from "../general/forms/InputField";
 import TextAreaField from "../general/forms/TextAreaField";
@@ -30,23 +31,43 @@ export const HabitForm = (props: Props) => {
           description: description.value,
         }
         Api.post("/habit", body);
+        Toast("Habit created", ToastType.success);
       } catch (error) {
-        console.log(error);
+        Toast("Something went wrong", ToastType.error);
       } finally {
-        setReload(!reload);
         props.modalRef.current.close();
       }
+      setReload(!reload);
     } else {
       // Update habit
-      console.log("Update habit");
+      try {
+        const body = {
+          title: title.value,
+          description: description.value,
+        }
+        if (props.habit) {
+          Api.put(`/habit/${props.habit.id}`, body);
+        }
+        Toast("Habit updated", ToastType.success);
+        props.modalRef.current.close();
+      } catch (error) {
+        Toast("Something went wrong", ToastType.error);
+      }
+      setReload(!reload);
     }
-
-
-    props.modalRef.current.close();
   };
 
   const handleDelete = () => {
-    deleteModalRef.current.open();
+    if (props.habit) {
+      try {
+        Api.delete(`/habit/${props.habit.id}`);
+        Toast("Habit deleted", ToastType.success);
+        props.modalRef.current.close();
+      } catch (error) {
+        Toast("Something went wrong", ToastType.error);
+      }
+      setReload(!reload);
+    }
   };
 
   return (

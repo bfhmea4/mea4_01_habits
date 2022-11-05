@@ -23,6 +23,7 @@ export const LoadingContextProvider = ({ children }: Props) => {
         reload,
         setLoading,
         setComponentLoading,
+        setError,
         setReload,
     };
 
