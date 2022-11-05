@@ -4,6 +4,7 @@ import Layout from '../components/Layout'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import { ToastContainer } from 'react-toastify';
+import { LoadingContextProvider } from '../context/loadingContext'
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -45,9 +46,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         ></meta>
         <meta name="theme-color" content="#FFFFFF"></meta>
       </Head>
+      <LoadingContextProvider>
         <Layout>
           <Component {...pageProps} />
         </Layout>
+      </LoadingContextProvider>
       <ToastContainer />
     </div>
   )

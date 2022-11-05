@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import Api from "../../config/Api";
+import { useLoadingContext } from "../../context/loadingContext";
 import { Habit } from "../../lib/interfaces";
 import StyledButton, { StyledButtonType } from "../general/buttons/StyledButton";
 import InputField from "../general/forms/InputField";
@@ -12,12 +14,34 @@ interface Props {
 
 export const HabitForm = (props: Props) => {
   const deleteModalRef = useRef<any>(null);
+  const { reload, setReload }: any = useLoadingContext();
 
   const handleSave = () => {
     const title = document.getElementById("title") as HTMLInputElement;
     const description = document.getElementById(
       "description"
     ) as HTMLInputElement;
+
+    if (props.type === "create") {
+      // Create habit
+      try {
+        const body = {
+          title: title.value,
+          description: description.value,
+        }
+        Api.post("/habit", body);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setReload(!reload);
+        props.modalRef.current.close();
+      }
+    } else {
+      // Update habit
+      console.log("Update habit");
+    }
+
+
     props.modalRef.current.close();
   };
 

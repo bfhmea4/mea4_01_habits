@@ -4,12 +4,14 @@ import { Dashboard } from '../components/habits/Dashboard';
 import { HabitCard } from '../components/habits/HabitCard';
 import { NewHabit } from '../components/habits/NewHabit';
 import Api from '../config/Api';
+import { useLoadingContext } from '../context/loadingContext';
 import { Habit } from '../lib/interfaces';
 
 const Home: NextPage = () => {
 
   const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { reload }: any = useLoadingContext();
 
   useEffect(() => {
     (async () => {
@@ -24,7 +26,7 @@ const Home: NextPage = () => {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [reload]);
 
   return (
     <div className="">
