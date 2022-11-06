@@ -36,7 +36,13 @@ The application uses kotlin, maven and java version 17.
 Start application by using maven:
 
 ```bash
-mvn spring-boot:run
+mvn clean install
+
+# using in-memory database
+mvn spring-boot:run -Dspring-boot.run.profiles=test
+
+# using local deployed postgres as database
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
 ### Frontend
@@ -44,13 +50,14 @@ mvn spring-boot:run
 Start the frontend directly:
 
 ```bash
-yarn --cwd ui/app dev
+yarn --cwd ui install
+yarn --cwd ui dev
 ```
 
 ### Database
 
 By default, we use PostgreSQL as our database.
-You have to configure the database connection settings in the following file: `src/main/kotlin/resources/application.properties`.
+You have to configure the database connection settings in the following file: `src/main/kotlin/resources/application-local.properties`.
 The default connection string is `jdbc:postgresql://postgres:5432/habits`, which works with the local docker-compose file (this includes the postgres deployment).
 
 
@@ -72,6 +79,9 @@ services:
       - "8080:8080"
     networks:
       - net
+    environment:
+      SPRING_DATASOURCE_PASSWORD: 'changeme'
+      SPRING_FLYWAY_PASSWORD: 'changeme'
 
   frontend:
     image: ghcr.io/bfhmea4/habits-frontend:latest
@@ -79,23 +89,23 @@ services:
     ports:
       - "3000:3000"
     networks:
-    - net
+      - net
     environment:
-      - ENV_API_URL=http://127.0.0.1:8080
+      ENV_API_URL: 'http://127.0.0.1:8080'
 
   postgresql:
     image: postgres:13-alpine
     container_name: postgres
     networks:
-    - net
+      - net
     ports:
-    - '5432:5432'
+      - '5432:5432'
     environment:
       POSTGRES_DB: 'habits'
-      POSTGRES_PASSWORD: 'habits'
       POSTGRES_USER: 'habits'
+      POSTGRES_PASSWORD: 'changeme'
     volumes:
-    - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
 
 volumes:
   db-data: {}
@@ -114,15 +124,15 @@ docker-compose up -d
 
 ### Build docker container manually
 
-You can build the docker container images manually with the included Dockerfiles under `./build/package/habits` and `./ui/app`.
-This step can be done automatically through a docker-compose file (see next chaptre).
+You can build the docker container images manually with the included Dockerfiles under `./build/package/habits` and `./ui`.
+This step can be done automatically through a docker-compose file (see next chapter).
 
 ```bash
 ## build backend manually
 docker build -f ./build/package/habits/Dockerfile . -t habits-backend:local
 
 ## build frontend manually
-docker build -f ./ui/app/Dockerfile . -t habits-frontend:local
+docker build -f ./ui/Dockerfile . -t habits-frontend:local
 ```
 
 ### Build docker container using docker-compose
@@ -142,30 +152,33 @@ services:
       - "8080:8080"
     networks:
       - net
+    environment:
+      SPRING_DATASOURCE_PASSWORD: 'changeme'
+      SPRING_FLYWAY_PASSWORD: 'changeme'
 
   frontend:
-    build: ./ui/app/
+    build: ./ui/
     container_name: habits_frontend
     ports:
       - "3000:3000"
     networks:
-    - net
+      - net
     environment:
-      - ENV_API_URL=http://127.0.0.1:8080
+      ENV_API_URL: 'http://127.0.0.1:8080'
 
   postgresql:
     image: postgres:13-alpine
     container_name: postgres
     networks:
-    - net
+      - net
     ports:
-    - '5432:5432'
+      - '5432:5432'
     environment:
       POSTGRES_DB: 'habits'
-      POSTGRES_PASSWORD: 'habits'
       POSTGRES_USER: 'habits'
+      POSTGRES_PASSWORD: 'changeme'
     volumes:
-    - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
 
 volumes:
   db-data: {}
@@ -190,6 +203,17 @@ You can deploy Habits in your Kubernetes cluster, but you have to set all the en
 
 You need to set the following environment:
 
+**Backend**
+
+| ENV | Default | Description |
+|-----|---------|-------------|
+| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://localhost:5432/habits` | The JDBC-String of the database |
+| `SPRING_DATASOURCE_USERNAME` | `habits` | The database user |
+| `SPRING_DATASOURCE_PASSWORD` | `habits` | Password of the database user |
+| `SPRING_FLYWAY_URL` | `jdbc:postgresql://localhost:5432/habits` | The JDBC-String of the database |
+| `SPRING_FLYWAY_USER`| `habits` | The flyway database user |
+| `SPRING_FLYWAY_PASSWORD` | `habits` | Password of the flyway database user |
+
 **UI**
 
-- `ENV_API_URL` - The URL of the API, e.g. `https://template.habits.io` (without trailing slash, but /api at the end, must be accessible from the webclient)
+- `ENV_API_URL` - The URL of the API, e.g. `https://template.habits.io` (without trailing slash, must be accessible from the webclient)
