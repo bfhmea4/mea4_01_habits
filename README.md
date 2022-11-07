@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/bfhmea4/mea4_01_habits">
-        <img height="120px" src="./assets/habits_logo.png" />
+        <img height="120px" src="./assets/habits_logo_original.png" />
     </a>
     <h1 align="center">
         Habits - Tracking your habits
