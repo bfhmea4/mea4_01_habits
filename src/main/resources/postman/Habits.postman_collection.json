@@ -21,12 +21,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/habit/",
-					"protocol": "http",
+					"raw": "{{host}}/api/habit/",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"habit",
@@ -42,12 +40,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/habits/",
-					"protocol": "http",
+					"raw": "{{host}}/api/habits/",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"habits",
@@ -63,12 +59,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/habit/1",
-					"protocol": "http",
+					"raw": "{{host}}/api/habit/1",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"habit",
@@ -93,12 +87,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/habit/1",
-					"protocol": "http",
+					"raw": "{{host}}/api/habit/1",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"habit",
@@ -114,12 +106,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/habit/1",
-					"protocol": "http",
+					"raw": "{{host}}/api/habit/1",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"habit",
@@ -144,12 +134,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/journal_entry",
-					"protocol": "http",
+					"raw": "{{host}}/api/journal_entry",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"journal_entry"
@@ -164,12 +152,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/journal_entries",
-					"protocol": "http",
+					"raw": "{{host}}/api/journal_entries",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"journal_entries"
@@ -184,12 +170,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/journal_entry/1",
-					"protocol": "http",
+					"raw": "{{host}}/api/journal_entry/1",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"journal_entry",
@@ -214,12 +198,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/journal_entry/1",
-					"protocol": "http",
+					"raw": "{{host}}/api/journal_entry/1",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"journal_entry",
@@ -244,12 +226,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/journal_entry/1",
-					"protocol": "http",
+					"raw": "{{host}}/api/journal_entry/1",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"journal_entry",
@@ -265,12 +245,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/journal_entry/1",
-					"protocol": "http",
+					"raw": "{{host}}/api/journal_entry/1",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"journal_entry",
