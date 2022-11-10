@@ -41,7 +41,6 @@ Based on the way the project is handled in this module, only all meaningful Scru
 * **When**: Every two weeks (Shifted one week)
 * **Goal**: Discuss the progress of the running Sprint.
 * **Procedure**: Show the Project Coach what is being worked on and clarify questions if they arise.
-* **Outcome**: Possible decisions are recorded in the [project decisions](project-decisions.md)
 
 ### Backlog Refinement
 * **Attendees**: PO, Project Coach/Customer
@@ -71,4 +70,4 @@ The Sprint Backlog is composed of the Sprint Goal (why), the set of Product Back
 
 ### Impediment Backlog
 
-The impediment backlog is kept in the following document: [project-decisions](project-decisions.md)
+The impediment backlog is kept in the following document: [Impediment Backlog](impediment-backlog.md)
