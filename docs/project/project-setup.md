@@ -34,12 +34,12 @@ Based on the way the project is handled in this module, only all meaningful Scru
 
 ## Team & Roles
 
-| Role   | Project Member(s) |
-|:-------|:------|
-| Product Owner (PO) | Bigler Andy |
-| Scrum Master | Fuhrer Jan |
-| Developers | Bigler Andy, Fuhrer Jan, Lauber Jan |
-| Customer/ Project Coach | Mowers Anthony Alexander |
+| Role                    | Project Member(s)                   |
+|:------------------------|:------------------------------------|
+| Product Owner (PO)      | Bigler Andy                         |
+| Scrum Master            | Fuhrer Jan                          |
+| Developers              | Bigler Andy, Fuhrer Jan, Lauber Jan |
+| Customer/ Project Coach | Mowers Anthony Alexander            |
 
 ## Artefacts
 
