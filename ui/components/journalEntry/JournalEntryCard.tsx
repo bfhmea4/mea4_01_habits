@@ -22,7 +22,7 @@ export const JournalEntryCard = ({ journalEntry }: JournalEntryCardProps) => {
             {journalEntry.createdAt.toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
-            })}
+            })}{' '}
             - {journalEntry?.habit?.title ?? 'No habit'}
           </h2>
         </div>
