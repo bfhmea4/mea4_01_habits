@@ -25,7 +25,7 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
     }
     Api.post('/journal_entry', body)
       .then(() => {
-        Toast('Journal Entry created', ToastType.success)
+        Toast('Log created', ToastType.success)
       })
       .catch(() => {
         Toast('Something went wrong', ToastType.error)
