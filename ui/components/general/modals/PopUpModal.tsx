@@ -1,35 +1,24 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/solid";
-import {
-  forwardRef,
-  Fragment,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import { Dialog, Transition } from '@headlessui/react'
+import { XMarkIcon } from '@heroicons/react/24/solid'
+import { forwardRef, Fragment, useImperativeHandle, useRef, useState } from 'react'
 
 export const PopUpModal = forwardRef(({ children }: any, ref) => {
-  const [open, setOpen] = useState(false);
-  const cancelButtonRef = useRef(null);
-  PopUpModal.displayName = "PopUpModal";
+  const [open, setOpen] = useState(false)
+  const cancelButtonRef = useRef(null)
+  PopUpModal.displayName = 'PopUpModal'
 
   useImperativeHandle(ref, () => ({
     open: () => {
-      setOpen(true);
+      setOpen(true)
     },
     close: () => {
-      setOpen(false);
+      setOpen(false)
     },
-  }));
+  }))
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-30"
-        initialFocus={cancelButtonRef}
-        onClose={setOpen}
-      >
+      <Dialog as="div" className="relative z-30" initialFocus={cancelButtonRef} onClose={setOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -54,10 +43,7 @@ export const PopUpModal = forwardRef(({ children }: any, ref) => {
               leaveTo="opacity-0 translate-y-0 scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all my-8 w-full max-w-lg p-6">
-                <XMarkIcon
-                  className="absolute top-2 right-2 w-6 h-6 cursor-pointer"
-                  onClick={() => setOpen(false)}
-                />
+                <XMarkIcon className="absolute top-2 right-2 w-6 h-6 cursor-pointer" onClick={() => setOpen(false)} />
                 {children}
               </Dialog.Panel>
             </Transition.Child>
@@ -65,5 +51,5 @@ export const PopUpModal = forwardRef(({ children }: any, ref) => {
         </div>
       </Dialog>
     </Transition.Root>
-  );
-});
+  )
+})

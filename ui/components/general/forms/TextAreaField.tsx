@@ -1,28 +1,25 @@
-import { classNames } from "../../../lib/design";
+import { classNames } from '../../../lib/design'
 
 export interface TextAreaFieldProps {
-  label: string;
-  name: string;
-  placeholder?: string;
-  onChange?: any;
-  required: boolean;
-  value?: any;
-  defaultValue?: any;
-  disabled?: boolean;
+  label: string
+  name: string
+  placeholder?: string
+  onChange?: any
+  required: boolean
+  value?: any
+  defaultValue?: any
+  disabled?: boolean
 }
 
 const TextAreaField = (props: TextAreaFieldProps) => {
   return (
     <div
       className={classNames(
-        props.disabled ? "border-gray-100 text-gray-400" : "border-gray-200",
-        "mb-2 relative block  focus-within:border-gray-300 border-4 w-full group rounded-lg transition-all duration-150 ease-in-out uppercase"
+        props.disabled ? 'border-gray-100 text-gray-400' : 'border-gray-200',
+        'mb-2 relative block  focus-within:border-gray-300 border-4 w-full group rounded-lg transition-all duration-150 ease-in-out uppercase'
       )}
     >
-      <label
-        className="block pt-2 pl-3 text-xs font-medium text-gray-600 uppercase"
-        htmlFor={props.name}
-      >
+      <label className="block pt-2 pl-3 text-xs font-medium text-gray-600 uppercase" htmlFor={props.name}>
         {props.required ? (
           <>
             {props.label} <span className="text-red-600">*</span>
@@ -44,7 +41,7 @@ const TextAreaField = (props: TextAreaFieldProps) => {
         defaultValue={props.defaultValue}
       />
     </div>
-  );
-};
+  )
+}
 
-export default TextAreaField;
+export default TextAreaField

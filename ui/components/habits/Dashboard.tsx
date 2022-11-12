@@ -1,7 +1,7 @@
-import Image from "next/image";
+import Image from 'next/image'
 
 export interface DashboardProps {
-  children?: React.ReactNode;
+  children?: React.ReactNode
 }
 
 export const Dashboard = (props: DashboardProps) => {
@@ -12,11 +12,11 @@ export const Dashboard = (props: DashboardProps) => {
           <h2 className="text-sm text-gray-600">
             {
               // Todays date on English
-              new Date().toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
+              new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
               })
             }
           </h2>
@@ -35,9 +35,7 @@ export const Dashboard = (props: DashboardProps) => {
         </div>
       </div>
       <h2 className="text-2xl font-medium px-6 absolute top-36">Your habits</h2>
-      <div className="px-6 fixed w-full top-44 bottom-6 overflow-auto">
-        {props.children}
-      </div>
+      <div className="px-6 fixed w-full top-44 bottom-6 overflow-auto">{props.children}</div>
     </div>
-  );
-};
+  )
+}

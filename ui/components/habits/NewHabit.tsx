@@ -1,14 +1,14 @@
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { useRef } from "react";
-import { PopUpModal } from "../general/modals/PopUpModal";
-import { HabitForm } from "./HabitForm";
+import { PlusIcon } from '@heroicons/react/24/outline'
+import { useRef } from 'react'
+import { PopUpModal } from '../general/modals/PopUpModal'
+import { HabitForm } from './HabitForm'
 
 export const NewHabit = () => {
-  const createModalRef = useRef<any>(null);
+  const createModalRef = useRef<any>(null)
 
   const handleOnClick = () => {
-    createModalRef.current.open();
-  };
+    createModalRef.current.open()
+  }
 
   return (
     <div
@@ -27,5 +27,5 @@ export const NewHabit = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
