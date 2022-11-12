@@ -7,6 +7,8 @@
     "build": "next build && next export",
     "start": "react-env -- next start",
     "lint": "eslint './**/*.{ts,tsx}'",
+    "format": "prettier --write .",
+    "fix": "yarn lint && yarn format",
     "image": "next-image-export-optimizer"
   },
   "husky": {
