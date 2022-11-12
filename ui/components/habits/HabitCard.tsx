@@ -1,25 +1,25 @@
-import { Habit } from "../../lib/interfaces";
-import { PencilIcon } from "@heroicons/react/24/outline";
-import { useRef } from "react";
-import { HabitForm } from "./HabitForm";
-import { PlusIcon } from "@heroicons/react/24/solid";
-import { PopUpModal } from "../general/modals/PopUpModal";
+import { Habit } from '../../lib/interfaces'
+import { PencilIcon } from '@heroicons/react/24/outline'
+import { useRef } from 'react'
+import { HabitForm } from './HabitForm'
+import { PlusIcon } from '@heroicons/react/24/solid'
+import { PopUpModal } from '../general/modals/PopUpModal'
 
 export interface HabitCardProps {
-  habit: Habit;
-  onClick?: () => void;
+  habit: Habit
+  onClick?: () => void
 }
 
 export const HabitCard = ({ habit }: HabitCardProps) => {
-  const editModalRef = useRef<any>(null);
+  const editModalRef = useRef<any>(null)
 
   const handleEdit = () => {
-    editModalRef.current.open();
-  };
+    editModalRef.current.open()
+  }
 
   const handleAddJournalEntry = () => {
-    console.log("Add journal entry");
-  };
+    console.log('Add journal entry')
+  }
 
   return (
     <div className="habit-card bg-primary rounded-lg sm:max-w-lg w-full py-4 pr-5 my-4 h-24 text-white shadow-lg select-none">
@@ -42,5 +42,5 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
