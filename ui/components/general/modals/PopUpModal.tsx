@@ -1,6 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { forwardRef, Fragment, useImperativeHandle, useRef, useState } from 'react'
+import { classNames } from '../../../lib/design'
 
 export const PopUpModal = forwardRef(({ children }: any, ref) => {
   const [open, setOpen] = useState(false)
@@ -18,7 +19,7 @@ export const PopUpModal = forwardRef(({ children }: any, ref) => {
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-30" initialFocus={cancelButtonRef} onClose={setOpen}>
+      <Dialog as="div" className="sm:relative z-30" initialFocus={cancelButtonRef} onClose={setOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
