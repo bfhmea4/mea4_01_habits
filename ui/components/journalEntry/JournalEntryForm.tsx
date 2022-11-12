@@ -58,7 +58,7 @@ export const JournalEntryForm = (props: Props) => {
       <PopUpModal ref={deleteModalRef}>
         <div className="flex flex-col justify-center">
           <h1 className="text-2xl font-medium">Delete Log</h1>
-          <p className="mt-2 text-sm">This journal entry will get removed forever!</p>
+          <p className="mt-2 text-sm">This log entry will get removed forever!</p>
           <div className="mt-4 grid sm:grid-cols-2 gap-2">
             <StyledButton name="Delete" type={StyledButtonType.Primary} onClick={handleDelete} small />
             <StyledButton
