@@ -4,6 +4,8 @@ import { useRef } from 'react'
 import { HabitForm } from './HabitForm'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import { PopUpModal } from '../general/modals/PopUpModal'
+import Api from '../../config/Api'
+import { Toast, ToastType } from '../alerts/Toast'
 
 export interface HabitCardProps {
   habit: Habit
@@ -17,8 +19,17 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
     editModalRef.current.open()
   }
 
-  const handleAddJournalEntry = () => {
-    console.log('Add journal entry')
+  const handleAddJournalEntry = (habitId: number) => {
+    const body = {
+      habitId,
+    }
+    Api.post('/journal_entry', body)
+      .then(() => {
+        Toast('Journal Entry created', ToastType.success)
+      })
+      .catch(() => {
+        Toast('Something went wrong', ToastType.error)
+      })
   }
 
   return (
@@ -30,7 +41,7 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
         <div className="w-24 rounded-full bg-secondary flex items-center justify-center">
           <PlusIcon
             className="w-12 h-12 text-white active:hover:scale-105 transition-all duration-200 ease-in-out cursor-pointer"
-            onClick={handleAddJournalEntry}
+            onClick={() => handleAddJournalEntry(habit.id)}
           />
         </div>
         <div className="font-light my-auto mr-5">
