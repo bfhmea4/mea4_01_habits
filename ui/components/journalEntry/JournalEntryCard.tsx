@@ -1,5 +1,8 @@
 import { JournalEntry } from '../../lib/interfaces'
 import Image from 'next/image'
+import { useRef } from 'react'
+import { JournalEntryForm } from './JournalEntryForm'
+import { PopUpModal } from '../general/modals/PopUpModal'
 
 export interface JournalEntryCardProps {
   journalEntry: JournalEntry
@@ -7,9 +10,19 @@ export interface JournalEntryCardProps {
 }
 
 export const JournalEntryCard = ({ journalEntry }: JournalEntryCardProps) => {
+  const editModalRef = useRef<any>(null)
+
+  const handleEdit = () => {
+    editModalRef.current.open()
+  }
+
   return (
     <div>
-      <div className="flex flex-row flex-wrap mt-2">
+      <PopUpModal ref={editModalRef}>
+        <JournalEntryForm modalRef={editModalRef} type="edit" journalEntry={journalEntry} />
+      </PopUpModal>
+
+      <div className="flex flex-row flex-wrap mt-2 cursor-pointer" onClick={handleEdit}>
         <div className="basis-1/6 text-center h-[35px]">
           {journalEntry.description ? (
             <Image src="/images/icons/book.svg" alt="Book" width={40} height={35} unoptimized />
