@@ -76,7 +76,7 @@ export const JournalEntryForm = (props: Props) => {
           placeholder="Enter a description"
           name="description"
           defaultValue={props.journalEntry?.description}
-          required
+          required={false}
         />
       </div>
 

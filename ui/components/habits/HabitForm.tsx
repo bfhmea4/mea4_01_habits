@@ -103,7 +103,7 @@ export const HabitForm = (props: Props) => {
           placeholder="Enter a description"
           name="description"
           defaultValue={props.habit?.description}
-          required
+          required={false}
         />
       </div>
 
