@@ -15,6 +15,7 @@ copyright: Copyright &copy; 2022 Jan Lauber, Jan Fuhrer, Andy Bigler
 # Configuration
 theme:
   logo: assets/habits_logo_original.png
+  favicon: assets/habits_logo_original.png
   name: material
   language: en
   font:
