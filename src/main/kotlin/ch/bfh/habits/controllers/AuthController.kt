@@ -1,6 +1,7 @@
 package ch.bfh.habits.controllers
 
 import ch.bfh.habits.dtos.ErrorMessage
+import ch.bfh.habits.dtos.JwtToken
 import ch.bfh.habits.dtos.user.LoginDTO
 import ch.bfh.habits.dtos.user.RegisterDTO
 import ch.bfh.habits.dtos.user.UserEntityBuilder
@@ -12,11 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-@CrossOrigin(origins = ["*"])
 class AuthController @Autowired constructor(private val userService: UserService) {
     @PostMapping("register")
     fun register(@RequestBody body: RegisterDTO): ResponseEntity<User> {
@@ -42,43 +41,30 @@ class AuthController @Autowired constructor(private val userService: UserService
             return ResponseEntity.badRequest().body(ErrorMessage("invalid password!"))
         }
 
-        val issuer = user.id.toString()
-
         val jwt = Jwts.builder()
-            .setIssuer(issuer)
+            .setIssuer("Habits")
             .setExpiration(Date(System.currentTimeMillis() + 60 * 24 * 1000)) // 1 day
+            .addClaims(mapOf("id" to user.id))
+            .addClaims(mapOf("email" to user.email))
+            .addClaims(mapOf("firstName" to user.firstName))
+            .addClaims(mapOf("lastName" to user.lastName))
             .signWith(SignatureAlgorithm.HS512, "secret").compact()
 
-        val cookie = Cookie("jwt", jwt)
-        cookie.isHttpOnly = true
-
-        response.addCookie(cookie)
-
-        return ResponseEntity.noContent().build()
+        return ResponseEntity.ok(JwtToken(jwt))
     }
 
     @GetMapping("user")
-    fun user(@CookieValue("jwt") jwt: String?): ResponseEntity<Any> {
+    fun user(@RequestHeader(value = "Authorization") token: String?): ResponseEntity<Any> {
         try {
-            if (jwt == null) {
+            if (token == null) {
                 return ResponseEntity.status(401).body(ErrorMessage("Unauthenticated"))
             }
 
-            val body = Jwts.parser().setSigningKey("secret").parseClaimsJws(jwt).body
+            val body = Jwts.parser().setSigningKey("secret").parseClaimsJws(token.split(' ').last()).body
 
-            return ResponseEntity.ok(this.userService.getById(body.issuer.toLong()))
+            return ResponseEntity.ok(this.userService.getById((body["id"] as Int).toLong()))
         } catch (e: Exception) {
             return ResponseEntity.status(401).body(ErrorMessage("Unauthenticated"))
         }
-    }
-
-    @PostMapping("logout")
-    fun logout(response: HttpServletResponse): ResponseEntity<Any> {
-        val cookie = Cookie("jwt", "")
-        cookie.maxAge = 0
-
-        response.addCookie(cookie)
-
-        return ResponseEntity.noContent().build()
     }
 }
