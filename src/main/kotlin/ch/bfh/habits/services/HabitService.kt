@@ -1,10 +1,7 @@
 package ch.bfh.habits.services
 
 import ch.bfh.habits.dtos.ObjectIdDTO
-import ch.bfh.habits.dtos.habit.HabitDTO
-import ch.bfh.habits.dtos.habit.HabitDtoBuilder
-import ch.bfh.habits.dtos.habit.HabitEntityBuilder
-import ch.bfh.habits.dtos.habit.HabitListDTO
+import ch.bfh.habits.dtos.habit.*
 import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
@@ -24,6 +21,12 @@ class HabitService(private val habitDAO: HabitDAO) {
 
     @Transactional
     fun newHabit(habitDTO: HabitDTO): ObjectIdDTO {
+        if (habitDTO.id != null) {
+            throw BadRequestException("Id must not be set")
+        }
+        if ((habitDTO.frequencyValue != null && habitDTO.frequency == null) || (habitDTO.frequencyValue == null && habitDTO.frequency != null)) {
+            throw BadRequestException("Frequency must be set if frequencyValue is set")
+        }
         val newHabit = createHabitEntityFromDTO(habitDTO)
         habitDAO.save(newHabit)
         return ObjectIdDTO(newHabit.id!!)

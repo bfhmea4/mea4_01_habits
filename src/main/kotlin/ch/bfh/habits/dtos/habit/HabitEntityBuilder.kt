@@ -9,7 +9,8 @@ class HabitEntityBuilder private constructor() {
             return Habit(
                 title = habitDTO.title ?: "",
                 description = habitDTO.description ?: "",
-                frequency = habitDTO.frequency
+                frequency = habitDTO.frequency,
+                frequencyValue = habitDTO.frequencyValue
             )
         }
 
@@ -17,6 +18,7 @@ class HabitEntityBuilder private constructor() {
             habitEntity.title = habitDTO.title ?: habitEntity.title
             habitEntity.description = habitDTO.description ?: habitEntity.description
             habitEntity.frequency = habitDTO.frequency ?: habitEntity.frequency
+            habitEntity.frequencyValue = habitDTO.frequencyValue ?: habitEntity.frequencyValue
         }
     }
 

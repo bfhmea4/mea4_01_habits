@@ -1,5 +1,6 @@
 package ch.bfh.habits.controllers
 
+import ch.bfh.habits.exceptions.BadRequestException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -13,13 +14,24 @@ import javax.persistence.EntityNotFoundException
 class RestExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(value = [EntityNotFoundException::class])
-    protected fun handleConflict(ex: Exception?, request: WebRequest?, ): ResponseEntity<Any> {
+    protected fun handleConflictEntityNotFound(ex: Exception?, request: WebRequest?): ResponseEntity<Any> {
         val bodyOfResponse = ex?.message
         return handleExceptionInternal(
             ex!!,
             bodyOfResponse,
             HttpHeaders(),
             HttpStatus.NOT_FOUND,
+            request!!)
+    }
+
+    @ExceptionHandler(value = [BadRequestException::class])
+    protected fun handleConflictBadRequest(ex: Exception?, request: WebRequest?): ResponseEntity<Any> {
+        val bodyOfResponse = ex?.message
+        return handleExceptionInternal(
+            ex!!,
+            bodyOfResponse,
+            HttpHeaders(),
+            HttpStatus.BAD_REQUEST,
             request!!)
     }
 }
