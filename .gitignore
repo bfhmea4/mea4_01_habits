@@ -15,7 +15,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 *.log
-update
+create.sql
+update.sql
 
 ## Frontend ##
 .next/

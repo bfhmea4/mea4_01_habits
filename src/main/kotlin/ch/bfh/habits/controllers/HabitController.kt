@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@CrossOrigin(origins = ["*"])
 class HabitController @Autowired constructor(private val service: HabitService) {
     @GetMapping("/api/habits")
     fun getAllHabits(): ResponseEntity<HabitListDTO> {
