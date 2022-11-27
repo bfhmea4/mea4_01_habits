@@ -21,7 +21,6 @@ export interface SelectProps {
 }
 
 const Select = (props: SelectProps) => {
-
   const [selected, setSelected] = useState<SelectOptions>(props.defaultValue || props.options[0])
 
   useEffect(() => {
@@ -36,15 +35,14 @@ const Select = (props: SelectProps) => {
         <>
           <div className="relative mt-1">
             <Listbox.Button className="relative w-full cursor-default rounded-lg border-gray-200 border-4 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus:ring-nonesm:text-sm">
-              <Listbox.Label className="block  text-xs font-medium text-gray-600 uppercase">{props.label}</Listbox.Label>
-              <hr
-                className='mb-2 mt-1'
-              />
+              <Listbox.Label className="block  text-xs font-medium text-gray-600 uppercase">
+                {props.label}
+              </Listbox.Label>
+              <hr className="mb-2 mt-1" />
               <span className="block truncate text-primary">{selected?.text}</span>
               <span className="pointer-events-none absolute inset-y-0 right-0 top-5 flex items-center pr-2">
                 <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
               </span>
-
             </Listbox.Button>
 
             <Transition
@@ -55,7 +53,7 @@ const Select = (props: SelectProps) => {
               leaveTo="opacity-0"
             >
               <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {props.options.map((option) => (
+                {props.options.map(option => (
                   <Listbox.Option
                     key={option.value}
                     className={({ active }) =>

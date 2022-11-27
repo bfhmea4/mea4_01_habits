@@ -6,7 +6,6 @@ export interface DashboardProps {
 }
 
 export const Dashboard = (props: DashboardProps) => {
-
   const { user, loading }: any = useUserContext()
 
   return (
@@ -25,7 +24,7 @@ export const Dashboard = (props: DashboardProps) => {
             }
           </h2>
           <h1 className="text-4xl font-medium">
-            Hello, <span className="text-primary">{(!loading && user) && user.firstName}</span>
+            Hello, <span className="text-primary">{!loading && user && user.firstName}</span>
           </h1>
         </div>
         <div className="absolute top-10 right-4 w-36 h-36">

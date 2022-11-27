@@ -22,7 +22,7 @@ export const JournalEntryForm = (props: Props) => {
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       try {
         const { data } = await Api.get('/habits')
         if (data.habits) {
@@ -54,8 +54,6 @@ export const JournalEntryForm = (props: Props) => {
     })()
   }, [reload])
 
-
-
   const handleSave = () => {
     if (props.type === 'create') {
       const description = document.getElementById('description') as HTMLInputElement
@@ -80,7 +78,6 @@ export const JournalEntryForm = (props: Props) => {
 
       // Update journal entry
       if (props.journalEntry) {
-
         const body = {
           habitId: selectedHabit?.value ? selectedHabit?.value : props.journalEntry.habit.id,
           description: description.value,
@@ -115,7 +112,7 @@ export const JournalEntryForm = (props: Props) => {
 
   return (
     <div className="">
-      <h1 className="text-2xl font-medium">{props.type == "create" ? "Create Log" : "Edit Log"}</h1>
+      <h1 className="text-2xl font-medium">{props.type == 'create' ? 'Create Log' : 'Edit Log'}</h1>
 
       <div className="mt-4">
         <Select
@@ -127,12 +124,10 @@ export const JournalEntryForm = (props: Props) => {
               text: habit.title,
             }
           })}
-          defaultValue={
-            {
-              value: props.type === 'create' ? undefined : props.journalEntry?.habit?.id || undefined,
-              text: props.type === 'create' ? "No habit" : props.journalEntry?.habit?.title || "No habit",
-            }
-          }
+          defaultValue={{
+            value: props.type === 'create' ? undefined : props.journalEntry?.habit?.id || undefined,
+            text: props.type === 'create' ? 'No habit' : props.journalEntry?.habit?.title || 'No habit',
+          }}
           setSelectedValue={setSelectedHabit}
           required
         />
