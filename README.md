@@ -30,23 +30,22 @@
 ## Overview
 ### Getting started and documentation
 
-To get started check out this [guide](https://bfhmea4.github.io/mea4_01_habits/getting-started/) on how to build/run the application.
-
+To get started check out this [guide](https://bfhmea4.github.io/mea4_01_habits/getting-started/) on how to build/run the application.  
 For more information, go to the [documentation](https://bfhmea4.github.io/mea4_01_habits/).
 
 ### Open Source
 
-Trust me, I'm open source.
-You can find the source code on [Github](https://github.com/bfhmea4/mea4_01_habits).
+Trust me, I'm open source.  
+You can find the source code on [Github](https://github.com/bfhmea4/mea4_01_habits).  
 License: GPL 3
 
 ### Backend
 
-The backend is written with Kotlin Spring Boot and uses Flyware as an SQL migration framework.
+The backend is written with Kotlin Spring Boot and uses Flyware as an SQL migration framework.  
 The data is persisted in a PostgreSQL database. 
 
 ### Frontend
 
-The frontend is written in TypeScript and uses Next.js.
-It uses [Tailwind CSS](https://tailwindcss.com/) for styling with [Flowbite React](https://flowbite-react.com) as a design system.
+The frontend is written in TypeScript and uses Next.js.  
+It uses [Tailwind CSS](https://tailwindcss.com/) for styling with [Flowbite React](https://flowbite-react.com) as a design system.  
 There are also some self-written components in the `components` folder.
