@@ -3,6 +3,7 @@ package ch.bfh.habits.habit.impl
 import ch.bfh.habits.dtos.ObjectIdDTO
 import ch.bfh.habits.dtos.habit.HabitDTO
 import ch.bfh.habits.dtos.habit.HabitListDTO
+import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.habit.HabitCrudActor
 import org.assertj.core.api.Assertions
@@ -84,6 +85,8 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
 
         if (result.status == HttpStatus.NOT_FOUND)
             throw EntityNotFoundException("Habit id = $habitId")
+        else if (result.status == HttpStatus.BAD_REQUEST)
+            throw BadRequestException("Habit id = $habitId")
 
         Assertions.assertThat(result.status.is2xxSuccessful).isTrue
     }

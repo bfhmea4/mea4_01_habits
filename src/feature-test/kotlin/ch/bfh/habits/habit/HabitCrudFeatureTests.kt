@@ -2,6 +2,7 @@ package ch.bfh.habits.habit
 
 import ch.bfh.habits.dtos.habit.HabitDTO
 import ch.bfh.habits.dtos.habit.HabitListDTO
+import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
@@ -99,12 +100,20 @@ class HabitCrudFeatureTests {
         }
 
         @Test
+        fun `update throws bad request`() {
+            assertThrows<BadRequestException> {
+                habitActor.updatesHabit(nonExistingHabitId, createHabitDTO())
+            }
+        }
+
+        @Test
         fun `update throws not found`() {
             assertThrows<EntityNotFoundException> {
-                habitActor.updatesHabit(nonExistingHabitId, createHabitDTO())
+                habitActor.updatesHabit(nonExistingHabitId, createHabitDTO2())
             }
         }
     }
 
     private fun createHabitDTO(title: String = "Gym", description: String = "Go to the gym") = HabitDTO(title = title, description = description)
+    private fun createHabitDTO2(id: Long = -1L, title: String = "Gym", description: String = "Go to the gym") = HabitDTO(id = id, title = title, description = description)
 }

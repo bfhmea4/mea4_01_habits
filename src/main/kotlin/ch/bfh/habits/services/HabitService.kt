@@ -1,11 +1,9 @@
 package ch.bfh.habits.services
 
 import ch.bfh.habits.dtos.ObjectIdDTO
-import ch.bfh.habits.dtos.habit.HabitDTO
-import ch.bfh.habits.dtos.habit.HabitDtoBuilder
-import ch.bfh.habits.dtos.habit.HabitEntityBuilder
-import ch.bfh.habits.dtos.habit.HabitListDTO
+import ch.bfh.habits.dtos.habit.*
 import ch.bfh.habits.entities.Habit
+import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.repositories.HabitDAO
 import org.springframework.dao.EmptyResultDataAccessException
@@ -23,6 +21,12 @@ class HabitService(private val habitDAO: HabitDAO) {
 
     @Transactional
     fun newHabit(habitDTO: HabitDTO): ObjectIdDTO {
+        if (habitDTO.id != null) {
+            throw BadRequestException("Id must not be set")
+        }
+        if ((habitDTO.frequencyValue != null && habitDTO.frequency == null) || (habitDTO.frequencyValue == null && habitDTO.frequency != null)) {
+            throw BadRequestException("Frequency and frequencyValue must be set together")
+        }
         val newHabit = createHabitEntityFromDTO(habitDTO)
         habitDAO.save(newHabit)
         return ObjectIdDTO(newHabit.id!!)
@@ -47,6 +51,12 @@ class HabitService(private val habitDAO: HabitDAO) {
 
     @Transactional
     fun updateHabitById(id: Long, habitDTO: HabitDTO) {
+        if (habitDTO.id != id) {
+            throw BadRequestException("Habit id in path and body do not match")
+        }
+        if ((habitDTO.frequencyValue != null && habitDTO.frequency == null) || (habitDTO.frequencyValue == null && habitDTO.frequency != null)) {
+            throw BadRequestException("Frequency and frequencyValue must be set together")
+        }
         val currentHabit = habitDAO.findById(id).orElseThrow {
             EntityNotFoundException("Habit id = $id not found")
         }

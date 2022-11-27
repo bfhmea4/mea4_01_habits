@@ -7,5 +7,7 @@ data class HabitDTO(
     val description: String? = null,
     val id: Long? = null,
     val createdAt: Timestamp? = null,
-    val editedAt: Timestamp? = null
+    val editedAt: Timestamp? = null,
+    val frequency: Frequency? = null,
+    val frequencyValue: Long? = null
 )
