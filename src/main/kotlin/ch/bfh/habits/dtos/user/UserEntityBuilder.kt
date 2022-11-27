@@ -9,7 +9,7 @@ class UserEntityBuilder private constructor() {
             val user = User(
                 userName = registerDTO.userName,
                 email = registerDTO.email,
-                firstName = registerDTO.firstName ?: "",
+                firstName = registerDTO.firstName,
                 lastName = registerDTO.lastName ?: ""
             )
             user.password = registerDTO.password
