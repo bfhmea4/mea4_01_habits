@@ -27,6 +27,12 @@ export const HabitForm = (props: Props) => {
         title: title.value,
         description: description.value,
       }
+
+      if (title.value === '') {
+        Toast('Please enter a title', ToastType.error)
+        return
+      }
+
       Api.post('/habit', body)
         .then(() => {
           Toast('Habit created', ToastType.success)
@@ -42,6 +48,20 @@ export const HabitForm = (props: Props) => {
         title: title.value,
         description: description.value,
       }
+
+      if (title.value === '') {
+        Toast('Please enter a title', ToastType.error)
+        return
+      }
+
+      // if title.value is the same as props.habit.title, then don't update
+      if (title.value === props.habit?.title && description.value === props.habit?.description) {
+        Toast('No changes made', ToastType.info)
+        // close modal
+        props.modalRef.current.close()
+        return
+      }
+
       if (props.habit) {
         Api.put(`/habit/${props.habit.id}`, body)
           .then(() => {

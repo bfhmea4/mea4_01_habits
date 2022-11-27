@@ -21,9 +21,15 @@ export const JournalEntryForm = (props: Props) => {
 
     // Update journal entry
     if (props.journalEntry) {
+
       const body = {
         habitId: props.journalEntry.habit.id,
         description: description.value,
+      }
+
+      if (description.value === '') {
+        Toast('Please enter a description', ToastType.error)
+        return
       }
 
       Api.put(`/journal_entry/${props.journalEntry.id}`, body)
