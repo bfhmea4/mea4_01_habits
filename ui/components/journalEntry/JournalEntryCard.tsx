@@ -14,12 +14,7 @@ export const JournalEntryCard = ({ journalEntry }: JournalEntryCardProps) => {
   const editModalRef = useRef<any>(null)
 
   const handleEdit = () => {
-    console.log(journalEntry)
-    if (journalEntry.habit) {
-      editModalRef.current.open()
-    } else {
-      Toast('Linked habit not found', ToastType.warning)
-    }
+    editModalRef.current.open()
   }
 
   return (

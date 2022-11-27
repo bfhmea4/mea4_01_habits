@@ -9,7 +9,6 @@ export interface Habit {
 export interface JournalEntry {
   id: number
   description: string
-  habitId: number
   habit: Habit
   createdAt: Date
   editedAt: Date
