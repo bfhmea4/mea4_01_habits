@@ -6,6 +6,7 @@ import ch.bfh.habits.dtos.habit.HabitDtoBuilder
 import ch.bfh.habits.dtos.habit.HabitEntityBuilder
 import ch.bfh.habits.dtos.habit.HabitListDTO
 import ch.bfh.habits.entities.Habit
+import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.repositories.HabitDAO
 import org.springframework.dao.EmptyResultDataAccessException
@@ -47,6 +48,9 @@ class HabitService(private val habitDAO: HabitDAO) {
 
     @Transactional
     fun updateHabitById(id: Long, habitDTO: HabitDTO) {
+        if (habitDTO.id != id) {
+            throw BadRequestException("Habit id in path and body do not match")
+        }
         val currentHabit = habitDAO.findById(id).orElseThrow {
             EntityNotFoundException("Habit id = $id not found")
         }
