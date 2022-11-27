@@ -23,9 +23,7 @@ export const JournalEntryCard = ({ journalEntry }: JournalEntryCardProps) => {
         <JournalEntryForm modalRef={editModalRef} type="edit" journalEntry={journalEntry} />
       </PopUpModal>
 
-      <div className="flex flex-row flex-wrap mt-2 cursor-pointer"
-        onClick={handleEdit}
-      >
+      <div className="flex flex-row flex-wrap mt-2 cursor-pointer" onClick={handleEdit}>
         <div className="basis-1/6 text-center h-[35px]">
           {journalEntry.description ? (
             <Image src="/images/icons/book.svg" alt="Book" width={40} height={35} unoptimized />
