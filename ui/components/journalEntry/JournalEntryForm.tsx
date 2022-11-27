@@ -1,46 +1,113 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Api from '../../config/Api'
 import { useLoadingContext } from '../../context/loadingContext'
-import { JournalEntry } from '../../lib/interfaces'
+import { Habit, JournalEntry } from '../../lib/interfaces'
 import { Toast, ToastType } from '../alerts/Toast'
 import StyledButton, { StyledButtonType } from '../general/buttons/StyledButton'
+import Select, { SelectOptions } from '../general/forms/Select'
 import TextAreaField from '../general/forms/TextAreaField'
 import { PopUpModal } from '../general/modals/PopUpModal'
 interface Props {
   modalRef: any
-  type: 'edit'
+  type: 'edit' | 'create'
   journalEntry?: JournalEntry
 }
 
 export const JournalEntryForm = (props: Props) => {
   const deleteModalRef = useRef<any>(null)
   const { reload, setReload }: any = useLoadingContext()
+  const [habits, setHabits] = useState<Habit[]>([])
+  const [selectedHabit, setSelectedHabit] = useState<SelectOptions>()
+
+  const [loading, setLoading] = useState<boolean>(true)
+
+  console.log(selectedHabit)
+
+  useEffect(() => {
+    if (props.type === 'create') {
+      ; (async () => {
+        try {
+          const { data } = await Api.get('/habits')
+          if (data.habits) {
+            // validate data.habits if its object of Habit[]
+            if (data.habits) {
+              try {
+                const habits = data.habits.map((habit: Habit) => {
+                  return {
+                    ...habit,
+                    createdAt: new Date(habit.createdAt),
+                    editedAt: new Date(habit.editedAt),
+                  }
+                })
+                // sort habits by createdAt latest first
+                habits.sort((a: any, b: any) => {
+                  return b.createdAt.getTime() - a.createdAt.getTime()
+                })
+                setHabits(habits)
+              } catch (error) {
+                console.log(error)
+              }
+            }
+          }
+        } catch (error) {
+          console.log(error)
+        } finally {
+          setLoading(false)
+        }
+      })()
+    }
+  }, [reload, props.type])
+
+
 
   const handleSave = () => {
-    const description = document.getElementById('description') as HTMLInputElement
+    if (props.type === 'create') {
+      const description = document.getElementById('description') as HTMLInputElement
 
-    // Update journal entry
-    if (props.journalEntry) {
+      console.log(description.value)
+      console.log(selectedHabit)
 
-      const body = {
-        habitId: props.journalEntry.habit.id,
-        description: description.value,
-      }
-
-      if (description.value === '') {
-        Toast('Please enter a description', ToastType.error)
+      if (selectedHabit?.value === '-1') {
+        Toast('Please select a habit', ToastType.warning)
         return
       }
 
-      Api.put(`/journal_entry/${props.journalEntry.id}`, body)
-        .then(() => {
-          Toast('Log updated', ToastType.success)
+      const body = {
+        description: description.value,
+        habitId: selectedHabit?.value,
+      }
+
+      Api.post('/journal_entry', body)
+        .then(res => {
+          Toast('Log created', ToastType.success)
           props.modalRef.current.close()
           setReload(!reload)
         })
-        .catch(() => {
+        .catch(err => {
           Toast('Something went wrong', ToastType.error)
+          console.log(err)
         })
+    } else if (props.type === 'edit') {
+      const description = document.getElementById('description') as HTMLInputElement
+
+      // Update journal entry
+      if (props.journalEntry) {
+
+        const body = {
+          habitId: props.journalEntry.habit.id,
+          description: description.value,
+        }
+
+        Api.put(`/journal_entry/${props.journalEntry.id}`, body)
+          .then(() => {
+            Toast('Log updated', ToastType.success)
+            props.modalRef.current.close()
+            setReload(!reload)
+          })
+          .catch(() => {
+            Toast('Something went wrong', ToastType.error)
+          })
+      }
     }
   }
 
@@ -60,7 +127,33 @@ export const JournalEntryForm = (props: Props) => {
 
   return (
     <div className="">
-      <h1 className="text-2xl font-medium">Edit Log</h1>
+      <h1 className="text-2xl font-medium">{props.type == "create" ? "Create Log" : "Edit Log"}</h1>
+
+      {
+        props.type === 'create' && (
+          <div className="mt-4">
+            <Select
+              label="Habit"
+              name="habit"
+              options={habits.map(habit => {
+                return {
+                  value: habit.id,
+                  text: habit.title,
+                }
+              })}
+              defaultValue={
+                {
+                  value: "-1",
+                  text: "Select Habit",
+                }
+              }
+              setSelectedValue={setSelectedHabit}
+              required
+            />
+          </div>
+        )
+      }
+
       <PopUpModal ref={deleteModalRef}>
         <div className="flex flex-col justify-center">
           <h1 className="text-2xl font-medium">Delete Log</h1>
@@ -110,4 +203,7 @@ export const JournalEntryForm = (props: Props) => {
       </div>
     </div>
   )
+}
+function setLoading(arg0: boolean) {
+  throw new Error('Function not implemented.')
 }

@@ -29,7 +29,7 @@ export const HabitForm = (props: Props) => {
       }
 
       if (title.value === '') {
-        Toast('Please enter a title', ToastType.error)
+        Toast('Please enter a title', ToastType.warning)
         return
       }
 
@@ -50,7 +50,7 @@ export const HabitForm = (props: Props) => {
       }
 
       if (title.value === '') {
-        Toast('Please enter a title', ToastType.error)
+        Toast('Please enter a title', ToastType.warning)
         return
       }
 
