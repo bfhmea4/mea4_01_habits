@@ -33,11 +33,7 @@ class AuthController @Autowired constructor(private val userService: UserService
             null
         }
 
-        if (user == null) {
-            return ResponseEntity.badRequest().body(ErrorMessage("Wrong credentials!"))
-        }
-
-        if (!user.comparePassword(body.password)) {
+        if (user == null || !user.comparePassword(body.password)) {
             return ResponseEntity.badRequest().body(ErrorMessage("Wrong credentials!"))
         }
 
@@ -48,7 +44,7 @@ class AuthController @Autowired constructor(private val userService: UserService
             .addClaims(mapOf("email" to user.email))
             .addClaims(mapOf("firstName" to user.firstName))
             .addClaims(mapOf("lastName" to user.lastName))
-            .signWith(SignatureAlgorithm.HS512, "secret").compact()
+            .signWith(SignatureAlgorithm.HS512, "secret").compact() //ToDo use env variable
 
         return ResponseEntity.ok(JwtToken(jwt))
     }

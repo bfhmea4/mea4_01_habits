@@ -11,7 +11,7 @@ class SecurityConfiguration {
     @Bean
     @Throws(Exception::class)
     fun filterChain(http: HttpSecurity): SecurityFilterChain? {
-        http.authorizeRequests().anyRequest().permitAll().and().csrf().disable()
+        http.authorizeRequests().anyRequest().permitAll().and().csrf().disable() //ToDo enable for api routes
         return http.build()
     }
 }

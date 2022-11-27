@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(JournalEntryController::class)
-@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc(addFilters = false) // ToDo remove and test auth also
 internal class JournalEntryControllerTests {
 
     @TestConfiguration
