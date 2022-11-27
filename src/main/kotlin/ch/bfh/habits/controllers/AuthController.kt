@@ -34,11 +34,11 @@ class AuthController @Autowired constructor(private val userService: UserService
         }
 
         if (user == null) {
-            return ResponseEntity.badRequest().body(ErrorMessage("User not found"))
+            return ResponseEntity.badRequest().body(ErrorMessage("Wrong credentials!"))
         }
 
         if (!user.comparePassword(body.password)) {
-            return ResponseEntity.badRequest().body(ErrorMessage("invalid password!"))
+            return ResponseEntity.badRequest().body(ErrorMessage("Wrong credentials!"))
         }
 
         val jwt = Jwts.builder()
