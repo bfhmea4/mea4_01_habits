@@ -25,7 +25,7 @@ class HabitService(private val habitDAO: HabitDAO) {
             throw BadRequestException("Id must not be set")
         }
         if ((habitDTO.frequencyValue != null && habitDTO.frequency == null) || (habitDTO.frequencyValue == null && habitDTO.frequency != null)) {
-            throw BadRequestException("Frequency must be set if frequencyValue is set")
+            throw BadRequestException("Frequency and frequencyValue must be set together")
         }
         val newHabit = createHabitEntityFromDTO(habitDTO)
         habitDAO.save(newHabit)
@@ -53,6 +53,9 @@ class HabitService(private val habitDAO: HabitDAO) {
     fun updateHabitById(id: Long, habitDTO: HabitDTO) {
         if (habitDTO.id != id) {
             throw BadRequestException("Habit id in path and body do not match")
+        }
+        if ((habitDTO.frequencyValue != null && habitDTO.frequency == null) || (habitDTO.frequencyValue == null && habitDTO.frequency != null)) {
+            throw BadRequestException("Frequency and frequencyValue must be set together")
         }
         val currentHabit = habitDAO.findById(id).orElseThrow {
             EntityNotFoundException("Habit id = $id not found")
