@@ -1,11 +1,11 @@
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import Loading from '../../components/Loading'
-import Api from '../../config/Api'
-import { useLoadingContext } from '../../context/loadingContext'
-import { JournalEntry } from '../../lib/interfaces'
-import { JournalDashboard } from '../../components/journalEntry/JournalDashboard'
-import { JournalEntryCard } from '../../components/journalEntry/JournalEntryCard'
+import Loading from '../components/Loading'
+import Api from '../config/Api'
+import { useLoadingContext } from '../context/loadingContext'
+import { JournalEntry } from '../lib/interfaces'
+import { JournalDashboard } from '../components/journalEntry/JournalDashboard'
+import { JournalEntryCard } from '../components/journalEntry/JournalEntryCard'
 
 const Home: NextPage = () => {
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([])
@@ -31,6 +31,7 @@ const Home: NextPage = () => {
               journalEntries.sort((a: any, b: any) => {
                 return b.createdAt.getTime() - a.createdAt.getTime()
               })
+
               setJournalEntries(journalEntries)
             } catch (error) {
               console.log(error)

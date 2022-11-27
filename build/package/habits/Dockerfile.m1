@@ -1,0 +1,34 @@
+#################
+# Backend build #
+#################
+FROM maven:3.8-eclipse-temurin-17 as build
+
+WORKDIR /app
+COPY ./pom.xml ./pom.xml
+COPY ./src ./src
+
+RUN mvn dependency:go-offline -B
+RUN mvn package
+
+###################################
+# Production build for Macbook M1 #
+###################################
+FROM azul/zulu-openjdk-alpine:17-latest
+
+# alpine base instructions
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+RUN apk add --no-cache --virtual .timezone tzdata &&
+    cp /usr/share/zoneinfo/Europe/Zurich /etc/localtime &&
+    echo "Europe/Zurich" >/etc/timezone &&
+    apk del .timezone
+RUN apk add --no-cache tini curl jq
+RUN adduser -h /app -s /bin/sh -u 1001 app -D
+
+ENV JAVA_HOME=/opt/jdk \
+    PATH=${PATH}:/opt/jdk/bin
+
+USER app
+COPY --from=build --chown=app /app/target/habits-*.jar /app/habits.jar
+EXPOSE 8080
+ENTRYPOINT [ "tini", "--" ]
+CMD ["java", "-jar", "/app/habits.jar"]
