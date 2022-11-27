@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletResponse
 
 @RestController
 class AuthController @Autowired constructor(private val userService: UserService) {
-    @PostMapping("register")
+    @PostMapping("api/register")
     fun register(@RequestBody body: RegisterDTO): ResponseEntity<User> {
         val user = UserEntityBuilder.createUserEntityFromDTO(body)
         return ResponseEntity.ok(this.userService.save(user))
     }
 
-    @PostMapping("login")
+    @PostMapping("api/login")
     fun login(@RequestBody body: LoginDTO, response: HttpServletResponse): ResponseEntity<Any> {
         val user = if (body.email != null) {
             this.userService.findByEmail(body.email)
@@ -49,7 +49,7 @@ class AuthController @Autowired constructor(private val userService: UserService
         return ResponseEntity.ok(JwtToken(jwt))
     }
 
-    @GetMapping("user")
+    @GetMapping("api/user")
     fun user(@RequestHeader(value = "Authorization") token: String?): ResponseEntity<Any> {
         try {
             if (token == null) {

@@ -6,7 +6,7 @@ export interface StyledButtonProps {
   icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element
   iconAnimation?: boolean
   type?: StyledButtonType
-  onClick: () => void
+  onClick: any
   className?: string
   small?: boolean | undefined
 }

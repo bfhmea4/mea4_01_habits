@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useRef } from 'react'
+import { useUserContext } from '../../context/userContext'
 import { classNames } from '../../lib/design'
 import { JournalEntryForm } from '../journalEntry/JournalEntryForm'
 import { PopUpModal } from './modals/PopUpModal'
@@ -9,10 +10,16 @@ import { PopUpModal } from './modals/PopUpModal'
 export const Nav = () => {
   const createModalRef = useRef<any>(null)
 
+  const { user, loading }: any = useUserContext()
+
   const router = useRouter()
 
   const handleCreate = () => {
     createModalRef.current.open()
+  }
+
+  if (!user) {
+    return null
   }
 
   return (
