@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import { ToastContainer } from 'react-toastify'
 import { LoadingContextProvider } from '../context/loadingContext'
+import { UserContextProvider } from '../context/userContext'
 
 function MyApp({ Component, pageProps }: AppProps) {
   if (typeof window !== 'undefined') {
@@ -42,11 +43,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="apple-mobile-web-app-status-bar-style" content="default"></meta>
         <meta name="theme-color" content="#FFFFFF"></meta>
       </Head>
-      <LoadingContextProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </LoadingContextProvider>
+      <UserContextProvider>
+        <LoadingContextProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </LoadingContextProvider>
+      </UserContextProvider>
       <ToastContainer />
     </div>
   )

@@ -1,10 +1,14 @@
 import Image from 'next/image'
+import { useUserContext } from '../../context/userContext'
 
 export interface DashboardProps {
   children?: React.ReactNode
 }
 
 export const Dashboard = (props: DashboardProps) => {
+
+  const { user, loading }: any = useUserContext()
+
   return (
     <div className="max-w-xl">
       <div className="top-0 absolute sm:max-w-xl w-full">
@@ -21,7 +25,7 @@ export const Dashboard = (props: DashboardProps) => {
             }
           </h2>
           <h1 className="text-4xl font-medium">
-            Hello, <span className="text-primary">Mike</span>
+            Hello, <span className="text-primary">{(!loading && user) && user.firstName}</span>
           </h1>
         </div>
         <div className="absolute top-10 right-4 w-36 h-36">
