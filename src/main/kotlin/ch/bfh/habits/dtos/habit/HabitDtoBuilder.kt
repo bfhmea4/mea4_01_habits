@@ -11,7 +11,8 @@ class HabitDtoBuilder private constructor() {
                 title = habitEntity.title,
                 description = habitEntity.description,
                 createdAt = habitEntity.createdAt,
-                editedAt = habitEntity.editedAt
+                editedAt = habitEntity.editedAt,
+                frequency = habitEntity.frequency
             )
         }
     }

@@ -10,6 +10,7 @@ import javax.persistence.*
 class Habit (
     var title: String,
     var description: String,
+    var frequency: Long? = null,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
