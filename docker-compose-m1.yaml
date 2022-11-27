@@ -1,0 +1,47 @@
+version: '3.9'
+services:
+
+  backend:
+    build:
+      context: ./
+      dockerfile: ./build/package/habits/Dockerfile.m1
+    container_name: habits_backend
+    ports:
+      - "8080:8080"
+    networks:
+      - net
+    environment:
+      SPRING_DATASOURCE_PASSWORD: 'changeme'
+      SPRING_FLYWAY_PASSWORD: 'changeme'
+
+  # frontend:
+  #   build: ./ui
+  #   container_name: habits_frontend
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - net
+  #   environment:
+  #     ENV_API_URL: 'http://127.0.0.1:8080'
+
+  postgresql:
+    image: postgres:13-alpine
+    container_name: postgres
+    networks:
+      - net
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: 'habits'
+      POSTGRES_USER: 'habits'
+      POSTGRES_PASSWORD: 'changeme'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data: {}
+
+networks:
+  net:
+    driver_opts:
+      com.docker.network.bridge.name: habits
