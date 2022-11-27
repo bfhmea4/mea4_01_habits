@@ -21,42 +21,38 @@ export const JournalEntryForm = (props: Props) => {
 
   const [loading, setLoading] = useState<boolean>(true)
 
-  console.log(selectedHabit)
-
   useEffect(() => {
-    if (props.type === 'create') {
-      ; (async () => {
-        try {
-          const { data } = await Api.get('/habits')
+    ; (async () => {
+      try {
+        const { data } = await Api.get('/habits')
+        if (data.habits) {
+          // validate data.habits if its object of Habit[]
           if (data.habits) {
-            // validate data.habits if its object of Habit[]
-            if (data.habits) {
-              try {
-                const habits = data.habits.map((habit: Habit) => {
-                  return {
-                    ...habit,
-                    createdAt: new Date(habit.createdAt),
-                    editedAt: new Date(habit.editedAt),
-                  }
-                })
-                // sort habits by createdAt latest first
-                habits.sort((a: any, b: any) => {
-                  return b.createdAt.getTime() - a.createdAt.getTime()
-                })
-                setHabits(habits)
-              } catch (error) {
-                console.log(error)
-              }
+            try {
+              const habits = data.habits.map((habit: Habit) => {
+                return {
+                  ...habit,
+                  createdAt: new Date(habit.createdAt),
+                  editedAt: new Date(habit.editedAt),
+                }
+              })
+              // sort habits by createdAt latest first
+              habits.sort((a: any, b: any) => {
+                return b.createdAt.getTime() - a.createdAt.getTime()
+              })
+              setHabits(habits)
+            } catch (error) {
+              console.log(error)
             }
           }
-        } catch (error) {
-          console.log(error)
-        } finally {
-          setLoading(false)
         }
-      })()
-    }
-  }, [reload, props.type])
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [reload])
 
 
 
@@ -64,16 +60,8 @@ export const JournalEntryForm = (props: Props) => {
     if (props.type === 'create') {
       const description = document.getElementById('description') as HTMLInputElement
 
-      console.log(description.value)
-      console.log(selectedHabit)
-
-      if (selectedHabit?.value === '-1') {
-        Toast('Please select a habit', ToastType.warning)
-        return
-      }
-
       const body = {
-        description: description.value,
+        description: description?.value,
         habitId: selectedHabit?.value,
       }
 
@@ -94,7 +82,7 @@ export const JournalEntryForm = (props: Props) => {
       if (props.journalEntry) {
 
         const body = {
-          habitId: props.journalEntry.habit.id,
+          habitId: selectedHabit?.value ? selectedHabit?.value : props.journalEntry.habit.id,
           description: description.value,
         }
 
@@ -129,30 +117,26 @@ export const JournalEntryForm = (props: Props) => {
     <div className="">
       <h1 className="text-2xl font-medium">{props.type == "create" ? "Create Log" : "Edit Log"}</h1>
 
-      {
-        props.type === 'create' && (
-          <div className="mt-4">
-            <Select
-              label="Habit"
-              name="habit"
-              options={habits.map(habit => {
-                return {
-                  value: habit.id,
-                  text: habit.title,
-                }
-              })}
-              defaultValue={
-                {
-                  value: "-1",
-                  text: "Select Habit",
-                }
-              }
-              setSelectedValue={setSelectedHabit}
-              required
-            />
-          </div>
-        )
-      }
+      <div className="mt-4">
+        <Select
+          label="Habit"
+          name="habit"
+          options={habits.map(habit => {
+            return {
+              value: habit.id,
+              text: habit.title,
+            }
+          })}
+          defaultValue={
+            {
+              value: props.type === 'create' ? undefined : props.journalEntry?.habit?.id || undefined,
+              text: props.type === 'create' ? "No habit" : props.journalEntry?.habit?.title || "No habit",
+            }
+          }
+          setSelectedValue={setSelectedHabit}
+          required
+        />
+      </div>
 
       <PopUpModal ref={deleteModalRef}>
         <div className="flex flex-col justify-center">
