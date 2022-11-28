@@ -4,6 +4,6 @@ class RegisterDTO (
     val password: String,
     val email: String,
     val userName: String,
-    val firstName: String? = null,
+    val firstName: String,
     val lastName: String? = null
 )

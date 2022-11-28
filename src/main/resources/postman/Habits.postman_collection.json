@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"password\": \"test\",\n    \"email\": \"mail@test.com\",\n    \"userName\": \"test\"\n}",
+							"raw": "{\n    \"password\": \"test\",\n    \"email\": \"mail@test.com\",\n    \"userName\": \"test\",\n    \"firstName\": \"Test\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -24,11 +24,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/register",
+							"raw": "{{host}}/api/register",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"register"
 							]
 						}
@@ -50,11 +51,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/login",
+							"raw": "{{host}}/api/login",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"login"
 							]
 						}
@@ -69,7 +71,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJIYWJpdHMiLCJleHAiOjE2Njk0ODQyNjgsImlkIjoxLCJlbWFpbCI6Im1haWxAdGVzdC5jb20iLCJmaXJzdE5hbWUiOiIiLCJsYXN0TmFtZSI6IiJ9.xNNV4dM9D5Bz2IWhceHsDpY0ugfnImV9RjIj7KddpUthz8Yxkx5lt__v4WozVT4BVVm3GA2HMM8IVMik4VimAQ",
+									"value": "",
 									"type": "string"
 								}
 							]
@@ -77,11 +79,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/user",
+							"raw": "{{host}}/api/user",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
 								"user"
 							]
 						}
