@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.util.*
 
-
 @Component
 class TokenProvider {
     @Value("\${jwt.token.validity}")
@@ -17,6 +16,9 @@ class TokenProvider {
 
     @Value("\${jwt.signing.key}")
     var signingKey: String? = null
+
+    @Value("\${jwt.token.prefix}")
+    var tokenPrefix: String = ""
 
     fun extractUsername(token: String): String {
         return extractAllClaims(token).subject
@@ -27,7 +29,7 @@ class TokenProvider {
     }
 
     private fun extractAllClaims(token: String): Claims {
-        return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token).body
+        return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token.replace(tokenPrefix, "")).body
     }
 
     private fun isTokenExpired(token: String): Boolean {
@@ -38,7 +40,7 @@ class TokenProvider {
         return Jwts.builder()
             .setIssuer("Habits")
             .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(tokenValidity * 1000)) // 1 week
+            .setExpiration(Date(System.currentTimeMillis() + tokenValidity * 1000)) // 1 week
             .setSubject(userDetails.username)
             .addClaims(mapOf("id" to user.id))
             .addClaims(mapOf("email" to user.email))
@@ -47,7 +49,11 @@ class TokenProvider {
             .signWith(SignatureAlgorithm.HS512, signingKey).compact()
     }
 
-    fun validateToken(token: String, userDetails: UserDetails): Boolean {
+    fun validateToken(token: String?, userDetails: UserDetails): Boolean {
+        if (token.isNullOrEmpty()) {
+            return false
+        }
+
         val username = extractUsername(token)
         return username == userDetails.username && !isTokenExpired(token)
     }

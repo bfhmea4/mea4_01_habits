@@ -9,11 +9,9 @@ import ch.bfh.habits.entities.User
 import ch.bfh.habits.services.CustomUserDetailService
 import ch.bfh.habits.services.UserService
 import ch.bfh.habits.util.TokenProvider
-import io.jsonwebtoken.Jwts
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -36,8 +34,8 @@ class AuthController @Autowired constructor(
     fun login(@RequestBody body: LoginDTO, response: HttpServletResponse): ResponseEntity<Any> {
          try {
              authenticationManager.authenticate(UsernamePasswordAuthenticationToken(body.userName, body.password))
-         } catch (e: BadCredentialsException) {
-             throw Exception("Incorrect username or password")
+         } catch (e: Exception) {
+             return ResponseEntity.status(401).body(ErrorMessage("Invalid username or password"))
          }
 
         val userDetails = customUserDetailService.loadUserByUsername(body.userName)
@@ -47,17 +45,8 @@ class AuthController @Autowired constructor(
     }
 
     @GetMapping("api/user")
-    fun user(@RequestHeader(value = "Authorization") token: String?): ResponseEntity<Any> {
-        try {
-            if (token == null) {
-                return ResponseEntity.status(401).body(ErrorMessage("Unauthenticated"))
-            }
-
-            val body = Jwts.parser().setSigningKey("secret").parseClaimsJws(token.split(' ').last()).body
-
-            return ResponseEntity.ok(this.userService.getById((body["id"] as Int).toLong()))
-        } catch (e: Exception) {
-            return ResponseEntity.status(401).body(ErrorMessage("Unauthenticated"))
-        }
+    fun user(@RequestHeader(value = "Authorization") token: String): ResponseEntity<Any> {
+        val userName = tokenProvider.extractUsername(token)
+        return ResponseEntity.ok(this.userService.findByUserName(userName))
     }
 }

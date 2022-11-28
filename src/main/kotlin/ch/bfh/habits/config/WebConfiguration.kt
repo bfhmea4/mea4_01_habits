@@ -7,11 +7,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @EnableWebMvc
-class WebConfig : WebMvcConfigurer {
+class WebConfiguration : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOrigins("http://localhost:3000", "https://habits.gigu.io") //ToDo use env variable
+            .allowedOrigins("http://localhost:3000", "https://habits.gigu.io") // ToDo use env variable
             .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
     }
 }

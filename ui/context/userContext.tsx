@@ -30,9 +30,11 @@ export const UserContextProvider = ({ children }: Props) => {
         try {
           // @ts-ignore
           Api.defaults.headers.Authorization = 'Bearer ' + token
-          const { data: user } = await Api.get('/user')
-          if (user) {
-            setUser(user)
+          if (!user) {
+            const { data: user } = await Api.get('/user')
+            if (user) {
+              setUser(user)
+            }
           }
         } catch (error) {
           logoutUser(true)
@@ -58,7 +60,7 @@ export const UserContextProvider = ({ children }: Props) => {
       const { data: user } = await Api.get('/user')
       if (user) {
         setUser(user)
-        console.log('Logged in as ' + user.username)
+        console.log('Logged in as ' + user.userName)
       }
     }
     Cookies.set('token', data['token'], { secure: true, expires: 1 })
