@@ -51,9 +51,6 @@ class HabitService(private val habitDAO: HabitDAO) {
 
     @Transactional
     fun updateHabitById(id: Long, habitDTO: HabitDTO) {
-        if (habitDTO.id != id) {
-            throw BadRequestException("Habit id in path and body do not match")
-        }
         if ((habitDTO.frequencyValue != null && habitDTO.frequency == null) || (habitDTO.frequencyValue == null && habitDTO.frequency != null)) {
             throw BadRequestException("Frequency and frequencyValue must be set together")
         }

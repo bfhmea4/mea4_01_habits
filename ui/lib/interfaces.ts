@@ -7,6 +7,8 @@ export interface BaseRecord {
 export interface Habit extends BaseRecord {
   title: string
   description: string
+  frequency: string
+  frequencyValue: number
 }
 
 export interface JournalEntry extends BaseRecord {

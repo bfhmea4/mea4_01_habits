@@ -20,12 +20,16 @@ export const HabitForm = (props: Props) => {
   const handleSave = () => {
     const title = document.getElementById('title') as HTMLInputElement
     const description = document.getElementById('description') as HTMLInputElement
+    const frequency = document.getElementById('frequency') as HTMLInputElement
+    const frequencyValue = document.getElementById('frequencyValue') as HTMLInputElement
 
     if (props.type === 'create') {
       // Create habit
       const body = {
         title: title.value,
         description: description.value,
+        frequency: frequency.value,
+        frequencyValue: frequencyValue.value,
       }
 
       if (title.value === '') {
@@ -47,6 +51,8 @@ export const HabitForm = (props: Props) => {
       const body = {
         title: title.value,
         description: description.value,
+        frequency: frequency.value,
+        frequencyValue: frequencyValue.value,
       }
 
       if (title.value === '') {
@@ -54,8 +60,12 @@ export const HabitForm = (props: Props) => {
         return
       }
 
-      // if title.value is the same as props.habit.title, then don't update
-      if (title.value === props.habit?.title && description.value === props.habit?.description) {
+      // TODO: check frequencyValue
+      if (
+        title.value === props.habit?.title &&
+        description.value === props.habit?.description &&
+        frequency.value === props.habit?.frequency
+      ) {
         Toast('No changes made', ToastType.info)
         // close modal
         props.modalRef.current.close()
@@ -124,6 +134,22 @@ export const HabitForm = (props: Props) => {
           name="description"
           defaultValue={props.habit?.description}
           required={false}
+        />
+        <TextAreaField
+          label="Frequency (Optional)"
+          placeholder="Enter a frequency"
+          name="frequency"
+          defaultValue={props.habit?.frequency}
+          required={false}
+        />
+        <InputField
+          label="Frequency value (max. 2 numbers)"
+          placeholder="Enter a frequency value"
+          name="frequencyValue"
+          type="text"
+          defaultValue={props.habit?.frequencyValue}
+          maxlength={2}
+          required
         />
       </div>
 
