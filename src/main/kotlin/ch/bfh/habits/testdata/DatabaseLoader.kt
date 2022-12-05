@@ -28,9 +28,9 @@ class DatabaseLoader(
             user.password = "root"
             userDAO.save(user)
 
-            val habit1 = Habit("Meditation", "Meditate for 10 minutes")
-            val habit2 = Habit("Exercise", "Go for a run")
-            val habit3 = Habit("Reading", "Read a book")
+            val habit1 = Habit("Meditation", "Meditate for 10 minutes", userId = user.id ?: 1)
+            val habit2 = Habit("Exercise", "Go for a run", userId = user.id ?: 1)
+            val habit3 = Habit("Reading", "Read a book", userId = user.id ?: 1)
             habitDAO.saveAll(listOf(habit1, habit2, habit3))
 
             val journalEntry1 = JournalEntry("Read 50 pages", habit3)
