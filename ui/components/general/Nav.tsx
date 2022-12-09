@@ -1,23 +1,21 @@
-
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { useUserContext } from '../../context/userContext'
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import HomeIcon from '@mui/icons-material/Home';
-import DescriptionIcon from '@mui/icons-material/Description';
-import PersonIcon from '@mui/icons-material/Person';
-import { PopUpModal } from './modals/PopUpModal';
-import { JournalEntryForm } from '../journalEntry/JournalEntryForm';
+import BottomNavigation from '@mui/material/BottomNavigation'
+import BottomNavigationAction from '@mui/material/BottomNavigationAction'
+import HomeIcon from '@mui/icons-material/Home'
+import DescriptionIcon from '@mui/icons-material/Description'
+import PersonIcon from '@mui/icons-material/Person'
+import { PopUpModal } from './modals/PopUpModal'
+import { JournalEntryForm } from '../journalEntry/JournalEntryForm'
 
 export const Nav = () => {
   const createModalRef = useRef<any>(null)
 
   const router = useRouter()
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0)
 
   const { user, loading }: any = useUserContext()
-
 
   useEffect(() => {
     if (router.pathname === '/') {
@@ -34,7 +32,7 @@ export const Nav = () => {
   }
 
   return (
-    <div className='fixed w-full bottom-0'>
+    <div className="fixed w-full bottom-0">
       <PopUpModal ref={createModalRef}>
         <JournalEntryForm modalRef={createModalRef} type="create" />
       </PopUpModal>
@@ -43,22 +41,12 @@ export const Nav = () => {
         showLabels
         value={value}
         onChange={(event, newValue) => {
-          setValue(newValue);
+          setValue(newValue)
         }}
       >
-        <BottomNavigationAction
-          LinkComponent={'a'}
-          href='/'
-          label="Home"
-          icon={<HomeIcon />}
-        />
+        <BottomNavigationAction LinkComponent={'a'} href="/" label="Home" icon={<HomeIcon />} />
         {router.pathname !== '/journal' ? (
-          <BottomNavigationAction
-            LinkComponent={'a'}
-            href='/journal'
-            label="Journal"
-            icon={<DescriptionIcon />}
-          />
+          <BottomNavigationAction LinkComponent={'a'} href="/journal" label="Journal" icon={<DescriptionIcon />} />
         ) : (
           <BottomNavigationAction
             onClick={() => createModalRef.current.open()}
@@ -66,12 +54,7 @@ export const Nav = () => {
             icon={<DescriptionIcon />}
           />
         )}
-        <BottomNavigationAction
-          LinkComponent={'a'}
-          href='/profile'
-          label="Profile"
-          icon={<PersonIcon />}
-        />
+        <BottomNavigationAction LinkComponent={'a'} href="/profile" label="Profile" icon={<PersonIcon />} />
       </BottomNavigation>
     </div>
   )

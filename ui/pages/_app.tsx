@@ -33,10 +33,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#B27092'
-      }
-    }
-  });
+        main: '#B27092',
+      },
+    },
+  })
 
   return (
     <div>
@@ -51,10 +51,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="apple-mobile-web-app-capable" content="yes"></meta>
         <meta name="apple-mobile-web-app-status-bar-style" content="default"></meta>
         <meta name="theme-color" content="#FFFFFF"></meta>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
       </Head>
       <UserContextProvider>
         <LoadingContextProvider>
