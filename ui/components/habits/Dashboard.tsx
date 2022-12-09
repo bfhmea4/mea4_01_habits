@@ -38,7 +38,7 @@ export const Dashboard = (props: DashboardProps) => {
         </div>
       </div>
       <h2 className="text-2xl font-medium px-6 absolute top-36">Your habits</h2>
-      <div className="px-6 fixed w-full top-44 bottom-6 overflow-auto">{props.children}</div>
+      <div className="px-6 fixed w-full top-44 bottom-12 overflow-auto">{props.children}</div>
     </div>
   )
 }
