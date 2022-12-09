@@ -43,7 +43,7 @@ export const PopUpModal = forwardRef(({ children }: any, ref) => {
               leaveFrom="opacity-100 translate-y-0scale-100"
               leaveTo="opacity-0 translate-y-0 scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all my-8 w-full max-w-lg p-6">
+              <Dialog.Panel className="relative transform rounded-lg bg-white text-left shadow-xl transition-all my-8 w-full max-w-lg p-6">
                 <XMarkIcon className="absolute top-2 right-2 w-6 h-6 cursor-pointer" onClick={() => setOpen(false)} />
                 {children}
               </Dialog.Panel>

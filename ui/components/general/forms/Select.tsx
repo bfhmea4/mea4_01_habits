@@ -13,7 +13,7 @@ export interface SelectProps {
   name: string
   options: SelectOptions[]
   onChange?: any
-  required: boolean
+  required?: boolean
   value?: any
   defaultValue?: any
   disabled?: boolean

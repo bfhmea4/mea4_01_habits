@@ -36,3 +36,7 @@ const padTo2Digits = (num: number): string => {
 export const formatDate = (date: Date): string => {
   return [padTo2Digits(date.getDate()), padTo2Digits(date.getMonth() + 1), date.getFullYear()].join('.')
 }
+
+export const checkIfStringIsNumber = (str: string): boolean => {
+  return !isNaN(Number(str)) && str !== ''
+}
