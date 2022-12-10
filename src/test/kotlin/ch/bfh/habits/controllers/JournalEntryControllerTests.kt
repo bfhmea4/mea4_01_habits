@@ -1,8 +1,7 @@
 package ch.bfh.habits.controllers
 
-import ch.bfh.habits.dtos.journalentry.JournalEntryDTO
-import ch.bfh.habits.dtos.journalentry.JournalEntryListDTO
 import ch.bfh.habits.entities.Habit
+import ch.bfh.habits.entities.JournalEntry
 import ch.bfh.habits.entities.User
 import ch.bfh.habits.services.JournalEntryService
 import ch.bfh.habits.services.UserService
@@ -63,16 +62,16 @@ internal class JournalEntryControllerTests {
         val token = "Bearer token"
 
         val habit = Habit("Gym", "Go to the gym",1, userId = user.id!!)
-        val journalEntry = JournalEntryDTO("Done", habit.id, habit, user.id)
+        val journalEntry = JournalEntry("Done", habit, user.id!!)
 
 
         every { userService.loadUserByUsername("testUser") } returns userDetails
         every { tokenProvider.validateToken(token, userDetails) } returns true
-        every { service.getAllJournalEntries(1) } returns JournalEntryListDTO(arrayListOf(journalEntry))
+        every { service.getAllJournalEntries(1) } returns arrayListOf(journalEntry)
 
         val result = mockMvc.perform(get("/api/journalEntries")
             .header("Authorization", token)).andExpect(status().isOk).andReturn()
 
-        assertEquals(mapper.writeValueAsString(JournalEntryListDTO(arrayListOf(journalEntry))), result.response.contentAsString)
+        assertEquals(mapper.writeValueAsString(arrayListOf(journalEntry)), result.response.contentAsString)
     }
 }

@@ -1,8 +1,7 @@
 package ch.bfh.habits.journalentry.impl
 
-import ch.bfh.habits.dtos.ObjectIdDTO
 import ch.bfh.habits.dtos.journalentry.JournalEntryDTO
-import ch.bfh.habits.dtos.journalentry.JournalEntryListDTO
+import ch.bfh.habits.entities.JournalEntry
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.journalentry.JournalEntryCrudActor
 import org.assertj.core.api.Assertions
@@ -14,40 +13,40 @@ import org.springframework.test.web.reactive.server.returnResult
 import reactor.core.publisher.Mono
 
 class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient) : JournalEntryCrudActor {
-    override fun getsAllJournalEntriesForHabit(habitId: Long): JournalEntryListDTO {
+    override fun getsAllJournalEntriesForHabit(habitId: Long): List<JournalEntry> {
         val result = webClient.get()
             .uri("/api/habit/$habitId/journal_entries")
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk
-            .expectBody<JournalEntryListDTO>()
+            .expectBody<List<JournalEntry>>()
             .returnResult()
 
         return result.responseBody!!
     }
 
-    override fun getsAllJournalEntries(): JournalEntryListDTO {
+    override fun getsAllJournalEntries(): List<JournalEntry> {
         val result = webClient.get()
             .uri("/api/journal_entries")
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk
-            .expectBody<JournalEntryListDTO>()
+            .expectBody<List<JournalEntry>>()
             .returnResult()
 
         return result.responseBody!!
     }
 
-    override fun createsJournalEntry(journalEntryDTO: JournalEntryDTO): Long {
+    override fun createsJournalEntry(journalEntryDTO: JournalEntryDTO): JournalEntry {
         val result = webClient.post()
             .uri("/api/journal_entry")
             .body(Mono.just(journalEntryDTO), JournalEntryDTO::class.java)
             .exchange()
             .expectStatus().isCreated
-            .expectBody<ObjectIdDTO>()
-            .returnResult().responseBody
+            .expectBody<JournalEntry>()
+            .returnResult()
 
-        return result!!.id
+        return result.responseBody!!
     }
 
     override fun seesJournalEntryExists(journalEntryId: Long): Boolean {
@@ -59,12 +58,12 @@ class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient) 
             .is2xxSuccessful
     }
 
-    override fun getsJournalEntry(journalEntryId: Long): JournalEntryDTO {
+    override fun getsJournalEntry(journalEntryId: Long): JournalEntry {
         val result = webClient.get()
             .uri("/api/journal_entry/$journalEntryId")
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
-            .expectBody<JournalEntryDTO>()
+            .expectBody<JournalEntry>()
             .returnResult()
 
         if (result.status == HttpStatus.NOT_FOUND)
@@ -86,17 +85,18 @@ class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient) 
         Assertions.assertThat(result.status).isEqualTo(HttpStatus.NO_CONTENT)
     }
 
-    override fun updatesJournalEntry(journalEntryId: Long, journalEntryDTO: JournalEntryDTO) {
+    override fun updatesJournalEntry(journalEntryId: Long, journalEntryDTO: JournalEntryDTO): JournalEntry {
         val result = webClient.put()
             .uri("/api/journal_entry/$journalEntryId")
             .body(Mono.just(journalEntryDTO), JournalEntryDTO::class.java)
             .exchange()
-            .expectBody()
+            .expectBody<JournalEntry>()
             .returnResult()
 
         if (result.status == HttpStatus.NOT_FOUND)
             throw EntityNotFoundException("Journal Entry id = $journalEntryId")
 
         Assertions.assertThat(result.status.is2xxSuccessful).isTrue
+        return result.responseBody!!
     }
 }

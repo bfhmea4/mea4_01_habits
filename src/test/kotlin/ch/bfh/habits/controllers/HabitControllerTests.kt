@@ -1,7 +1,6 @@
 package ch.bfh.habits.controllers
 
-import ch.bfh.habits.dtos.habit.HabitDTO
-import ch.bfh.habits.dtos.habit.HabitListDTO
+import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.services.HabitService
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.every
@@ -42,16 +41,16 @@ internal class HabitControllerTests {
 
     @Test
     fun controller_invokes_getAllHabits_function() {
-        val habit = HabitDTO("Gym", "Go to the gym",1)
+        val habit = Habit("Gym", "Go to the gym",1, userId = 1)
 
-        every { service.getAllHabits(1) } returns HabitListDTO(arrayListOf(habit))
+        every { service.getAllHabits(1) } returns arrayListOf(habit)
 
         val result = mockMvc.perform(get("/api/habits"))
             .andExpect(status().isOk)
             .andDo(print())
             .andReturn()
 
-        assertEquals(mapper.writeValueAsString(HabitListDTO(arrayListOf(habit))), result.response.contentAsString)
+        assertEquals(mapper.writeValueAsString(arrayListOf(habit)), result.response.contentAsString)
         verify { service.getAllHabits(1) }
     }
 }

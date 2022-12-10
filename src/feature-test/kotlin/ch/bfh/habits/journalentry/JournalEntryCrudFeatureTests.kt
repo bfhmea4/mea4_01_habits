@@ -2,7 +2,7 @@ package ch.bfh.habits.journalentry
 
 import ch.bfh.habits.dtos.habit.HabitDTO
 import ch.bfh.habits.dtos.journalentry.JournalEntryDTO
-import ch.bfh.habits.dtos.journalentry.JournalEntryListDTO
+import ch.bfh.habits.entities.JournalEntry
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.habit.HabitCrudActor
 import org.assertj.core.api.Assertions.assertThat
@@ -32,53 +32,52 @@ class JournalEntryCrudFeatureTests {
     inner class GivenNoJournalEntriesExists {
         @Test
         fun `get an empty list for get all`() {
-            assertThat(journalEntryActor.getsAllJournalEntries()).isEqualTo(JournalEntryListDTO(arrayListOf()))
+            assertThat(journalEntryActor.getsAllJournalEntries()).isEqualTo(arrayListOf<JournalEntry>())
         }
     }
 
     @Nested
     @DisplayName("Given we have created a journal entry THEN we ...")
     inner class GivenNewJournalEntryCreated {
-        private var habitId = habitActor.createsHabit(createHabitDTO("Gym", "Go to the gym"))
-        private var journalEntryId = journalEntryActor.createsJournalEntry(createJournalEntryDTO("Done", habitId))
+        private var habit = habitActor.createsHabit(createHabitDTO("Gym", "Go to the gym"))
+        private var journalEntry = journalEntryActor.createsJournalEntry(createJournalEntryDTO("Done", habit.id!!))
 
         @Test
         fun `can find it amongst all journal entries`() {
             // when
-            journalEntryActor.createsJournalEntry(createJournalEntryDTO("Done again", habitId))
-            val allJournalEntries = journalEntryActor.getsAllJournalEntries().journalEntries
+            journalEntryActor.createsJournalEntry(createJournalEntryDTO("Done again", habit.id!!))
+            val allJournalEntries = journalEntryActor.getsAllJournalEntries()
 
             // then
             assertThat(allJournalEntries.size).isGreaterThan(1)
-            assertThat(allJournalEntries.filter { i -> i.id == journalEntryId }).isNotEmpty
+            assertThat(allJournalEntries.filter { i -> i.id == journalEntry.id }).isNotEmpty
         }
 
         @Test
         fun `can find it`() {
-            assertThat(journalEntryActor.seesJournalEntryExists(journalEntryId)).isTrue
+            assertThat(journalEntryActor.seesJournalEntryExists(journalEntry.id!!)).isTrue
         }
 
         @Test
         fun `can get it`() {
-            assertThat(journalEntryActor.getsJournalEntry(journalEntryId).id).isEqualTo(journalEntryId)
+            assertThat(journalEntryActor.getsJournalEntry(journalEntry.id!!).id).isEqualTo(journalEntry.id!!)
         }
 
         @Test
         fun `can delete it`() {
-            journalEntryActor.deletesJournalEntry(journalEntryId)
-            assertThat(journalEntryActor.seesJournalEntryExists(journalEntryId)).isFalse
+            journalEntryActor.deletesJournalEntry(journalEntry.id!!)
+            assertThat(journalEntryActor.seesJournalEntryExists(journalEntry.id!!)).isFalse
         }
 
         @Test
         fun `can update it`() {
             // given
-            val originalJournalEntry = journalEntryActor.getsJournalEntry(journalEntryId)
+            val newJournalEntry = createJournalEntryDTO("Done again", habit.id!!)
             // when
-            // ToDo also check adding/removing/changing habit reference
-            journalEntryActor.updatesJournalEntry(journalEntryId, originalJournalEntry.copy(description = "Done_Fixed"))
+            journalEntryActor.updatesJournalEntry(journalEntry.id!!, newJournalEntry)
             // then
-            val updatedJournalEntry = journalEntryActor.getsJournalEntry(journalEntryId)
-            assertThat(updatedJournalEntry.description).isEqualTo("Done_Fixed")
+            val updatedJournalEntry = journalEntryActor.getsJournalEntry(journalEntry.id!!)
+            assertThat(updatedJournalEntry.description).isEqualTo("Done again")
         }
     }
 
