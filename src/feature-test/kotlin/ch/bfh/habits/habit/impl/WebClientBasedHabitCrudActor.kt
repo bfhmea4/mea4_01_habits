@@ -1,8 +1,7 @@
 package ch.bfh.habits.habit.impl
 
-import ch.bfh.habits.dtos.ObjectIdDTO
 import ch.bfh.habits.dtos.habit.HabitDTO
-import ch.bfh.habits.dtos.habit.HabitListDTO
+import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.habit.HabitCrudActor
@@ -15,28 +14,28 @@ import org.springframework.test.web.reactive.server.returnResult
 import reactor.core.publisher.Mono
 
 class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : HabitCrudActor {
-    override fun getsAllHabits(): HabitListDTO {
+    override fun getsAllHabits(): List<Habit> {
         val result = webClient.get()
             .uri("/api/habits/")
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk
-            .expectBody<HabitListDTO>()
+            .expectBody<List<Habit>>()
             .returnResult()
 
         return result.responseBody!!
     }
 
-    override fun createsHabit(habitDTO: HabitDTO): Long {
+    override fun createsHabit(habitDTO: HabitDTO): Habit {
         val result = webClient.post()
             .uri("/api/habit")
             .body(Mono.just(habitDTO), HabitDTO::class.java)
             .exchange()
             .expectStatus().isCreated
-            .expectBody<ObjectIdDTO>()
-            .returnResult().responseBody
+            .expectBody<Habit>()
+            .returnResult()
 
-        return result!!.id
+        return result.responseBody!!
     }
 
     override fun seesHabitExists(habitId: Long): Boolean {
@@ -48,12 +47,12 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
             .is2xxSuccessful
     }
 
-    override fun getsHabit(habitId: Long): HabitDTO {
+    override fun getsHabit(habitId: Long): Habit {
         val result = webClient.get()
             .uri("/api/habit/$habitId")
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
-            .expectBody<HabitDTO>()
+            .expectBody<Habit>()
             .returnResult()
 
         if (result.status == HttpStatus.NOT_FOUND)
@@ -75,12 +74,12 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
         Assertions.assertThat(result.status).isEqualTo(HttpStatus.NO_CONTENT)
     }
 
-    override fun updatesHabit(habitId: Long, habitDTO: HabitDTO) {
+    override fun updatesHabit(habitId: Long, habitDTO: HabitDTO): Habit {
         val result = webClient.put()
             .uri("/api/habit/$habitId")
             .body(Mono.just(habitDTO), HabitDTO::class.java)
             .exchange()
-            .expectBody()
+            .expectBody<Habit>()
             .returnResult()
 
         if (result.status == HttpStatus.NOT_FOUND)
@@ -89,5 +88,6 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
             throw BadRequestException("Habit id = $habitId")
 
         Assertions.assertThat(result.status.is2xxSuccessful).isTrue
+        return result.responseBody!!
     }
 }

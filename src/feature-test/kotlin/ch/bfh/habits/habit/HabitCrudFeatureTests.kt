@@ -1,7 +1,7 @@
 package ch.bfh.habits.habit
 
 import ch.bfh.habits.dtos.habit.HabitDTO
-import ch.bfh.habits.dtos.habit.HabitListDTO
+import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThat
@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
-
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -28,51 +27,52 @@ class HabitCrudFeatureTests {
     inner class GivenNoHabitExists {
         @Test
         fun `get an empty list for get all`() {
-            assertThat(habitActor.getsAllHabits()).isEqualTo(HabitListDTO(arrayListOf()))
+            assertThat(habitActor.getsAllHabits()).isEqualTo(arrayListOf<Habit>())
         }
     }
 
     @Nested
     @DisplayName("Given we have created a habit THEN we ...")
     inner class GivenNewHabitCreated {
-        private var habitId = habitActor.createsHabit(createHabitDTO())
+        private var habit = habitActor.createsHabit(createHabitDTO())
 
         @Test
         fun `can find it amongst all habits`() {
             // when
             habitActor.createsHabit(createHabitDTO("Running", "Go for a run"))
-            val allHabits = habitActor.getsAllHabits().habits
+            val allHabits = habitActor.getsAllHabits()
 
             // then
             assertThat(allHabits.size).isGreaterThan(1)
-            assertThat(allHabits.filter { i -> i.id == habitId }).isNotEmpty
+            assertThat(allHabits.filter { i -> i.id == habit.id }).isNotEmpty
         }
 
         @Test
         fun `can find it`() {
-            assertThat(habitActor.seesHabitExists(habitId)).isTrue
+            assertThat(habitActor.seesHabitExists(habit.id!!)).isTrue
         }
 
         @Test
         fun `can get it`() {
-            assertThat(habitActor.getsHabit(habitId).id).isEqualTo(habitId)
+            assertThat(habitActor.getsHabit(habit.id!!).id).isEqualTo(habit.id)
         }
 
         @Test
         fun `can delete it`() {
-            habitActor.deletesHabit(habitId)
-            assertThat(habitActor.seesHabitExists(habitId)).isFalse
+            habitActor.deletesHabit(habit.id!!)
+            assertThat(habitActor.seesHabitExists(habit.id!!)).isFalse
         }
 
         @Test
         fun `can update it`() {
             // given
-            val originalHabit = habitActor.getsHabit(habitId)
+            val newHabit = createHabitDTO("New", "New")
             // when
-            habitActor.updatesHabit(habitId, originalHabit.copy(title = "Gym_Old"))
+            habitActor.updatesHabit(habit.id!!, newHabit)
             // then
-            val updatedHabit = habitActor.getsHabit(habitId)
-            assertThat(updatedHabit.title).isEqualTo("Gym_Old")
+            val updatedHabit = habitActor.getsHabit(habit.id!!)
+            assertThat(updatedHabit.title).isEqualTo("New")
+            assertThat(updatedHabit.description).isEqualTo("New")
         }
     }
 
@@ -110,11 +110,10 @@ class HabitCrudFeatureTests {
         @Test
         fun `update throws not found`() {
             assertThrows<EntityNotFoundException> {
-                habitActor.updatesHabit(nonExistingHabitId, createHabitDTO2())
+                habitActor.updatesHabit(nonExistingHabitId, createHabitDTO())
             }
         }
     }
 
     private fun createHabitDTO(title: String = "Gym", description: String = "Go to the gym") = HabitDTO(title = title, description = description)
-    private fun createHabitDTO2(id: Long = -1L, title: String = "Gym", description: String = "Go to the gym") = HabitDTO(id = id, title = title, description = description)
 }
