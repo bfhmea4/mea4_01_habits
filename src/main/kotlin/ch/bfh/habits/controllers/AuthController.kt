@@ -6,7 +6,6 @@ import ch.bfh.habits.dtos.user.LoginDTO
 import ch.bfh.habits.dtos.user.RegisterDTO
 import ch.bfh.habits.dtos.user.UserEntityBuilder
 import ch.bfh.habits.entities.User
-import ch.bfh.habits.services.CustomUserDetailService
 import ch.bfh.habits.services.UserService
 import ch.bfh.habits.util.TokenProvider
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +21,6 @@ class AuthController @Autowired constructor(
         private val authenticationManager: AuthenticationManager,
         private val tokenProvider: TokenProvider,
         private val userService: UserService,
-        private val customUserDetailService: CustomUserDetailService
     ) {
     @PostMapping("api/register")
     fun register(@RequestBody body: RegisterDTO): ResponseEntity<User> {
@@ -38,7 +36,7 @@ class AuthController @Autowired constructor(
              return ResponseEntity.status(401).body(ErrorMessage("Invalid username or password"))
          }
 
-        val userDetails = customUserDetailService.loadUserByUsername(body.userName)
+        val userDetails = userService.loadUserByUsername(body.userName)
         val jwt = tokenProvider.generateToken(userDetails, this.userService.findByUserName(body.userName)!!)
 
         return ResponseEntity.ok(JwtToken(jwt))

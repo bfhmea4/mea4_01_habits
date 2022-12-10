@@ -24,6 +24,10 @@ class TokenProvider {
         return extractAllClaims(token).subject
     }
 
+    fun extractId(token: String): Long {
+        return extractAllClaims(token).get("id", Integer::class.java).toLong()
+    }
+
     fun extractExpiration(token: String): Date {
         return extractAllClaims(token).expiration
     }

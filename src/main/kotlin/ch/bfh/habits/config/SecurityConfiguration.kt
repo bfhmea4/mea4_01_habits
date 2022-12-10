@@ -4,6 +4,7 @@ import ch.bfh.habits.filters.JwtRequestFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
@@ -13,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
@@ -24,7 +26,7 @@ class SecurityConfiguration(@Autowired private val jwtRequestFilter: JwtRequestF
         http.
             authorizeRequests { authorizeRequests ->
                 authorizeRequests
-                    .antMatchers("/api/register", "/api/login").permitAll()
+                    .antMatchers("/api/register", "/api/login", "/api/docs/**", "/api/swagger-ui/**").permitAll()
                     .anyRequest().authenticated()
                     .and().sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -32,6 +34,7 @@ class SecurityConfiguration(@Autowired private val jwtRequestFilter: JwtRequestF
             .csrf().disable()
             .cors(Customizer.withDefaults())
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .exceptionHandling().authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
         return http.build()
     }
 

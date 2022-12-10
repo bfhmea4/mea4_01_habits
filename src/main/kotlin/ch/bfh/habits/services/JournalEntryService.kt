@@ -5,7 +5,6 @@ import ch.bfh.habits.dtos.journalentry.JournalEntryDTO
 import ch.bfh.habits.dtos.journalentry.JournalEntryDtoBuilder
 import ch.bfh.habits.dtos.journalentry.JournalEntryEntityBuilder
 import ch.bfh.habits.dtos.journalentry.JournalEntryListDTO
-import ch.bfh.habits.entities.JournalEntry
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.repositories.HabitDAO
 import ch.bfh.habits.repositories.JournalEntryDAO
@@ -16,26 +15,22 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class JournalEntryService(private val journalEntryDAO: JournalEntryDAO, private val habitDAO: HabitDAO) {
     @Transactional
-    fun getAllJournalEntriesForHabit(id: Long): JournalEntryListDTO {
+    fun getAllJournalEntriesForHabit(id: Long, userId: Long): JournalEntryListDTO {
         val journalEntries =  ArrayList<JournalEntryDTO>()
-        journalEntryDAO.findAll().forEach { i ->
-            if (i.habit?.id == id) {
-                journalEntries.add(createJournalEntryDtoFromEntity(i))
-            }
-        }
+        journalEntryDAO.findAllByHabitIdAndUserId(id, userId).forEach { i -> journalEntries.add(JournalEntryDtoBuilder.createJournalEntryDtoFromEntity(i))}
         return JournalEntryListDTO(journalEntries = journalEntries)
     }
 
     @Transactional
-    fun getAllJournalEntries(): JournalEntryListDTO {
+    fun getAllJournalEntries(userId: Long): JournalEntryListDTO {
         val journalEntries =  ArrayList<JournalEntryDTO>()
-        journalEntryDAO.findAll().forEach { i -> journalEntries.add(createJournalEntryDtoFromEntity(i))}
+        journalEntryDAO.findAllByUserId(userId).forEach { i -> journalEntries.add(JournalEntryDtoBuilder.createJournalEntryDtoFromEntity(i))}
         return JournalEntryListDTO(journalEntries = journalEntries)
     }
 
     @Transactional
-    fun newJournalEntry(journalEntryDTO: JournalEntryDTO): ObjectIdDTO {
-        val newJournalEntry = createJournalEntryEntityFromDTO(journalEntryDTO)
+    fun newJournalEntry(journalEntryDTO: JournalEntryDTO, userId: Long): ObjectIdDTO {
+        val newJournalEntry = JournalEntryEntityBuilder.createJournalEntryEntityFromDTO(journalEntryDTO, userId)
 
         // ToDO Do we probably need two DTOs. One as input and one as output
         // Is there a better way. Using the HabitService somehow
@@ -51,35 +46,29 @@ class JournalEntryService(private val journalEntryDAO: JournalEntryDAO, private 
     }
 
     @Transactional
-    fun getJournalEntryById(id: Long): JournalEntryDTO {
-        val journalEntry = journalEntryDAO.findById(id).orElseThrow {
-            EntityNotFoundException("Journal Entry id = $id not found")
-        }
-        return createJournalEntryDtoFromEntity(journalEntry)
+    fun getJournalEntryById(id: Long, userId: Long): JournalEntryDTO {
+        val journalEntry = journalEntryDAO.findByUserIdAndId(userId, id) ?: throw EntityNotFoundException("Journal Entry not found or not owned by user")
+        return JournalEntryDtoBuilder.createJournalEntryDtoFromEntity(journalEntry)
     }
 
     @Transactional
-    fun deleteJournalEntryById(id: Long) {
+    fun deleteJournalEntryById(id: Long, userId: Long) {
         try {
-            journalEntryDAO.deleteById(id)
+            journalEntryDAO.deleteByIdAndUserId(id, userId)
         } catch (e: EmptyResultDataAccessException) {
-            throw EntityNotFoundException("Journal Entry id = $id not found")
+            throw EntityNotFoundException("Journal Entry not found or not owned by user")
         }
     }
 
     @Transactional
-    fun updateJournalEntryById(id: Long, journalEntryDTO: JournalEntryDTO) {
-        val currentJournalEntry = journalEntryDAO.findById(id).orElseThrow {
-            EntityNotFoundException("Journal Entry id = $id not found")
-        }
+    fun updateJournalEntryById(id: Long, journalEntryDTO: JournalEntryDTO, userId: Long) {
+        val currentJournalEntry = journalEntryDAO.findByUserIdAndId(userId, id) ?: throw EntityNotFoundException("Journal Entry not found or not owned by user")
 
         if (currentJournalEntry.habit?.id != journalEntryDTO.habitId) {
             val habitId = if (journalEntryDTO.habitId != null) journalEntryDTO.habitId else null
 
             if (habitId != null) {
-                val habit = habitDAO.findById(habitId).orElseThrow {
-                    EntityNotFoundException("Habit id = $habitId not found")
-                }
+                val habit = habitDAO.findByUserIdAndId(userId, id) ?: throw EntityNotFoundException("Habit not found or not owned by user")
                 currentJournalEntry.habit = habit
             } else {
                 currentJournalEntry.habit = null
@@ -87,12 +76,5 @@ class JournalEntryService(private val journalEntryDAO: JournalEntryDAO, private 
         }
 
         JournalEntryEntityBuilder.applyJournalEntryDtoToEntity(journalEntryDTO, currentJournalEntry)
-        journalEntryDAO.save(currentJournalEntry)
     }
-
-    private fun createJournalEntryDtoFromEntity(journalEntry: JournalEntry) =
-        JournalEntryDtoBuilder.createJournalEntryDtoFromEntity(journalEntry)
-
-    private fun createJournalEntryEntityFromDTO(journalEntryDTO: JournalEntryDTO): JournalEntry =
-        JournalEntryEntityBuilder.createJournalEntryEntityFromDTO(journalEntryDTO)
 }

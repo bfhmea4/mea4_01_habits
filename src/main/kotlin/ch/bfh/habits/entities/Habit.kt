@@ -22,10 +22,10 @@ class Habit (
     @OneToMany(mappedBy = "habit", cascade = [CascadeType.PERSIST])
     @JsonIgnore
     var journalEntries: MutableList<JournalEntry> = mutableListOf(),
-
     @Enumerated(EnumType.STRING)
     var frequency: Frequency? = null,
     var frequencyValue: Long? = null,
+    var userId: Long
 ) {
     @PreRemove
     private fun preRemove() {
