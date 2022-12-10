@@ -95,7 +95,8 @@ export const HabitForm = (props: Props) => {
       if (
         title.value === props.habit?.title &&
         description.value === props.habit?.description &&
-        selectedFrequency.value === props.habit?.frequency
+        selectedFrequency.value === props.habit?.frequency &&
+        Number(frequencyValue.value) === props.habit?.frequencyValue
       ) {
         Toast('No changes made', ToastType.info)
         // close modal
@@ -191,12 +192,12 @@ export const HabitForm = (props: Props) => {
         {selectedFrequency.value !== FrequencyType.NONE && (
           <div>
             <InputField
-              label="Frequency value (max. 2 numbers)"
+              label="Frequency value (max. 3 numbers)"
               placeholder="Enter a frequency value"
               name="frequencyValue"
               type="text"
               defaultValue={props.habit?.frequencyValue}
-              maxlength={2}
+              maxlength={3}
               required
             />
           </div>
