@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "7be7142b-13a1-4011-8f4c-0483c58d2744",
 		"name": "Habits",
+		"description": "Run the Login request first to get a valid JWT token.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1455623"
 	},
@@ -12,6 +13,9 @@
 				{
 					"name": "Register",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -38,7 +42,31 @@
 				},
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"pm.collectionVariables.set(\"token\", jsonResponse.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -66,16 +94,6 @@
 				{
 					"name": "Show user",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -94,256 +112,303 @@
 			]
 		},
 		{
-			"name": "Create Habit",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"title\": \"Gym\",\n    \"description\": \"Go to the Gym more often\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Habits",
+			"item": [
+				{
+					"name": "Create Habit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Gym\",\n    \"description\": \"Go to the Gym more often\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/habit/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"habit",
+								""
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/api/habit/",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"habit",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "List all Habits",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/habits/",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"habits",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Show Habit",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/habit/1",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"habit",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Habit",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"title\": \"Go to the Gym\",\n    \"description\": \"\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "List all Habits",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/habits/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"habits",
+								""
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/api/habit/1",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"habit",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Habit",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/habit/1",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"habit",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Journal Entry",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"description\": \"Done\",\n    \"habitId\": 1\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Show Habit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/habit/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"habit",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/api/journal_entry",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"journal_entry"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "List all Journal Entries",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/journal_entries",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"journal_entries"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Show Journal Entry",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/journal_entry/1",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"journal_entry",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Journal Entry (Remove Habit)",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"description\": \"Fixed\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Update Habit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Go to the Gym\",\n    \"description\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/habit/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"habit",
+								"1"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/api/journal_entry/1",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"journal_entry",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Journal Entry (Add Habit)",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"description\": \"Fixed\",\n    \"habitId\": 1\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Delete Habit",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/habit/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"habit",
+								"1"
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "{{host}}/api/journal_entry/1",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"journal_entry",
-						"1"
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Delete Journal Entry",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{host}}/api/journal_entry/1",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"journal_entry",
-						"1"
-					]
+			"name": "Journal Entries",
+			"item": [
+				{
+					"name": "Create Journal Entry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Done\",\n    \"habitId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/journal_entry",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"journal_entry"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all Journal Entries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/journal_entries",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"journal_entries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Journal Entry",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/journal_entry/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"journal_entry",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Journal Entry (Remove Habit)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Fixed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/journal_entry/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"journal_entry",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Journal Entry (Add Habit)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Fixed\",\n    \"habitId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/journal_entry/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"journal_entry",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Journal Entry",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/journal_entry/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"journal_entry",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

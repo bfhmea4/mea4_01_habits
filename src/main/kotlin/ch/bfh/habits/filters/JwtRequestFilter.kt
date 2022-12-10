@@ -1,6 +1,6 @@
 package ch.bfh.habits.filters
 
-import ch.bfh.habits.services.CustomUserDetailService
+import ch.bfh.habits.services.UserService
 import ch.bfh.habits.util.TokenProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -16,20 +16,17 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class JwtRequestFilter @Autowired constructor(
     private val tokenProvider: TokenProvider,
-    private val customUserDetailService: CustomUserDetailService,
+    private val userService: UserService,
 ) : OncePerRequestFilter() {
     @Value("\${jwt.token.prefix}")
     var tokenPrefix: String = ""
-
-    @Value("\${jwt.header.string}")
-    var headerName: String = ""
 
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        val authorizationHeader = request.getHeader(headerName)
+        val authorizationHeader = request.getHeader("Authorization")
         var username: String? = null
         var jwtToken: String? = null
 
@@ -39,7 +36,7 @@ class JwtRequestFilter @Autowired constructor(
         }
 
         if (username != null && SecurityContextHolder.getContext().authentication == null) {
-            val userDetails = customUserDetailService.loadUserByUsername(username)
+            val userDetails = userService.loadUserByUsername(username)
             if (tokenProvider.validateToken(jwtToken, userDetails)) {
                 val usernamePasswordAuthenticationToken =
                     UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)

@@ -5,12 +5,13 @@ import ch.bfh.habits.entities.Habit
 class HabitEntityBuilder private constructor() {
 
     companion object {
-        fun createHabitEntityFromDTO(habitDTO: HabitDTO): Habit {
+        fun createHabitEntityFromDTO(habitDTO: HabitDTO, userId: Long): Habit {
             return Habit(
                 title = habitDTO.title ?: "",
                 description = habitDTO.description ?: "",
                 frequency = habitDTO.frequency,
-                frequencyValue = habitDTO.frequencyValue
+                frequencyValue = habitDTO.frequencyValue,
+                userId = userId
             )
         }
 

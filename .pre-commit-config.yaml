@@ -5,8 +5,9 @@ repos:
       - id: check-yaml
         exclude: mkdocs.yaml
       - id: end-of-file-fixer
+        exclude: ^src/main/resources/postman/
       - id: trailing-whitespace
-        exclude: README.md
+        exclude: ^(src/main/resources/postman/|README.md)
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: "v8.25.0"
     hooks:

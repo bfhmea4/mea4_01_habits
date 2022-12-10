@@ -5,9 +5,10 @@ import ch.bfh.habits.entities.JournalEntry
 class JournalEntryEntityBuilder private constructor() {
 
     companion object {
-        fun createJournalEntryEntityFromDTO(journalEntryDTO: JournalEntryDTO): JournalEntry {
+        fun createJournalEntryEntityFromDTO(journalEntryDTO: JournalEntryDTO, userId: Long): JournalEntry {
             return JournalEntry(
-                description = journalEntryDTO.description ?: ""
+                description = journalEntryDTO.description ?: "",
+                userId = userId
             )
         }
 
