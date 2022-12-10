@@ -31,7 +31,7 @@ class JwtRequestFilter @Autowired constructor(
         var jwtToken: String? = null
 
         if (authorizationHeader != null && authorizationHeader.startsWith(tokenPrefix)) {
-            jwtToken = authorizationHeader.replace(tokenPrefix, "")
+            jwtToken = authorizationHeader.replace(tokenPrefix, "").trim()
             username = tokenProvider.extractUsername(jwtToken)
         }
 
