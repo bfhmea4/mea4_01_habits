@@ -26,7 +26,7 @@ class SecurityConfiguration(@Autowired private val jwtRequestFilter: JwtRequestF
         http.
             authorizeRequests { authorizeRequests ->
                 authorizeRequests
-                    .antMatchers("/api/register", "/api/login").permitAll()
+                    .antMatchers("/api/register", "/api/login", "/api/docs/**", "/api/swagger-ui/**").permitAll()
                     .anyRequest().authenticated()
                     .and().sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
