@@ -1,3 +1,10 @@
+export enum FrequencyType {
+  NONE = '',
+  DAILY = 'DAILY',
+  WEEKLY = 'WEEKLY',
+  MONTHLY = 'MONTHLY',
+}
+
 export interface BaseRecord {
   id: number
   createdAt: Date
@@ -7,6 +14,8 @@ export interface BaseRecord {
 export interface Habit extends BaseRecord {
   title: string
   description: string
+  frequency: FrequencyType
+  frequencyValue: number
 }
 
 export interface JournalEntry extends BaseRecord {

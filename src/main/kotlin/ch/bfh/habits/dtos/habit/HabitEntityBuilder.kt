@@ -18,8 +18,8 @@ class HabitEntityBuilder private constructor() {
         fun applyHabitDtoToEntity(habitDTO: HabitDTO, habitEntity: Habit) {
             habitEntity.title = habitDTO.title ?: habitEntity.title
             habitEntity.description = habitDTO.description ?: habitEntity.description
-            habitEntity.frequency = habitDTO.frequency ?: habitEntity.frequency
-            habitEntity.frequencyValue = habitDTO.frequencyValue ?: habitEntity.frequencyValue
+            habitEntity.frequency = habitDTO.frequency
+            habitEntity.frequencyValue = habitDTO.frequencyValue
         }
     }
 

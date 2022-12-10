@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react'
 import Api from '../../config/Api'
 import { useLoadingContext } from '../../context/loadingContext'
-import { Habit } from '../../lib/interfaces'
+import { FrequencyType, Habit } from '../../lib/interfaces'
+import { checkIfStringIsNumber } from '../../lib/parse'
 import { Toast, ToastType } from '../alerts/Toast'
 import StyledButton, { StyledButtonType } from '../general/buttons/StyledButton'
 import InputField from '../general/forms/InputField'
+import Select, { SelectOptions } from '../general/forms/Select'
 import TextAreaField from '../general/forms/TextAreaField'
 import { PopUpModal } from '../general/modals/PopUpModal'
 interface Props {
@@ -13,20 +15,59 @@ interface Props {
   habit?: Habit
 }
 
+const renderSelectedFrequency = (frequency: FrequencyType | undefined) => {
+  let selectedFrequency: SelectOptions = {
+    value: FrequencyType.NONE,
+    text: 'None',
+  }
+
+  if (frequency) {
+    selectedFrequency = {
+      value: frequency,
+      text: frequency,
+    }
+  }
+
+  return selectedFrequency
+}
+
 export const HabitForm = (props: Props) => {
   const deleteModalRef = useRef<any>(null)
   const { reload, setReload }: any = useLoadingContext()
+  const [selectedFrequency, setSelectedFrequency] = useState<SelectOptions>(
+    renderSelectedFrequency(props.habit?.frequency)
+  )
 
   const handleSave = () => {
     const title = document.getElementById('title') as HTMLInputElement
     const description = document.getElementById('description') as HTMLInputElement
+    const frequencyValue = document.getElementById('frequencyValue') as HTMLInputElement
+
+    if (selectedFrequency.value !== FrequencyType.NONE && !checkIfStringIsNumber(frequencyValue.value)) {
+      Toast('Please enter a valid number', ToastType.warning)
+      return
+    }
+
+    const generateRequestBody = () => {
+      if (selectedFrequency.value === FrequencyType.NONE) {
+        return {
+          title: title.value,
+          description: description.value,
+        }
+      }
+
+      return {
+        title: title.value,
+        description: description.value,
+        frequency: selectedFrequency.value,
+        frequencyValue: frequencyValue.value,
+      }
+    }
 
     if (props.type === 'create') {
       // Create habit
-      const body = {
-        title: title.value,
-        description: description.value,
-      }
+
+      const body = generateRequestBody()
 
       if (title.value === '') {
         Toast('Please enter a title', ToastType.warning)
@@ -44,18 +85,19 @@ export const HabitForm = (props: Props) => {
         })
     } else {
       // Update habit
-      const body = {
-        title: title.value,
-        description: description.value,
-      }
+      const body = generateRequestBody()
 
       if (title.value === '') {
         Toast('Please enter a title', ToastType.warning)
         return
       }
 
-      // if title.value is the same as props.habit.title, then don't update
-      if (title.value === props.habit?.title && description.value === props.habit?.description) {
+      if (
+        title.value === props.habit?.title &&
+        description.value === props.habit?.description &&
+        selectedFrequency.value === props.habit?.frequency &&
+        Number(frequencyValue.value) === props.habit?.frequencyValue
+      ) {
         Toast('No changes made', ToastType.info)
         // close modal
         props.modalRef.current.close()
@@ -108,7 +150,7 @@ export const HabitForm = (props: Props) => {
           </div>
         </div>
       </PopUpModal>
-      <div className="mt-2">
+      <div className="mt-2 space-y-2">
         <InputField
           label="Title (max. 16 characters)"
           placeholder="Enter a title"
@@ -125,6 +167,40 @@ export const HabitForm = (props: Props) => {
           defaultValue={props.habit?.description}
           required={false}
         />
+        <div className="">
+          <Select
+            label="Frequency"
+            name="frequency"
+            // options is enum of frequencytype
+            options={Object.keys(FrequencyType).map(key => {
+              if (key === 'NONE') {
+                return {
+                  value: FrequencyType.NONE,
+                  text: 'None',
+                }
+              }
+              return {
+                value: key,
+                text: key,
+              }
+            })}
+            defaultValue={selectedFrequency}
+            setSelectedValue={setSelectedFrequency}
+          />
+        </div>
+        {selectedFrequency.value !== FrequencyType.NONE && (
+          <div>
+            <InputField
+              label="Frequency value (max. 3 numbers)"
+              placeholder="Enter a frequency value"
+              name="frequencyValue"
+              type="text"
+              defaultValue={props.habit?.frequencyValue}
+              maxlength={3}
+              required
+            />
+          </div>
+        )}
       </div>
 
       <div className="mt-4 grid sm:grid-cols-2 gap-2">
