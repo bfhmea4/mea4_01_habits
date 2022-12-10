@@ -7,6 +7,7 @@ import javax.persistence.*
 
 @Entity
 class JournalEntry (
+    @Column(columnDefinition = "TEXT")
     var description: String,
     @ManyToOne
     var habit: Habit? = null,
