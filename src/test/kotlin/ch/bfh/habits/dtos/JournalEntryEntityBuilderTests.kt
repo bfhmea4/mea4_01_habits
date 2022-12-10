@@ -10,8 +10,9 @@ class JournalEntryEntityBuilderTests {
 
     @Test
     fun empty_dto_creates_default_habit() {
-        val entity = JournalEntryEntityBuilder.createJournalEntryEntityFromDTO(JournalEntryDTO())
+        val entity = JournalEntryEntityBuilder.createJournalEntryEntityFromDTO(JournalEntryDTO(), 1)
         assertThat(entity.description).isEqualTo("")
         assertThat(entity.habit).isNull()
+        assertThat(entity.userId).isEqualTo(1)
     }
 }

@@ -3,42 +3,49 @@ package ch.bfh.habits.controllers
 import ch.bfh.habits.dtos.journalentry.JournalEntryDTO
 import ch.bfh.habits.dtos.journalentry.JournalEntryListDTO
 import ch.bfh.habits.services.JournalEntryService
+import ch.bfh.habits.util.TokenProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class JournalEntryController @Autowired constructor(private val journalEntryService: JournalEntryService) {
+class JournalEntryController @Autowired constructor(private val journalEntryService: JournalEntryService, private val tokenProvider: TokenProvider) {
     @GetMapping("/api/habit/{id}/journal_entries")
-    fun getAllJournalEntriesForHabit(@PathVariable id: Long): ResponseEntity<JournalEntryListDTO> {
-        return ResponseEntity.ok().body(journalEntryService.getAllJournalEntriesForHabit(id))
+    fun getAllJournalEntriesForHabit(@RequestHeader(value = "Authorization") token: String, @PathVariable id: Long): ResponseEntity<JournalEntryListDTO> {
+        val userId = tokenProvider.extractId(token)
+        return ResponseEntity.ok().body(journalEntryService.getAllJournalEntriesForHabit(id, userId))
     }
 
     @GetMapping("/api/journal_entries")
-    fun getAllJournalEntries(): ResponseEntity<JournalEntryListDTO> {
-        return ResponseEntity.ok().body(journalEntryService.getAllJournalEntries())
+    fun getAllJournalEntries(@RequestHeader(value = "Authorization") token: String): ResponseEntity<JournalEntryListDTO> {
+        val userId = tokenProvider.extractId(token)
+        return ResponseEntity.ok().body(journalEntryService.getAllJournalEntries(userId))
     }
 
     @PostMapping("/api/journal_entry")
-    fun newJournalEntry(@RequestBody journalEntryDTO: JournalEntryDTO): ResponseEntity<Any> {
-        return ResponseEntity.status(HttpStatus.CREATED).body(journalEntryService.newJournalEntry(journalEntryDTO))
+    fun newJournalEntry(@RequestHeader(value = "Authorization") token: String, @RequestBody journalEntryDTO: JournalEntryDTO): ResponseEntity<Any> {
+        val userId = tokenProvider.extractId(token)
+        return ResponseEntity.status(HttpStatus.CREATED).body(journalEntryService.newJournalEntry(journalEntryDTO, userId))
     }
 
     @GetMapping("/api/journal_entry/{id}")
-    fun getJournalEntry(@PathVariable id: Long): ResponseEntity<JournalEntryDTO> {
-        return ResponseEntity.ok().body(journalEntryService.getJournalEntryById(id))
+    fun getJournalEntry(@RequestHeader(value = "Authorization") token: String, @PathVariable id: Long): ResponseEntity<JournalEntryDTO> {
+        val userId = tokenProvider.extractId(token)
+        return ResponseEntity.ok().body(journalEntryService.getJournalEntryById(id, userId))
     }
 
     @DeleteMapping("/api/journal_entry/{id}")
-    fun deleteJournalEntry(@PathVariable id: Long): ResponseEntity<Any> {
-        journalEntryService.deleteJournalEntryById(id)
+    fun deleteJournalEntry(@RequestHeader(value = "Authorization") token: String, @PathVariable id: Long): ResponseEntity<Any> {
+        val userId = tokenProvider.extractId(token)
+        journalEntryService.deleteJournalEntryById(id, userId)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
     @PutMapping("/api/journal_entry/{id}")
-    fun updateJournalEntry(@RequestBody journalEntry: JournalEntryDTO, @PathVariable id: Long): ResponseEntity<Any> {
-        journalEntryService.updateJournalEntryById(id, journalEntry)
+    fun updateJournalEntry(@RequestHeader(value = "Authorization") token: String, @RequestBody journalEntry: JournalEntryDTO, @PathVariable id: Long): ResponseEntity<Any> {
+        val userId = tokenProvider.extractId(token)
+        journalEntryService.updateJournalEntryById(id, journalEntry, userId)
         return ResponseEntity.ok().build()
     }
 }

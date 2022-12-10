@@ -2,7 +2,6 @@ package ch.bfh.habits.services
 
 import ch.bfh.habits.dtos.ObjectIdDTO
 import ch.bfh.habits.dtos.habit.*
-import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.repositories.HabitDAO
@@ -13,39 +12,37 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class HabitService(private val habitDAO: HabitDAO) {
     @Transactional
-    fun getAllHabits(): HabitListDTO {
+    fun getAllHabits(userId: Long): HabitListDTO {
         val habits =  ArrayList<HabitDTO>()
-        habitDAO.findAll().forEach { i -> habits.add(createHabitDtoFromEntity(i))}
+        habitDAO.findAllByUserId(userId).forEach { i -> habits.add(HabitDtoBuilder.createHabitDtoFromEntity(i))}
         return HabitListDTO(habits = habits)
     }
 
     @Transactional
-    fun newHabit(habitDTO: HabitDTO): ObjectIdDTO {
+    fun newHabit(habitDTO: HabitDTO, userId: Long): ObjectIdDTO {
         if (habitDTO.id != null) {
             throw BadRequestException("Id must not be set")
         }
         if ((habitDTO.frequencyValue != null && habitDTO.frequency == null) || (habitDTO.frequencyValue == null && habitDTO.frequency != null)) {
             throw BadRequestException("Frequency and frequencyValue must be set together")
         }
-        val newHabit = createHabitEntityFromDTO(habitDTO)
+        val newHabit = HabitEntityBuilder.createHabitEntityFromDTO(habitDTO, userId)
         habitDAO.save(newHabit)
         return ObjectIdDTO(newHabit.id!!)
     }
 
     @Transactional
-    fun getHabitById(id: Long): HabitDTO {
-        val habit = habitDAO.findById(id).orElseThrow {
-            EntityNotFoundException("Habit id = $id not found")
-        }
-        return createHabitDtoFromEntity(habit)
+    fun getHabit(id: Long, userId: Long): HabitDTO {
+        val habit = habitDAO.findByUserIdAndId(userId, id) ?: throw EntityNotFoundException("Habit not found or not owned by user")
+        return HabitDtoBuilder.createHabitDtoFromEntity(habit)
     }
 
     @Transactional
-    fun deleteHabitById(id: Long) {
+    fun deleteHabit(id: Long, userId: Long) {
         try {
-            habitDAO.deleteById(id)
+            habitDAO.deleteByIdAndUserId(id, userId)
         } catch (e: EmptyResultDataAccessException) {
-            throw EntityNotFoundException("Habit id = $id not found")
+            throw EntityNotFoundException("Habit not found or not owned by user")
         }
     }
 
@@ -54,15 +51,7 @@ class HabitService(private val habitDAO: HabitDAO) {
         if ((habitDTO.frequencyValue != null && habitDTO.frequency == null) || (habitDTO.frequencyValue == null && habitDTO.frequency != null)) {
             throw BadRequestException("Frequency and frequencyValue must be set together")
         }
-        val currentHabit = habitDAO.findById(id).orElseThrow {
-            EntityNotFoundException("Habit id = $id not found")
-        }
+        val currentHabit = habitDAO.findByUserIdAndId(userId, id) ?: throw EntityNotFoundException("Habit not found or not owned by user")
         HabitEntityBuilder.applyHabitDtoToEntity(habitDTO, currentHabit)
     }
-
-    private fun createHabitDtoFromEntity(habit: Habit) =
-        HabitDtoBuilder.createHabitDtoFromEntity(habit)
-
-    private fun createHabitEntityFromDTO(habitDTO: HabitDTO): Habit =
-        HabitEntityBuilder.createHabitEntityFromDTO(habitDTO)
 }

@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UserDAO : JpaRepository<User, Long> {
     fun findByUserName(userName: String): User?
-    fun findByEmail(email:String): User?
 }
