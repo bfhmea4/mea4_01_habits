@@ -19,8 +19,13 @@ class Group (
     var createdAt: Timestamp? = null,
     @UpdateTimestamp
     var editedAt: Timestamp? = null,
-    @OneToMany(cascade = [CascadeType.PERSIST])
+    @OneToMany(mappedBy = "group", cascade = [CascadeType.PERSIST])
     @JsonIgnore
-    var groupEntries: MutableList<Group> = mutableListOf(),
+    var groupEntries: MutableList<Habit> = mutableListOf(),
     var userId: Long
-)
+) {
+    @PreRemove
+    private fun preRemove() {
+        groupEntries.forEach { child -> child.group = null }
+    }
+}

@@ -27,7 +27,9 @@ class Habit (
     @Enumerated(EnumType.STRING)
     var frequency: Frequency? = null,
     var frequencyValue: Long? = null,
-    var userId: Long
+    var userId: Long,
+    @ManyToOne
+    var group: Group? = null
 ) {
     @PreRemove
     private fun preRemove() {

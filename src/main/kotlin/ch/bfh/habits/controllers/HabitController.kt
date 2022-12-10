@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class HabitController @Autowired constructor(private val service: HabitService, private val tokenProvider: TokenProvider) {
+    @GetMapping("/api/group/{id}/habits")
+    fun getAllHabitsForGroup(@RequestHeader(value = "Authorization") token: String, @PathVariable id: Long): ResponseEntity<List<Habit>> {
+        val userId = tokenProvider.extractId(token)
+        return ResponseEntity.ok().body(service.getAllHabitsForGroup(id, userId))
+    }
+
     @GetMapping("/api/habits")
     fun getAllHabits(@RequestHeader(value = "Authorization") token: String): ResponseEntity<List<Habit>> {
         val userId = tokenProvider.extractId(token)

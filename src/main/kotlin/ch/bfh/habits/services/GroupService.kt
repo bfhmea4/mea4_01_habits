@@ -3,6 +3,7 @@ package ch.bfh.habits.services
 import ch.bfh.habits.dtos.group.GroupDTO
 import ch.bfh.habits.dtos.group.GroupEntityBuilder
 import ch.bfh.habits.entities.Group
+import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.repositories.GroupDAO
 import org.springframework.dao.EmptyResultDataAccessException
