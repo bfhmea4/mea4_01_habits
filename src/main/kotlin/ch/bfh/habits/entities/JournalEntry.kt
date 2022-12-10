@@ -10,6 +10,7 @@ class JournalEntry (
     var description: String,
     @ManyToOne
     var habit: Habit? = null,
+    var userId: Long,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

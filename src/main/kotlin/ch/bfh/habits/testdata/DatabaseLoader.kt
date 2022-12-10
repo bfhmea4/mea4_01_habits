@@ -33,9 +33,9 @@ class DatabaseLoader(
             val habit3 = Habit("Reading", "Read a book", userId = user.id ?: 1)
             habitDAO.saveAll(listOf(habit1, habit2, habit3))
 
-            val journalEntry1 = JournalEntry("Read 50 pages", habit3)
-            val journalEntry2 = JournalEntry("Ran a half marathon for training", habit2)
-            val journalEntry3 = JournalEntry("Just something", null)
+            val journalEntry1 = JournalEntry("Read 50 pages", habit3, user.id ?: 1)
+            val journalEntry2 = JournalEntry("Ran a half marathon for training", habit2, user.id ?: 1)
+            val journalEntry3 = JournalEntry("Just something", null, user.id ?: 1)
             journalEntryDAO.saveAll(listOf(journalEntry1, journalEntry2, journalEntry3))
         }
     }

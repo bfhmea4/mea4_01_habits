@@ -21,15 +21,12 @@ class JwtRequestFilter @Autowired constructor(
     @Value("\${jwt.token.prefix}")
     var tokenPrefix: String = ""
 
-    @Value("\${jwt.header.string}")
-    var headerName: String = ""
-
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        val authorizationHeader = request.getHeader(headerName)
+        val authorizationHeader = request.getHeader("Authorization")
         var username: String? = null
         var jwtToken: String? = null
 

@@ -39,7 +39,7 @@ class HabitController @Autowired constructor(private val service: HabitService, 
     @PutMapping("/api/habit/{id}")
     fun updateHabit(@RequestHeader(value = "Authorization") token: String, @RequestBody habit: HabitDTO, @PathVariable id: Long): ResponseEntity<Any> {
         val userId = tokenProvider.extractId(token)
-        service.updateHabit(id, userId, habit)
+        service.updateHabit(id, habit, userId)
         return ResponseEntity.ok().build()
     }
 }
