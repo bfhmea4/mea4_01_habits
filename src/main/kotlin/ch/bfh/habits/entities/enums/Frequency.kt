@@ -1,4 +1,4 @@
-package ch.bfh.habits.dtos.habit
+package ch.bfh.habits.entities.enums
 
 enum class Frequency {
     DAILY,
