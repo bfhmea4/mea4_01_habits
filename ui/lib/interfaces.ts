@@ -11,11 +11,16 @@ export interface BaseRecord {
   editedAt: Date
 }
 
+export interface Group extends BaseRecord {
+  title: string
+}
+
 export interface Habit extends BaseRecord {
   title: string
   description: string
   frequency: FrequencyType
   frequencyValue: number
+  group: Group
 }
 
 export interface JournalEntry extends BaseRecord {

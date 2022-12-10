@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Api from '../../config/Api'
 import { useLoadingContext } from '../../context/loadingContext'
-import { FrequencyType, Habit } from '../../lib/interfaces'
+import { FrequencyType, Habit, Group } from '../../lib/interfaces'
 import { checkIfStringIsNumber } from '../../lib/parse'
 import { Toast, ToastType } from '../alerts/Toast'
 import StyledButton, { StyledButtonType } from '../general/buttons/StyledButton'
@@ -37,6 +37,39 @@ export const HabitForm = (props: Props) => {
   const [selectedFrequency, setSelectedFrequency] = useState<SelectOptions>(
     renderSelectedFrequency(props.habit?.frequency)
   )
+  const [groups, setGroups] = useState<Group[]>([])
+  const [selectedGroup, setSelectedGroup] = useState<SelectOptions>()
+  const [loading, setLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const { data } = await Api.get('/groups')
+        if (data) {
+          try {
+            const groups = data.map((group: Group) => {
+              return {
+                ...group,
+                createdAt: new Date(group.createdAt),
+                editedAt: new Date(group.editedAt),
+              }
+            })
+            // sort groups by createdAt latest first
+            groups.sort((a: any, b: any) => {
+              return b.createdAt.getTime() - a.createdAt.getTime()
+            })
+            setGroups(groups)
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [reload])
 
   const handleSave = () => {
     const title = document.getElementById('title') as HTMLInputElement
@@ -53,6 +86,7 @@ export const HabitForm = (props: Props) => {
         return {
           title: title.value,
           description: description.value,
+          groupId: selectedGroup?.value,
         }
       }
 
@@ -61,6 +95,7 @@ export const HabitForm = (props: Props) => {
         description: description.value,
         frequency: selectedFrequency.value,
         frequencyValue: frequencyValue.value,
+        groupId: selectedGroup?.value,
       }
     }
 
@@ -96,7 +131,8 @@ export const HabitForm = (props: Props) => {
         title.value === props.habit?.title &&
         description.value === props.habit?.description &&
         selectedFrequency.value === props.habit?.frequency &&
-        Number(frequencyValue.value) === props.habit?.frequencyValue
+        Number(frequencyValue.value) === props.habit?.frequencyValue &&
+        selectedGroup?.value === props.habit?.group.id
       ) {
         Toast('No changes made', ToastType.info)
         // close modal
@@ -167,6 +203,24 @@ export const HabitForm = (props: Props) => {
           defaultValue={props.habit?.description}
           required={false}
         />
+        <div className="mt-4">
+          <Select
+            label="Group"
+            name="group"
+            options={groups.map(group => {
+              return {
+                value: group.id,
+                text: group.title,
+              }
+            })}
+            defaultValue={{
+              value: props.type === 'create' ? undefined : props.habit?.group?.id || undefined,
+              text: props.type === 'create' ? 'No group' : props.habit?.group?.title || 'No group',
+            }}
+            setSelectedValue={setSelectedGroup}
+            required
+          />
+        </div>
         <div className="">
           <Select
             label="Frequency"
@@ -227,4 +281,7 @@ export const HabitForm = (props: Props) => {
       </div>
     </div>
   )
+}
+function setLoading(arg0: boolean) {
+  throw new Error('Function not implemented.')
 }

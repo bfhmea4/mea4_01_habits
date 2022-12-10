@@ -1,8 +1,10 @@
 package ch.bfh.habits.testdata
 
+import ch.bfh.habits.entities.Group
 import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.entities.JournalEntry
 import ch.bfh.habits.entities.User
+import ch.bfh.habits.repositories.GroupDAO
 import ch.bfh.habits.repositories.HabitDAO
 import ch.bfh.habits.repositories.JournalEntryDAO
 import ch.bfh.habits.repositories.UserDAO
@@ -17,6 +19,7 @@ class DatabaseLoader(
     private val habitDAO: HabitDAO,
     private val journalEntryDAO: JournalEntryDAO,
     private val userDAO: UserDAO,
+    private val groupDAO: GroupDAO,
 ) : CommandLineRunner  {
 
     @Autowired
@@ -27,6 +30,10 @@ class DatabaseLoader(
             val user = User("John", "Doe", "johnD", "john@doe.com")
             user.password = "root"
             userDAO.save(user)
+
+            val group1 = Group("Private", userId = user.id ?: 1)
+            val group2 = Group("BFH", userId = user.id ?: 1)
+            groupDAO.saveAll(listOf(group1, group2))
 
             val habit1 = Habit("Meditation", "Meditate for 10 minutes", userId = user.id ?: 1)
             val habit2 = Habit("Exercise", "Go for a run", userId = user.id ?: 1)
