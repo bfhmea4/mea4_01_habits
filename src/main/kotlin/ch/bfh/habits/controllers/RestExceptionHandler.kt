@@ -2,6 +2,7 @@ package ch.bfh.habits.controllers
 
 import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
+import ch.bfh.habits.exceptions.UnauthorizedException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -32,6 +33,17 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
             bodyOfResponse,
             HttpHeaders(),
             HttpStatus.BAD_REQUEST,
+            request!!)
+    }
+
+    @ExceptionHandler(value = [UnauthorizedException::class])
+    protected fun handleConflictUnauthorized(ex: Exception?, request: WebRequest?): ResponseEntity<Any> {
+        val bodyOfResponse = ex?.message
+        return handleExceptionInternal(
+            ex!!,
+            bodyOfResponse,
+            HttpHeaders(),
+            HttpStatus.UNAUTHORIZED,
             request!!)
     }
 }

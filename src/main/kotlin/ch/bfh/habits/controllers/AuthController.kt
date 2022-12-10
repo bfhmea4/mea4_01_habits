@@ -1,17 +1,18 @@
 package ch.bfh.habits.controllers
 
-import ch.bfh.habits.dtos.ErrorMessage
-import ch.bfh.habits.dtos.JwtToken
+import ch.bfh.habits.dtos.user.JwtTokenDTO
 import ch.bfh.habits.dtos.user.LoginDTO
 import ch.bfh.habits.dtos.user.RegisterDTO
 import ch.bfh.habits.dtos.user.UserEntityBuilder
 import ch.bfh.habits.entities.User
+import ch.bfh.habits.exceptions.UnauthorizedException
 import ch.bfh.habits.services.UserService
 import ch.bfh.habits.util.TokenProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.AuthenticationException
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import javax.servlet.http.HttpServletResponse
@@ -32,14 +33,14 @@ class AuthController @Autowired constructor(
     fun login(@RequestBody body: LoginDTO, response: HttpServletResponse): ResponseEntity<Any> {
          try {
              authenticationManager.authenticate(UsernamePasswordAuthenticationToken(body.userName, body.password))
-         } catch (e: Exception) {
-             return ResponseEntity.status(401).body(ErrorMessage("Invalid username or password"))
+         } catch (e: AuthenticationException) {
+             throw UnauthorizedException("Invalid username/password supplied")
          }
 
         val userDetails = userService.loadUserByUsername(body.userName)
         val jwt = tokenProvider.generateToken(userDetails, this.userService.findByUserName(body.userName)!!)
 
-        return ResponseEntity.ok(JwtToken(jwt))
+        return ResponseEntity.ok(JwtTokenDTO(jwt))
     }
 
     @GetMapping("api/user")
