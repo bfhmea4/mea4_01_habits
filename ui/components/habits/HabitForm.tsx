@@ -106,11 +106,10 @@ export const HabitForm = (props: Props) => {
 
       if (props.habit) {
         Api.put(`/habit/${props.habit.id}`, body)
-          .then((res: any) => {
+          .then(() => {
             Toast('Habit updated', ToastType.success)
             props.modalRef.current.close()
             setReload(!reload)
-            console.log(res)
           })
           .catch(() => {
             Toast('Something went wrong', ToastType.error)
