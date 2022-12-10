@@ -17,25 +17,22 @@ const Home: NextPage = () => {
     ;(async () => {
       try {
         const { data } = await Api.get('/habits')
-        if (data.habits) {
-          // validate data.habits if its object of Habit[]
-          if (data.habits) {
-            try {
-              const habits = data.habits.map((habit: Habit) => {
-                return {
-                  ...habit,
-                  createdAt: new Date(habit.createdAt),
-                  editedAt: new Date(habit.editedAt),
-                }
-              })
-              // sort habits by createdAt latest first
-              habits.sort((a: any, b: any) => {
-                return b.createdAt.getTime() - a.createdAt.getTime()
-              })
-              setHabits(habits)
-            } catch (error) {
-              console.log(error)
-            }
+        if (data) {
+          try {
+            const habits = data.map((habit: Habit) => {
+              return {
+                ...habit,
+                createdAt: new Date(habit.createdAt),
+                editedAt: new Date(habit.editedAt),
+              }
+            })
+            // sort habits by createdAt latest first
+            habits.sort((a: any, b: any) => {
+              return b.createdAt.getTime() - a.createdAt.getTime()
+            })
+            setHabits(habits)
+          } catch (error) {
+            console.log(error)
           }
         }
       } catch (error) {
