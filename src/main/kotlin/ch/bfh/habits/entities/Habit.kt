@@ -9,7 +9,9 @@ import javax.persistence.*
 
 @Entity
 class Habit (
+    @Column(length = 100)
     var title: String,
+    @Column(columnDefinition = "TEXT")
     var description: String,
 
     @Id
