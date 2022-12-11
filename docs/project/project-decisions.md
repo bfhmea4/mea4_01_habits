@@ -11,3 +11,4 @@ This document keeps track of important decisions about this project
 - Write controllers and accept some boilerplate code instead of using Spring Data
   - More flexibility by doing that
   - Learn one thing at a time. Too much magic for us now.
+- Use Spring Security and JWT for Authentication/Authorization
