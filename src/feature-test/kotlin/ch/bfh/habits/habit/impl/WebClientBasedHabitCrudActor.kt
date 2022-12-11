@@ -1,6 +1,6 @@
 package ch.bfh.habits.habit.impl
 
-import ch.bfh.habits.base.impl.WebClientBasedBaseCrudActor
+import ch.bfh.habits.auth.impl.WebClientBasedAuthCrudActor
 import ch.bfh.habits.dtos.habit.HabitDTO
 import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.exceptions.BadRequestException
@@ -14,7 +14,7 @@ import org.springframework.test.web.reactive.server.expectBody
 import org.springframework.test.web.reactive.server.returnResult
 import reactor.core.publisher.Mono
 
-class WebClientBasedHabitCrudActor(private val webClient: WebTestClient, authWebClient: WebTestClient) : WebClientBasedBaseCrudActor(authWebClient), HabitCrudActor {
+class WebClientBasedHabitCrudActor(private val webClient: WebTestClient, authWebClient: WebTestClient) : WebClientBasedAuthCrudActor(authWebClient), HabitCrudActor {
     override fun getsAllHabits(): List<Habit> {
         val result = webClient.get()
             .uri("/api/habits/")

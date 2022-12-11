@@ -1,10 +1,10 @@
 package ch.bfh.habits.habit
 
-import ch.bfh.habits.base.BaseCrudActor
+import ch.bfh.habits.auth.AuthCrudActor
 import ch.bfh.habits.dtos.habit.HabitDTO
 import ch.bfh.habits.entities.Habit
 
-interface HabitCrudActor : BaseCrudActor {
+interface HabitCrudActor : AuthCrudActor {
     fun getsAllHabits(): List<Habit>
     fun createsHabit(habitDTO: HabitDTO): Habit
     fun seesHabitExists(habitId: Long): Boolean

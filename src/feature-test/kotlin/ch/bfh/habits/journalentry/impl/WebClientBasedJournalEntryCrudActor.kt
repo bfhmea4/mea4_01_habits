@@ -1,5 +1,6 @@
 package ch.bfh.habits.journalentry.impl
 
+import ch.bfh.habits.auth.impl.WebClientBasedAuthCrudActor
 import ch.bfh.habits.dtos.journalentry.JournalEntryDTO
 import ch.bfh.habits.entities.JournalEntry
 import ch.bfh.habits.exceptions.EntityNotFoundException
@@ -12,10 +13,11 @@ import org.springframework.test.web.reactive.server.expectBody
 import org.springframework.test.web.reactive.server.returnResult
 import reactor.core.publisher.Mono
 
-class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient) : JournalEntryCrudActor {
+class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient, authWebClient: WebTestClient) : WebClientBasedAuthCrudActor(authWebClient), JournalEntryCrudActor {
     override fun getsAllJournalEntriesForHabit(habitId: Long): List<JournalEntry> {
         val result = webClient.get()
             .uri("/api/habit/$habitId/journal_entries")
+            .header("Authorization", token)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk
@@ -28,6 +30,7 @@ class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient) 
     override fun getsAllJournalEntries(): List<JournalEntry> {
         val result = webClient.get()
             .uri("/api/journal_entries")
+            .header("Authorization", token)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk
@@ -40,6 +43,7 @@ class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient) 
     override fun createsJournalEntry(journalEntryDTO: JournalEntryDTO): JournalEntry {
         val result = webClient.post()
             .uri("/api/journal_entry")
+            .header("Authorization", token)
             .body(Mono.just(journalEntryDTO), JournalEntryDTO::class.java)
             .exchange()
             .expectStatus().isCreated
@@ -52,6 +56,7 @@ class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient) 
     override fun seesJournalEntryExists(journalEntryId: Long): Boolean {
         return webClient.get()
             .uri("/api/journal_entry/$journalEntryId")
+            .header("Authorization", token)
             .exchange()
             .returnResult<Any>()
             .status
@@ -61,6 +66,7 @@ class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient) 
     override fun getsJournalEntry(journalEntryId: Long): JournalEntry {
         val result = webClient.get()
             .uri("/api/journal_entry/$journalEntryId")
+            .header("Authorization", token)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectBody<JournalEntry>()
@@ -76,6 +82,7 @@ class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient) 
     override fun deletesJournalEntry(journalEntryId: Long) {
         val result = webClient.delete()
             .uri("/api/journal_entry/$journalEntryId")
+            .header("Authorization", token)
             .exchange()
             .returnResult<Any>()
 
@@ -88,6 +95,7 @@ class WebClientBasedJournalEntryCrudActor(private val webClient: WebTestClient) 
     override fun updatesJournalEntry(journalEntryId: Long, journalEntryDTO: JournalEntryDTO): JournalEntry {
         val result = webClient.put()
             .uri("/api/journal_entry/$journalEntryId")
+            .header("Authorization", token)
             .body(Mono.just(journalEntryDTO), JournalEntryDTO::class.java)
             .exchange()
             .expectBody<JournalEntry>()

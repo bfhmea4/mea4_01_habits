@@ -32,19 +32,19 @@ class JournalEntryController @Autowired constructor(private val journalEntryServ
     @GetMapping("/api/journal_entry/{id}")
     fun getJournalEntry(@RequestHeader(value = "Authorization") token: String, @PathVariable id: Long): ResponseEntity<JournalEntry> {
         val userId = tokenProvider.extractId(token)
-        return ResponseEntity.ok().body(journalEntryService.getJournalEntryById(id, userId))
+        return ResponseEntity.ok().body(journalEntryService.getJournalEntry(id, userId))
     }
 
     @DeleteMapping("/api/journal_entry/{id}")
     fun deleteJournalEntry(@RequestHeader(value = "Authorization") token: String, @PathVariable id: Long): ResponseEntity<Unit> {
         val userId = tokenProvider.extractId(token)
-        journalEntryService.deleteJournalEntryById(id, userId)
+        journalEntryService.deleteJournalEntry(id, userId)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
     }
 
     @PutMapping("/api/journal_entry/{id}")
     fun updateJournalEntry(@RequestHeader(value = "Authorization") token: String, @RequestBody journalEntry: JournalEntryDTO, @PathVariable id: Long): ResponseEntity<JournalEntry> {
         val userId = tokenProvider.extractId(token)
-        return ResponseEntity.ok().body(journalEntryService.updateJournalEntryById(id, journalEntry, userId))
+        return ResponseEntity.ok().body(journalEntryService.updateJournalEntry(id, journalEntry, userId))
     }
 }

@@ -1,6 +1,6 @@
-package ch.bfh.habits.base.impl
+package ch.bfh.habits.auth.impl
 
-import ch.bfh.habits.base.BaseCrudActor
+import ch.bfh.habits.auth.AuthCrudActor
 import ch.bfh.habits.dtos.user.JwtTokenDTO
 import ch.bfh.habits.dtos.user.LoginDTO
 import ch.bfh.habits.dtos.user.RegisterDTO
@@ -9,8 +9,11 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 import reactor.core.publisher.Mono
 
-open class WebClientBasedBaseCrudActor(private val webClient: WebTestClient) : BaseCrudActor {
+open class WebClientBasedAuthCrudActor(private val webClient: WebTestClient) : AuthCrudActor {
     internal var token = ""
+        set(value) {
+            field = "Bearer $value"
+        }
 
     override fun login(input: LoginDTO): JwtTokenDTO {
         val result = webClient.post()
