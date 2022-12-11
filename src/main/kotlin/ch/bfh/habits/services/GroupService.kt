@@ -30,11 +30,7 @@ class GroupService(private val groupDAO: GroupDAO) {
 
     @Transactional
     fun deleteGroup(id: Long, userId: Long) {
-        try {
-            groupDAO.deleteByIdAndUserId(id, userId)
-        } catch (e: EmptyResultDataAccessException) {
-            throw EntityNotFoundException("Group not found or not owned by user")
-        }
+        return groupDAO.delete(getGroup(id, userId))
     }
 
     @Transactional

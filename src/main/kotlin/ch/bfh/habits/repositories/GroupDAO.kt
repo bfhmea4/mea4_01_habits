@@ -10,5 +10,4 @@ import org.springframework.stereotype.Repository
 interface GroupDAO : PagingAndSortingRepository<Group, Long> {
     fun findAllByUserId(userId: Long): List<Group>
     fun findByUserIdAndId(userId: Long, id: Long): Group?
-    fun deleteByIdAndUserId(id: Long, userId: Long)
 }
