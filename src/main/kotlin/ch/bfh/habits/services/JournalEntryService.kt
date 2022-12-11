@@ -39,7 +39,7 @@ class JournalEntryService(private val journalEntryDAO: JournalEntryDAO, private 
 
     @Transactional
     fun deleteJournalEntry(id: Long, userId: Long) {
-        journalEntryDAO.delete(getJournalEntry(id, userId))
+        return journalEntryDAO.delete(getJournalEntry(id, userId))
     }
 
     @Transactional

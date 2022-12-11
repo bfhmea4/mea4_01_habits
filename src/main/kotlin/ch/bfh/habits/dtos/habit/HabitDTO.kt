@@ -6,5 +6,6 @@ data class HabitDTO(
     val title: String? = null,
     val description: String? = null,
     val frequency: Frequency? = null,
-    val frequencyValue: Long? = null
+    val frequencyValue: Long? = null,
+    var groupId: Long? = null
 )
