@@ -5,8 +5,9 @@ import ch.bfh.habits.dtos.user.LoginDTO
 import ch.bfh.habits.dtos.user.RegisterDTO
 import ch.bfh.habits.entities.Group
 import ch.bfh.habits.exceptions.EntityNotFoundException
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
@@ -33,7 +34,7 @@ class GroupCrudFeatureTests {
 
         @Test
         fun `get an empty list for get all`() {
-            Assertions.assertThat(groupActor.getsAllGroups()).isEqualTo(arrayListOf<Group>())
+            assertThat(groupActor.getsAllGroups()).isEqualTo(arrayListOf<Group>())
         }
     }
 
@@ -41,7 +42,7 @@ class GroupCrudFeatureTests {
     @DisplayName("Given we have created a group THEN we ...")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-    @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
+    @TestMethodOrder(OrderAnnotation::class)
     inner class GivenNewHabitCreated {
         private lateinit var group: Group
 
@@ -57,23 +58,23 @@ class GroupCrudFeatureTests {
         fun `can find it amongst all groups`() {
             // when
             groupActor.createsGroup(createGroupDTO("BFH"))
-            val allHabits = groupActor.getsAllGroups()
+            val allGroups = groupActor.getsAllGroups()
 
             // then
-            Assertions.assertThat(allHabits.size).isGreaterThan(1)
-            Assertions.assertThat(allHabits.filter { i -> i.id == group.id }).isNotEmpty
+            assertThat(allGroups.size).isGreaterThan(1)
+            assertThat(allGroups.filter { i -> i.id == group.id }).isNotEmpty
         }
 
         @Test
         @Order(2)
         fun `can find it`() {
-            Assertions.assertThat(groupActor.seesGroupExists(group.id!!)).isTrue
+            assertThat(groupActor.seesGroupExists(group.id!!)).isTrue
         }
 
         @Test
         @Order(3)
         fun `can get it`() {
-            Assertions.assertThat(groupActor.getsGroup(group.id!!).id).isEqualTo(group.id)
+            assertThat(groupActor.getsGroup(group.id!!).id).isEqualTo(group.id)
         }
 
         @Test
@@ -85,14 +86,14 @@ class GroupCrudFeatureTests {
             groupActor.updatesGroup(group.id!!, newHabit)
             // then
             val updatedHabit = groupActor.getsGroup(group.id!!)
-            Assertions.assertThat(updatedHabit.title).isEqualTo("New")
+            assertThat(updatedHabit.title).isEqualTo("New")
         }
 
         @Test
         @Order(5)
         fun `can delete it`() {
             groupActor.deletesGroup(group.id!!)
-            Assertions.assertThat(groupActor.seesGroupExists(group.id!!)).isFalse
+            assertThat(groupActor.seesGroupExists(group.id!!)).isFalse
         }
     }
 
@@ -111,7 +112,7 @@ class GroupCrudFeatureTests {
 
         @Test
         fun `find returns false`() {
-            Assertions.assertThat(groupActor.seesGroupExists(nonExistingGroupId)).isFalse
+            assertThat(groupActor.seesGroupExists(nonExistingGroupId)).isFalse
         }
 
         @Test
