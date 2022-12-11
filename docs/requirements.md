@@ -30,3 +30,13 @@ $ cd mea4_01_habits
 $ pre-commit install
 pre-commit installed at .git/hooks/pre-commit
 ```
+
+## Technical requirements
+
+The current programs must be installed on your system:
+
+- Java 17
+- Maven
+- Node version >= 16
+- yarn
+- Docker
