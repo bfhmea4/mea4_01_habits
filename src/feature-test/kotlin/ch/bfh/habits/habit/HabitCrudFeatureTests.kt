@@ -1,30 +1,37 @@
 package ch.bfh.habits.habit
 
 import ch.bfh.habits.dtos.habit.HabitDTO
+import ch.bfh.habits.dtos.user.LoginDTO
+import ch.bfh.habits.dtos.user.RegisterDTO
 import ch.bfh.habits.entities.Habit
-import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
 @Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@Disabled // ToDo remove
+@ActiveProfiles("test")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HabitCrudFeatureTests {
-
     @Autowired
     private lateinit var habitActor: HabitCrudActor
 
     @Nested
     @DisplayName("Given no habits exist THEN we")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     inner class GivenNoHabitExists {
+        @BeforeAll
+        fun setup() {
+            habitActor.register(RegisterDTO("test", "test@test.com", "test", "Test"))
+            habitActor.login(LoginDTO("test", "test"))
+        }
+
         @Test
         fun `get an empty list for get all`() {
             assertThat(habitActor.getsAllHabits()).isEqualTo(arrayListOf<Habit>())
@@ -33,10 +40,21 @@ class HabitCrudFeatureTests {
 
     @Nested
     @DisplayName("Given we have created a habit THEN we ...")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+    @TestMethodOrder(OrderAnnotation::class)
     inner class GivenNewHabitCreated {
-        private var habit = habitActor.createsHabit(createHabitDTO())
+        private lateinit var habit: Habit
+
+        @BeforeAll
+        fun setup() {
+            habitActor.register(RegisterDTO("test", "test@test.com", "test", "Test"))
+            habitActor.login(LoginDTO("test", "test"))
+            habit = habitActor.createsHabit(createHabitDTO())
+        }
 
         @Test
+        @Order(1)
         fun `can find it amongst all habits`() {
             // when
             habitActor.createsHabit(createHabitDTO("Running", "Go for a run"))
@@ -48,22 +66,19 @@ class HabitCrudFeatureTests {
         }
 
         @Test
+        @Order(2)
         fun `can find it`() {
             assertThat(habitActor.seesHabitExists(habit.id!!)).isTrue
         }
 
         @Test
+        @Order(3)
         fun `can get it`() {
             assertThat(habitActor.getsHabit(habit.id!!).id).isEqualTo(habit.id)
         }
 
         @Test
-        fun `can delete it`() {
-            habitActor.deletesHabit(habit.id!!)
-            assertThat(habitActor.seesHabitExists(habit.id!!)).isFalse
-        }
-
-        @Test
+        @Order(4)
         fun `can update it`() {
             // given
             val newHabit = createHabitDTO("New", "New")
@@ -74,11 +89,26 @@ class HabitCrudFeatureTests {
             assertThat(updatedHabit.title).isEqualTo("New")
             assertThat(updatedHabit.description).isEqualTo("New")
         }
+
+        @Test
+        @Order(5)
+        fun `can delete it`() {
+            habitActor.deletesHabit(habit.id!!)
+            assertThat(habitActor.seesHabitExists(habit.id!!)).isFalse
+        }
     }
 
     @Nested
     @DisplayName("Given a non-existing habit id THEN ...")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     inner class GivenNonExistingHabit {
+        @BeforeAll
+        fun setup() {
+            habitActor.register(RegisterDTO("test", "test@test.com", "test", "Test"))
+            habitActor.login(LoginDTO("test", "test"))
+        }
+
         private val nonExistingHabitId = -1L
 
         @Test
@@ -97,13 +127,6 @@ class HabitCrudFeatureTests {
         fun `delete throws not found`() {
             assertThrows<EntityNotFoundException> {
                 habitActor.deletesHabit(nonExistingHabitId)
-            }
-        }
-
-        @Test
-        fun `update throws bad request`() {
-            assertThrows<BadRequestException> {
-                habitActor.updatesHabit(nonExistingHabitId, createHabitDTO())
             }
         }
 
