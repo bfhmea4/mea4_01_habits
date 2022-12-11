@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class JournalEntryEntityBuilderTests {
 
     @Test
-    fun empty_dto_creates_default_habit() {
+    fun empty_dto_creates_default_journalEntry() {
         val entity = JournalEntryEntityBuilder.createJournalEntryEntityFromDTO(JournalEntryDTO(), 1)
         assertThat(entity.description).isEqualTo("")
         assertThat(entity.habit).isNull()

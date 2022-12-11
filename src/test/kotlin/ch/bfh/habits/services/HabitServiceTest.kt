@@ -3,6 +3,7 @@ package ch.bfh.habits.services
 import ch.bfh.habits.dtos.habit.HabitDTO
 import ch.bfh.habits.entities.enums.Frequency
 import ch.bfh.habits.exceptions.BadRequestException
+import ch.bfh.habits.repositories.GroupDAO
 import ch.bfh.habits.repositories.HabitDAO
 import io.mockk.mockk
 import org.junit.Test
@@ -10,7 +11,9 @@ import org.junit.jupiter.api.assertThrows
 
 internal class HabitServiceTest {
     private val habitDAO = mockk<HabitDAO>()
-    private val habitService = HabitService(habitDAO)
+    private val groupDAO = mockk<GroupDAO>()
+    private val groupService = GroupService(groupDAO)
+    private val habitService = HabitService(habitDAO, groupService)
 
     @Test
     fun `newHabit should throw BadRequestException if frequency and frequencyValue are not set together`() {
