@@ -11,5 +11,4 @@ interface JournalEntryDAO : PagingAndSortingRepository<JournalEntry, Long> {
     fun findAllByHabitIdAndUserId(habitId: Long, userId: Long): List<JournalEntry>
     fun findAllByUserId(userId: Long): List<JournalEntry>
     fun findByUserIdAndId(userId: Long, id: Long): JournalEntry?
-    fun deleteByIdAndUserId(id: Long, userId: Long)
 }

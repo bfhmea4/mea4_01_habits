@@ -1,6 +1,7 @@
 package ch.bfh.habits.util
 
 import ch.bfh.habits.entities.User
+import ch.bfh.habits.exceptions.UnauthorizedException
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -28,18 +29,6 @@ class TokenProvider {
         return extractAllClaims(token).get("id", Integer::class.java).toLong()
     }
 
-    fun extractExpiration(token: String): Date {
-        return extractAllClaims(token).expiration
-    }
-
-    private fun extractAllClaims(token: String): Claims {
-        return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token.replace(tokenPrefix, "").trim()).body
-    }
-
-    private fun isTokenExpired(token: String): Boolean {
-        return extractExpiration(token).before(Date())
-    }
-
     fun generateToken(userDetails: UserDetails, user: User): String {
         return Jwts.builder()
             .setIssuer("Habits")
@@ -58,7 +47,18 @@ class TokenProvider {
             return false
         }
 
-        val username = extractUsername(token)
-        return username == userDetails.username && !isTokenExpired(token)
+        return try {
+            userDetails.username == extractUsername(token)
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun extractAllClaims(token: String): Claims {
+        try {
+            return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token.replace(tokenPrefix, "").trim()).body
+        } catch (e: Exception) {
+            throw UnauthorizedException("Invalid token")
+        }
     }
 }

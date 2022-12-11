@@ -13,6 +13,8 @@ class HabitEntityBuilderTests {
         val entity = HabitEntityBuilder.createHabitEntityFromDTO(HabitDTO(), 1)
         assertThat(entity.title).isEqualTo("")
         assertThat(entity.description).isEqualTo("")
+        assertThat(entity.frequency).isNull()
+        assertThat(entity.frequencyValue).isNull()
         assertThat(entity.userId).isEqualTo(1)
     }
 }

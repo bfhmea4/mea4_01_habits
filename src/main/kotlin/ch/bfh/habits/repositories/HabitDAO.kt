@@ -10,5 +10,4 @@ import org.springframework.stereotype.Repository
 interface HabitDAO : PagingAndSortingRepository<Habit, Long> {
     fun findAllByUserId(userId: Long): List<Habit>
     fun findByUserIdAndId(userId: Long, id: Long): Habit?
-    fun deleteByIdAndUserId(id: Long, userId: Long)
 }
