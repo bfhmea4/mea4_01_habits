@@ -38,7 +38,9 @@ export const HabitForm = (props: Props) => {
     renderSelectedFrequency(props.habit?.frequency)
   )
   const [groups, setGroups] = useState<Group[]>([])
-  const [selectedGroup, setSelectedGroup] = useState<SelectOptions>()
+  const [selectedGroup, setSelectedGroup] = useState<SelectOptions>(
+    props.habit?.group ? { value: props.habit.group.id, text: props.habit.group.title } : { value: 0, text: 'None' }
+  )
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
@@ -53,6 +55,14 @@ export const HabitForm = (props: Props) => {
                 createdAt: new Date(group.createdAt),
                 editedAt: new Date(group.editedAt),
               }
+            })
+            // add none option
+            groups.unshift({
+              id: 0,
+              title: 'No group',
+              description: '',
+              createdAt: new Date(),
+              editedAt: new Date(),
             })
             // sort groups by createdAt latest first
             groups.sort((a: any, b: any) => {
@@ -82,11 +92,27 @@ export const HabitForm = (props: Props) => {
     }
 
     const generateRequestBody = () => {
+      if (selectedFrequency.value === FrequencyType.NONE && selectedGroup.value === 0) {
+        return {
+          title: title.value,
+          description: description.value,
+        }
+      }
+
       if (selectedFrequency.value === FrequencyType.NONE) {
         return {
           title: title.value,
           description: description.value,
           groupId: selectedGroup?.value,
+        }
+      }
+
+      if (selectedGroup.value === 0) {
+        return {
+          title: title.value,
+          description: description.value,
+          frequency: selectedFrequency.value,
+          frequencyValue: frequencyValue.value,
         }
       }
 
@@ -128,11 +154,12 @@ export const HabitForm = (props: Props) => {
       }
 
       if (
+        // TODO: works only if group AND frequency are set
         title.value === props.habit?.title &&
         description.value === props.habit?.description &&
-        selectedFrequency.value === props.habit?.frequency &&
-        Number(frequencyValue.value) === props.habit?.frequencyValue &&
-        selectedGroup?.value === props.habit?.group.id
+        selectedGroup.value === props.habit?.group?.id &&
+        selectedFrequency.value == props.habit?.frequency &&
+        Number(frequencyValue?.value) === props.habit?.frequencyValue
       ) {
         Toast('No changes made', ToastType.info)
         // close modal
@@ -214,7 +241,7 @@ export const HabitForm = (props: Props) => {
               }
             })}
             defaultValue={{
-              value: props.type === 'create' ? undefined : props.habit?.group?.id || undefined,
+              value: props.type === 'create' ? '' : props.habit?.group?.id || '',
               text: props.type === 'create' ? 'No group' : props.habit?.group?.title || 'No group',
             }}
             setSelectedValue={setSelectedGroup}
