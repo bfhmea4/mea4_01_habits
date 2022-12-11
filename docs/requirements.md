@@ -33,7 +33,7 @@ pre-commit installed at .git/hooks/pre-commit
 
 ## Technical requirements
 
-The current programs must be installed on your system:
+The following programs must be installed on your system:
 
 - Java 17
 - Maven
