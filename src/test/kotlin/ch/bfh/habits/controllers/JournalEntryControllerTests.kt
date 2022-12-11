@@ -2,42 +2,42 @@ package ch.bfh.habits.controllers
 
 import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.entities.JournalEntry
-import ch.bfh.habits.entities.User
 import ch.bfh.habits.services.JournalEntryService
 import ch.bfh.habits.services.UserService
 import ch.bfh.habits.util.TokenProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.jupiter.api.Disabled
+import io.mockk.verify
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import kotlin.test.assertEquals
-import org.springframework.security.core.userdetails.User as SpringUser
 
-@ExtendWith(SpringExtension::class)
 @WebMvcTest(JournalEntryController::class)
-@Disabled // ToDo remove
 internal class JournalEntryControllerTests {
 
     @TestConfiguration
-    class JournalEntryControllerTestsConfig {
+    class HabitControllerTestsConfig {
         @Bean
         fun service() = mockk<JournalEntryService>()
-
+        @Bean
+        fun tokenProvider() = mockk<TokenProvider> {
+            every { validateToken(any(), any()) } returns true
+            every { extractUsername("correctUser") } returns "correctUser"
+            every { extractUsername("wrongUser") } returns "wrongUser"
+            every { extractId("correctUser") } returns 1
+            every { extractId("wrongUser") } returns 2
+        }
         @Bean
         fun userService() = mockk<UserService>()
-
-        @Bean
-        fun tokenProvider() = mockk<TokenProvider>()
     }
 
     @Autowired
@@ -46,32 +46,24 @@ internal class JournalEntryControllerTests {
     @Autowired
     private lateinit var service: JournalEntryService
 
-    @Autowired
-    private lateinit var userService: UserService
-
-    @Autowired
-    private lateinit var tokenProvider: TokenProvider
-
     private val mapper = jacksonObjectMapper()
 
-    // Still doesn't work
     @Test
-    fun logged_in_user_can_see_entries() {
-        val user = User("Test", "Test", "Test", "Test", 1L)
-        val userDetails = SpringUser("Test", "Test", emptyList())
-        val token = "Bearer token"
-
-        val habit = Habit("Gym", "Go to the gym",1, userId = user.id!!)
-        val journalEntry = JournalEntry("Done", habit, user.id!!)
-
-
-        every { userService.loadUserByUsername("testUser") } returns userDetails
-        every { tokenProvider.validateToken(token, userDetails) } returns true
+    @WithMockUser(username = "correctUser")
+    fun `getAllJournalEntries return the current users journal entries`() {
+        // given
+        val habit = Habit("Gym", "Go to the gym",1, userId = 1)
+        val journalEntry = JournalEntry("Done", habit, 1)
         every { service.getAllJournalEntries(1) } returns arrayListOf(journalEntry)
+        val userName = SecurityContextHolder.getContext().authentication.name
 
-        val result = mockMvc.perform(get("/api/journalEntries")
-            .header("Authorization", token)).andExpect(status().isOk).andReturn()
+        // when
+        val result = mockMvc.perform(get("/api/journal_entries")
+            .header("Authorization", userName))
+            .andExpect(status().isOk).andReturn()
 
+        // then
         assertEquals(mapper.writeValueAsString(arrayListOf(journalEntry)), result.response.contentAsString)
+        verify { service.getAllJournalEntries(1) }
     }
 }

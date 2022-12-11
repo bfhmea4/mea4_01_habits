@@ -9,6 +9,7 @@ import ch.bfh.habits.exceptions.UnauthorizedException
 import ch.bfh.habits.services.UserService
 import ch.bfh.habits.util.TokenProvider
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -26,11 +27,11 @@ class AuthController @Autowired constructor(
     @PostMapping("api/register")
     fun register(@RequestBody body: RegisterDTO): ResponseEntity<User> {
         val user = UserEntityBuilder.createUserEntityFromDTO(body)
-        return ResponseEntity.ok(this.userService.save(user))
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.save(user))
     }
 
     @PostMapping("api/login")
-    fun login(@RequestBody body: LoginDTO, response: HttpServletResponse): ResponseEntity<Any> {
+    fun login(@RequestBody body: LoginDTO): ResponseEntity<JwtTokenDTO> {
          try {
              authenticationManager.authenticate(UsernamePasswordAuthenticationToken(body.userName, body.password))
          } catch (e: AuthenticationException) {
@@ -44,7 +45,7 @@ class AuthController @Autowired constructor(
     }
 
     @GetMapping("api/user")
-    fun user(@RequestHeader(value = "Authorization") token: String): ResponseEntity<Any> {
+    fun user(@RequestHeader(value = "Authorization") token: String): ResponseEntity<User?> {
         val userName = tokenProvider.extractUsername(token)
         return ResponseEntity.ok(this.userService.findByUserName(userName))
     }

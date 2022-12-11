@@ -5,7 +5,6 @@ import ch.bfh.habits.dtos.journalentry.JournalEntryEntityBuilder
 import ch.bfh.habits.entities.JournalEntry
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.repositories.JournalEntryDAO
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -34,21 +33,17 @@ class JournalEntryService(private val journalEntryDAO: JournalEntryDAO, private 
     }
 
     @Transactional
-    fun getJournalEntryById(id: Long, userId: Long): JournalEntry {
+    fun getJournalEntry(id: Long, userId: Long): JournalEntry {
         return journalEntryDAO.findByUserIdAndId(userId, id) ?: throw EntityNotFoundException("Journal Entry not found or not owned by user")
     }
 
     @Transactional
-    fun deleteJournalEntryById(id: Long, userId: Long) {
-        try {
-            journalEntryDAO.deleteByIdAndUserId(id, userId)
-        } catch (e: EmptyResultDataAccessException) {
-            throw EntityNotFoundException("Journal Entry not found or not owned by user")
-        }
+    fun deleteJournalEntry(id: Long, userId: Long) {
+        journalEntryDAO.delete(getJournalEntry(id, userId))
     }
 
     @Transactional
-    fun updateJournalEntryById(id: Long, journalEntryDTO: JournalEntryDTO, userId: Long): JournalEntry {
+    fun updateJournalEntry(id: Long, journalEntryDTO: JournalEntryDTO, userId: Long): JournalEntry {
         val currentJournalEntry = journalEntryDAO.findByUserIdAndId(userId, id) ?: throw EntityNotFoundException("Journal Entry not found or not owned by user")
 
         if (currentJournalEntry.habit?.id != journalEntryDTO.habitId) {

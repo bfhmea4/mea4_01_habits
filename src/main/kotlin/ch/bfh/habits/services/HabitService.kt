@@ -5,7 +5,6 @@ import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.exceptions.BadRequestException
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.repositories.HabitDAO
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -32,11 +31,7 @@ class HabitService(private val habitDAO: HabitDAO) {
 
     @Transactional
     fun deleteHabit(id: Long, userId: Long) {
-        try {
-            habitDAO.deleteByIdAndUserId(id, userId)
-        } catch (e: EmptyResultDataAccessException) {
-            throw EntityNotFoundException("Habit not found or not owned by user")
-        }
+        return habitDAO.delete(getHabit(id, userId))
     }
 
     @Transactional

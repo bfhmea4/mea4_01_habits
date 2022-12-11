@@ -1,5 +1,6 @@
 package ch.bfh.habits.habit.impl
 
+import ch.bfh.habits.auth.impl.WebClientBasedAuthCrudActor
 import ch.bfh.habits.dtos.habit.HabitDTO
 import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.exceptions.BadRequestException
@@ -13,10 +14,11 @@ import org.springframework.test.web.reactive.server.expectBody
 import org.springframework.test.web.reactive.server.returnResult
 import reactor.core.publisher.Mono
 
-class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : HabitCrudActor {
+class WebClientBasedHabitCrudActor(private val webClient: WebTestClient, authWebClient: WebTestClient) : WebClientBasedAuthCrudActor(authWebClient), HabitCrudActor {
     override fun getsAllHabits(): List<Habit> {
         val result = webClient.get()
             .uri("/api/habits/")
+            .header("Authorization", token)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk
@@ -29,6 +31,7 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
     override fun createsHabit(habitDTO: HabitDTO): Habit {
         val result = webClient.post()
             .uri("/api/habit")
+            .header("Authorization", token)
             .body(Mono.just(habitDTO), HabitDTO::class.java)
             .exchange()
             .expectStatus().isCreated
@@ -41,6 +44,7 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
     override fun seesHabitExists(habitId: Long): Boolean {
         return webClient.get()
             .uri("/api/habit/$habitId")
+            .header("Authorization", token)
             .exchange()
             .returnResult<Any>()
             .status
@@ -50,6 +54,7 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
     override fun getsHabit(habitId: Long): Habit {
         val result = webClient.get()
             .uri("/api/habit/$habitId")
+            .header("Authorization", token)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectBody<Habit>()
@@ -65,6 +70,7 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
     override fun deletesHabit(habitId: Long) {
         val result = webClient.delete()
             .uri("/api/habit/$habitId")
+            .header("Authorization", token)
             .exchange()
             .returnResult<Any>()
 
@@ -77,6 +83,7 @@ class WebClientBasedHabitCrudActor(private val webClient: WebTestClient) : Habit
     override fun updatesHabit(habitId: Long, habitDTO: HabitDTO): Habit {
         val result = webClient.put()
             .uri("/api/habit/$habitId")
+            .header("Authorization", token)
             .body(Mono.just(habitDTO), HabitDTO::class.java)
             .exchange()
             .expectBody<Habit>()

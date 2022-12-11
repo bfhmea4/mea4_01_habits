@@ -33,7 +33,7 @@ class TokenProvider {
     }
 
     private fun extractAllClaims(token: String): Claims {
-        return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token.replace(tokenPrefix, "")).body
+        return Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token.replace(tokenPrefix, "").trim()).body
     }
 
     private fun isTokenExpired(token: String): Boolean {
