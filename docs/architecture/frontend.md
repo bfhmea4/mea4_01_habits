@@ -47,3 +47,13 @@ The context folder is a convenient place to store these context objects because 
 For example, if we have an authentication context in the context folder, we can use it in our app by importing it from the context folder and using the `useContext` hook to access the context data and functions in any component. This makes it easy to manage user authentication and access control throughout the app, without having to pass data and functions through multiple levels of components. We wrap the app in the context provider in the `_app.tsx` file, and then we can access the context data and functions from anywhere in the app.
 
 Overall, the context folder is a useful tool for organizing and sharing React context objects in a Next.js app. It allows us to keep these objects organized and easily accessible from anywhere in the app.
+
+### Pages
+
+In a Next.js app, the `pages` directory is where we define the routes and components for our application. Each file in the pages directory represents a different route in the app, and the contents of the file define the component that will be rendered when that route is accessed.
+
+For example, if we have a file called login.tsx in the pages directory, this will define a route for the URL `/login`, and the contents of the file will define the component that will be rendered when this route is accessed.
+
+Next.js automatically generates the routing for our app based on the files in the pages directory, so we don't have to worry about configuring routing manually. This makes it easy to add new routes and components to our app, and to organize our app into logical, modular units.
+
+Overall, the pages directory is a central part of the Next.js framework, and is where we define the routes and components for our app. It allows us to easily add new routes and components to our app, and to organize our app into logical, modular units.
