@@ -47,8 +47,3 @@ The context folder is a convenient place to store these context objects because 
 For example, if we have an authentication context in the context folder, we can use it in our app by importing it from the context folder and using the `useContext` hook to access the context data and functions in any component. This makes it easy to manage user authentication and access control throughout the app, without having to pass data and functions through multiple levels of components. We wrap the app in the context provider in the `_app.tsx` file, and then we can access the context data and functions from anywhere in the app.
 
 Overall, the context folder is a useful tool for organizing and sharing React context objects in a Next.js app. It allows us to keep these objects organized and easily accessible from anywhere in the app.
-
-## Diagram
-```python
-
-```
