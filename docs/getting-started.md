@@ -1,39 +1,19 @@
 # Getting started
 
-This chapter shows the various ways to run/ deploy the application.
+This chapter shows the various ways to run and deploy the application.
 After the application is running (locally), you can access it under the following URLs:
 
 - Backend: [http://localhost:8080](http://localhost:8080)
 - Frontend: [http://localhost:3000](http://localhost:3000)
 - The REST-API: [http://localhost:8080/api](http://localhost:8080/api)
 
-## Test application locally
-
-### Build Local Image
-
-```bash
-docker build -f ./build/package/habits/Dockerfile . -t habits-backend:local
-```
-
-### Run Local Image
-
-Start docker image of backend:
-
-```bash
-docker run -p 8080:8080 -t habits-backend:local
-```
-
-Run test suite against localhost:
-
-```bash
-mvn test -Dhabits.test.localhost=true
-```
+## Start application locally for development
 
 ### Backend
 
-The application uses kotlin, maven and java version 17.
+The application uses Kotlin and Maven with Java Version 17.
 
-Start application by using maven:
+Start application by using Maven:
 
 ```bash
 mvn clean install
@@ -41,13 +21,13 @@ mvn clean install
 # using in-memory database
 mvn spring-boot:run -Dspring-boot.run.profiles=test
 
-# using local deployed postgres as database
+# using locally deployed postgres as database
 mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
 ### Frontend
 
-Start the frontend directly:
+Start the frontend with yarn:
 
 ```bash
 yarn --cwd ui install
@@ -56,16 +36,23 @@ yarn --cwd ui dev
 
 ### Database
 
-By default, we use PostgreSQL as our database.
-You have to configure the database connection settings in the following file: `src/main/kotlin/resources/application-local.properties`.
-The default connection string is `jdbc:postgresql://postgres:5432/habits`, which works with the local docker-compose file (this includes the postgres deployment).
+We use PostgreSQL as our database.
+To get started run the database using Docker
 
+```bash
+docker-compose up -d postgresql
+```
+
+Be aware that you need to delete the database or drop the tables and let it be regenerated on startup by Flyway in case there were changes.
+If you are changing the structure of the database make sure to update or create a migration. You don't need
+to do that manually. In `application-local.properties` you can uncomment the lines regarding `javax.persistence.schema-generation`.
+This will create a file with the required SQL statements on startup to create the database.
 
 ## Docker
 
-### Use pre-builded docker images
+### Use pre-built docker images
 
-The easiest way to run the application is to use the pre-builed docker-images from the Github registry.
+The easiest way to run the application is to use the pre-built docker-images from the GitHub registry.
 To start the application locally, use following docker-compose file:
 
 ```yaml
@@ -189,7 +176,7 @@ networks:
       com.docker.network.bridge.name: habits
 ```
 
-Build and start container (this take some time):
+Build and start container (this takes some time):
 
 ```bash
 docker-compose up -d
@@ -217,3 +204,10 @@ You need to set the following environment:
 **UI**
 
 - `ENV_API_URL` - The URL of the API, e.g. `https://template.habits.io` (without trailing slash, must be accessible from the webclient)
+
+
+## Postman
+
+Have a look at `src/main/resources/postman` for a Postman collection to test the API.
+Import it and run the login request. It will fetch a token and automatically set it for all other requests.
+Also make sure to import the environments to be able to run the requests against local or production.

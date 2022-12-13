@@ -120,6 +120,70 @@
 - Presented our work and scrum process
 - Watched presentations by other teams
 
+## 14.11.2022
+### Sprint Review / Sprint Planning
+#### present
+- Bigler Andy
+- Fuhrer Jan
+- Lauber Jan
+- Mowers Anthony Alexander
+
+#### protocol
+- ToDo
+
+## 22.11.2022
+### Backlog Refinement
+#### present
+- Bigler Andy
+- Mowers Anthony Alexander
+
+#### protocol
+- ToDo
+
+## 22.11.2022
+### Mid Sprint Meeting
+#### present
+- Bigler Andy
+- Fuhrer Jan
+- Lauber Jan
+- Mowers Anthony Alexander
+
+#### protocol
+- ToDo
+
+## 29.11.2022
+### Sprint Review / Sprint Planning
+#### present
+- Bigler Andy
+- Fuhrer Jan
+- Lauber Jan
+- Mowers Anthony Alexander
+
+#### protocol
+- ToDo
+
+## 06.12.2022
+### Mid Sprint Meeting
+#### present
+- Bigler Andy
+- Fuhrer Jan
+- Lauber Jan
+- Mowers Anthony Alexander
+
+#### protocol
+- ToDo
+
+## 13.12.2022
+### Sprint Review / Sprint Planning
+#### present
+- Bigler Andy
+- Fuhrer Jan
+- Lauber Jan
+- Mowers Anthony Alexander
+
+#### protocol
+- ToDo
+
 # Team Internal
 
 ## Retro
@@ -142,6 +206,18 @@
 #### Retro
 - Good work with Figma and UI foundation
 - Focus on presentation
+
+### 15.11.2022
+#### Retro
+- ToDo
+
+### 29.11.2022
+#### Retro
+- ToDO
+
+### 13.12.2022
+#### Retro
+- ToDO
 
 ## "Daily"
 ### 29.09.2022
@@ -178,3 +254,30 @@
 ### 07.11.2022
 - Go through presentation
 - Feedback on slides and Scrum document
+
+### 12.11.2022
+- Sync on prototype
+- Pair on integration of journal entry component
+
+### 19.11.2022
+- Longer break because of Blockweek
+- Discuss bugs regarding frontend input validation
+
+### 24.11.2022
+- Present PoC for Authentication
+
+### 27.11.2022
+- Present integration of standalone journal entry
+
+### 30.11.2022
+- Distribute work in the team
+
+### 03.12.2022
+- Pairing on new backend features
+
+### 07.12.2022
+- Show progress on UI
+
+### 10.12.2022
+- Pair programming to refactor backend
+- Work together on auth

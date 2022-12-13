@@ -28,6 +28,9 @@
 <br>
 
 ## Overview
+
+Our web habit tracking journaling app is built with Next.js and uses the popular tailwind CSS framework, making it fast, responsive, and easy to use. With our app, you can easily log and track your daily activities and habits, and filter them by habit to see how you're doing and where you can improve. Plus, our journaling feature allows you to reflect on your progress and stay motivated to continue building healthy habits. Try our app today and take control of your daily routine!
+
 ### Getting started and documentation
 
 To get started check out this [guide](https://bfhmea4.github.io/mea4_01_habits/getting-started/) on how to build/run the application.  
@@ -47,5 +50,5 @@ The data is persisted in a PostgreSQL database.
 ### Frontend
 
 The frontend is written in TypeScript and uses Next.js.  
-It uses [Tailwind CSS](https://tailwindcss.com/) for styling with [Flowbite React](https://flowbite-react.com) as a design system.  
+It uses [Tailwind CSS](https://tailwindcss.com/) for designing purposes.  
 There are also some self-written components in the `components` folder.
