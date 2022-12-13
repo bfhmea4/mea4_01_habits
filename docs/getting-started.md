@@ -43,6 +43,11 @@ To get started run the database using Docker
 docker-compose up -d postgresql
 ```
 
+Be aware that you need to delete the database or drop the tables and let it be regenerated on startup by Flyway in case there were changes.
+If you are changing the structure of the database make sure to update or create a migration. You don't need
+to do that manually. In `application-local.properties` you can uncomment the lines regarding `javax.persistence.schema-generation`.
+This will create a file with the required SQL statements on startup to create the database.
+
 ## Docker
 
 ### Use pre-built docker images
@@ -199,3 +204,10 @@ You need to set the following environment:
 **UI**
 
 - `ENV_API_URL` - The URL of the API, e.g. `https://template.habits.io` (without trailing slash, must be accessible from the webclient)
+
+
+## Postman
+
+Have a look at `src/main/resources/postman` for a Postman collection to test the API.
+Import it and run the login request. It will fetch a token and automatically set it for all other requests.
+Also make sure to import the environments to be able to run the requests against local or production.
