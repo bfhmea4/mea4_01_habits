@@ -194,8 +194,7 @@ const Home: NextPage = () => {
                 required={false}
               />
               <StyledButton
-                name="Add Habit"
-                icon={PlusIcon}
+                name="+ Add Habit"
                 type={StyledButtonType.Primary}
                 onClick={() => createModalRef.current.open()}
                 small
