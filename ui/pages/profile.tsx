@@ -28,14 +28,16 @@ const Profile = () => {
               <h1 className="text-4xl font-medium">Profile</h1>
             </div>
             <div className="pl-6 pt-2">
-              <Image
-                src={getAvatar()}
-                alt="Avatar"
-                width={100}
-                height={100}
-                className="rounded-full mx-auto"
-                loader={() => getAvatar()}
-              />
+              {!loading && user && (
+                <Image
+                  src={getAvatar()}
+                  alt="Avatar"
+                  width={100}
+                  height={100}
+                  className="rounded-full mx-auto"
+                  loader={() => getAvatar()}
+                />
+              )}
             </div>
           </div>
         </div>
