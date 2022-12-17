@@ -10,7 +10,7 @@ const Info = () => {
           </div>
         </div>
         <div className="px-6 fixed w-full top-20 bottom-14 pb-2 overflow-auto">
-          <div className="w-full flex flex-col space-y-2 ">
+          <div className="w-full flex flex-col space-y-2 sm:max-w-xl">
             <h2 className="text-2xl font-medium text-primary">How to use it</h2>
 
             <h3 className="text-lg font-medium text-gray-700">Home</h3>
