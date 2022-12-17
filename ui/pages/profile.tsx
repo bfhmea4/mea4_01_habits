@@ -1,11 +1,14 @@
-import { EnvelopeIcon, FingerPrintIcon, UserIcon } from '@heroicons/react/24/outline'
+import { Cog6ToothIcon, EnvelopeIcon, FingerPrintIcon, UserIcon } from '@heroicons/react/24/outline'
 import { Tooltip } from '@mui/material'
 import Image from 'next/image'
+import { useRef } from 'react'
 import StyledButton, { StyledButtonType } from '../components/general/buttons/StyledButton'
+import { PopUpModal } from '../components/general/modals/PopUpModal'
 import { useUserContext } from '../context/userContext'
 
 const Profile = () => {
   const { user, loading, logoutUser }: any = useUserContext()
+  const groupModalRef = useRef<any>(null)
 
   const handleLogout = () => {
     logoutUser()
@@ -21,6 +24,7 @@ const Profile = () => {
 
   return (
     <div className="">
+      <PopUpModal ref={groupModalRef}></PopUpModal>
       <div className="mx-auto sm:max-w-lg">
         <div className="max-w-xl">
           <div className="top-0 absolute sm:max-w-xl w-full">
@@ -62,6 +66,14 @@ const Profile = () => {
               {user?.email}
             </p>
           </div>
+          <StyledButton
+            name="Manage Groups"
+            icon={Cog6ToothIcon}
+            type={StyledButtonType.Primary}
+            onClick={() => {}}
+            className="w-full"
+            small
+          />
           <StyledButton
             name="Logout"
             onClick={() => handleLogout()}

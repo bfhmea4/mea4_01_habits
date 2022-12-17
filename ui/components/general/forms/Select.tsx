@@ -27,7 +27,7 @@ const Select = (props: SelectProps) => {
     if (props.setSelectedValue) {
       props.setSelectedValue(selected)
     }
-  }, [selected])
+  }, [props, selected])
 
   return (
     <Listbox value={selected} onChange={setSelected}>

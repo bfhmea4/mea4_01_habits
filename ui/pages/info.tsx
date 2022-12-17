@@ -1,24 +1,4 @@
-import { EnvelopeIcon, FingerPrintIcon, UserIcon } from '@heroicons/react/24/outline'
-import { Tooltip } from '@mui/material'
-import Image from 'next/image'
-import StyledButton, { StyledButtonType } from '../components/general/buttons/StyledButton'
-import { useUserContext } from '../context/userContext'
-
 const Info = () => {
-  const { user, loading, logoutUser }: any = useUserContext()
-
-  const handleLogout = () => {
-    logoutUser()
-  }
-
-  const getAvatar = () => {
-    if (user?.userName === 'johnD') {
-      return '/images/avatars/1.png'
-    } else {
-      return '/images/avatars/2.png'
-    }
-  }
-
   return (
     <div className="">
       <div className="mx-auto sm:max-w-lg">

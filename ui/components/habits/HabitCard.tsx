@@ -9,6 +9,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import { useLoadingContext } from '../../context/loadingContext'
 import { classNames } from '../../lib/design'
 import { parseStringLength } from '../../lib/parse'
+import { useRouter } from 'next/router'
 
 export interface HabitCardProps {
   habit: Habit
@@ -19,6 +20,7 @@ export interface HabitCardProps {
 export const HabitCard = (props: HabitCardProps) => {
   const editModalRef = useRef<any>(null)
   const { reload, setReload }: any = useLoadingContext()
+  const router = useRouter()
 
   const handleEdit = () => {
     editModalRef.current.open()
@@ -154,7 +156,14 @@ export const HabitCard = (props: HabitCardProps) => {
           />
         </div>
         <div className="font-light my-auto mr-5 w-40">
-          <h2 className="font-normal pl-2 text-lg">{parseStringLength(props.habit.title)}</h2>
+          <h2
+            className="font-normal pl-2 text-lg cursor-pointer"
+            onClick={() => {
+              router.push({ pathname: '/journal' })
+            }}
+          >
+            {parseStringLength(props.habit.title)}
+          </h2>
           {(props.habit.frequency && props.habit.frequencyValue && (
             <p className="pl-2 text-sm">
               {props.journalEntries?.length}/{props.habit.frequencyValue} {props.habit.frequency}

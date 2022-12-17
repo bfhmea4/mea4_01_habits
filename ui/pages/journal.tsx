@@ -9,9 +9,9 @@ import { JournalEntryCard } from '../components/journalEntry/JournalEntryCard'
 import Select, { SelectOptions } from '../components/general/forms/Select'
 import Image from 'next/image'
 import StyledButton, { StyledButtonType } from '../components/general/buttons/StyledButton'
-import { PlusIcon } from '@heroicons/react/24/outline'
 import { PopUpModal } from '../components/general/modals/PopUpModal'
 import { JournalEntryForm } from '../components/journalEntry/JournalEntryForm'
+import { useRouter } from 'next/router'
 
 const Home: NextPage = () => {
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([])
@@ -19,8 +19,9 @@ const Home: NextPage = () => {
   const [habits, setHabits] = useState<Habit[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const { reload }: any = useLoadingContext()
-  const [selectedHabit, setSelectedHabit] = useState<SelectOptions | null>(null)
   const createModalRef = useRef<any>(null)
+
+  const [selectedHabit, setSelectedHabit] = useState<SelectOptions | null>()
 
   const parseHabitsToSelectOptions = () => {
     let options: SelectOptions[] = [
@@ -66,7 +67,7 @@ const Home: NextPage = () => {
         setFilteredJournalEntries(journalEntries)
       }
     })()
-  }, [journalEntries, selectedHabit])
+  }, [habits, journalEntries, selectedHabit])
 
   useEffect(() => {
     ;(async () => {

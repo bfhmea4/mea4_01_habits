@@ -1,3 +1,4 @@
+import { PlusIcon } from '@heroicons/react/24/outline'
 import type { NextPage } from 'next'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
@@ -193,7 +194,8 @@ const Home: NextPage = () => {
                 required={false}
               />
               <StyledButton
-                name="+ Add Habit"
+                name="Add Habit"
+                icon={PlusIcon}
                 type={StyledButtonType.Primary}
                 onClick={() => createModalRef.current.open()}
                 small
