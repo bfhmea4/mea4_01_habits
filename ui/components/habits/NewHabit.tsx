@@ -20,7 +20,7 @@ export const NewHabit = () => {
       </PopUpModal>
       <div className="flex h-full">
         <div className="w-24 rounded-full bg-secondary flex items-center justify-center">
-          <PlusIcon className="w-12 h-12 text-primary" />
+          <p className="text-6xl text-bold">+</p>
         </div>
         <div className="font-light my-auto mr-5">
           <h2 className="font-normal text-2xl">add a habit</h2>
