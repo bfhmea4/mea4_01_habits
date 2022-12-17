@@ -6,6 +6,7 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction'
 import HomeIcon from '@mui/icons-material/Home'
 import DescriptionIcon from '@mui/icons-material/Description'
 import PersonIcon from '@mui/icons-material/Person'
+import InfoIcon from '@mui/icons-material/Info'
 import { PopUpModal } from './modals/PopUpModal'
 import { JournalEntryForm } from '../journalEntry/JournalEntryForm'
 
@@ -24,6 +25,8 @@ export const Nav = () => {
       setValue(1)
     } else if (router.pathname === '/profile') {
       setValue(2)
+    } else if (router.pathname === '/info') {
+      setValue(3)
     }
   }, [router])
 
@@ -55,6 +58,7 @@ export const Nav = () => {
           />
         )}
         <BottomNavigationAction LinkComponent={'a'} href="/profile" label="Profile" icon={<PersonIcon />} />
+        <BottomNavigationAction LinkComponent={'a'} href="/info" label="Info" icon={<InfoIcon />} />
       </BottomNavigation>
     </div>
   )
