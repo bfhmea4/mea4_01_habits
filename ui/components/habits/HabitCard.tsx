@@ -150,7 +150,7 @@ export const HabitCard = (props: HabitCardProps) => {
               // Colors
               pathColor: `#FFF`,
               textColor: '#FFF',
-              trailColor: props.journalEntries?.length ? '' : '#B27092',
+              trailColor: props.journalEntries?.length && props.habit.frequency ? '' : '#B27092',
               backgroundColor: '#FFF',
             })}
           />
