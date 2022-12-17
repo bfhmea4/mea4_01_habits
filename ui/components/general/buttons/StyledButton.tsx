@@ -28,7 +28,7 @@ const StyledButton = (props: StyledButtonProps) => {
     props.type === StyledButtonType.Primary ? 'bg-primary text-white' : '',
     props.type === StyledButtonType.Secondary ? 'border-2 bg-white border-primary text-primary' : '',
     props.type === StyledButtonType.Danger ? 'bg-red-600 text-white' : '',
-    props.small ? 'h-9 text-xs py-2' : 'h-14 py-4 text-sm px-11',
+    props.small ? 'text-sm py-2' : 'py-4 text-sm px-11',
     'rounded-lg px-4 overflow-hidden group font-medium'
   )
 
@@ -38,13 +38,13 @@ const StyledButton = (props: StyledButtonProps) => {
       onClick={props.onClick}
     >
       {props.icon && !props.iconAnimation && (
-        <props.icon className={classNames(props.small ? 'h-4 w-4 inline mr-2' : 'h-5 w-5 inline mr-2')} />
+        <props.icon className={classNames(props.small ? 'h-5 w-5 inline mr-2' : 'h-5 w-5 inline mr-2')} />
       )}
       {props.name}
       {props.icon && props.iconAnimation && (
         <props.icon
           className={classNames(
-            props.small ? 'h-4 w-4' : 'h-5 w-5',
+            props.small ? 'h-5 w-5' : 'h-5 w-5',
             'inline ml-2 group-hover:translate-x-1 transition-all ease-in-out duration-150'
           )}
         />

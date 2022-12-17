@@ -3,5 +3,5 @@ export interface DashboardProps {
 }
 
 export const JournalDashboard = (props: DashboardProps) => {
-  return <div className="px-6 fixed w-full top-72 bottom-14 overflow-auto">{props.children}</div>
+  return <div className="px-6 fixed w-full top-52 bottom-14 overflow-auto">{props.children}</div>
 }

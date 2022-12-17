@@ -8,6 +8,7 @@ import { Toast, ToastType } from '../alerts/Toast'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import { useLoadingContext } from '../../context/loadingContext'
 import { classNames } from '../../lib/design'
+import { parseStringLength } from '../../lib/parse'
 
 export interface HabitCardProps {
   habit: Habit
@@ -147,12 +148,13 @@ export const HabitCard = (props: HabitCardProps) => {
               // Colors
               pathColor: `#FFF`,
               textColor: '#FFF',
+              trailColor: props.journalEntries?.length ? '' : '#B27092',
               backgroundColor: '#FFF',
             })}
           />
         </div>
-        <div className="font-light my-auto mr-5">
-          <h2 className="font-normal pl-2 text-2xl">{props.habit.title}</h2>
+        <div className="font-light my-auto mr-5 w-40">
+          <h2 className="font-normal pl-2 text-lg">{parseStringLength(props.habit.title)}</h2>
           {(props.habit.frequency && props.habit.frequencyValue && (
             <p className="pl-2 text-sm">
               {props.journalEntries?.length}/{props.habit.frequencyValue} {props.habit.frequency}
