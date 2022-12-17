@@ -40,3 +40,10 @@ export const formatDate = (date: Date): string => {
 export const checkIfStringIsNumber = (str: string): boolean => {
   return !isNaN(Number(str)) && str !== ''
 }
+
+export const parseStringLength = (str: string): string => {
+  if (str.length > 15) {
+    return str.slice(0, 15) + '...'
+  }
+  return str
+}

@@ -9,7 +9,7 @@ const withPWA = require('next-pwa')({
 
 module.exports = withPWA({
   trailingSlash: true,
-  reactStrictMode: true,
+  reactStrictMode: false,
   publicRuntimeConfig: {
     ENV_API_URL: process.env.ENV_API_URL,
   },

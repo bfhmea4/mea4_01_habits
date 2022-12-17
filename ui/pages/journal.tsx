@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Loading from '../components/Loading'
 import Api from '../config/Api'
 import { useLoadingContext } from '../context/loadingContext'
@@ -8,6 +8,10 @@ import { JournalDashboard } from '../components/journalEntry/JournalDashboard'
 import { JournalEntryCard } from '../components/journalEntry/JournalEntryCard'
 import Select, { SelectOptions } from '../components/general/forms/Select'
 import Image from 'next/image'
+import StyledButton, { StyledButtonType } from '../components/general/buttons/StyledButton'
+import { PopUpModal } from '../components/general/modals/PopUpModal'
+import { JournalEntryForm } from '../components/journalEntry/JournalEntryForm'
+import { useRouter } from 'next/router'
 
 const Home: NextPage = () => {
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([])
@@ -15,7 +19,9 @@ const Home: NextPage = () => {
   const [habits, setHabits] = useState<Habit[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const { reload }: any = useLoadingContext()
-  const [selectedHabit, setSelectedHabit] = useState<SelectOptions | null>(null)
+  const createModalRef = useRef<any>(null)
+
+  const [selectedHabit, setSelectedHabit] = useState<SelectOptions | null>()
 
   const parseHabitsToSelectOptions = () => {
     let options: SelectOptions[] = [
@@ -61,7 +67,7 @@ const Home: NextPage = () => {
         setFilteredJournalEntries(journalEntries)
       }
     })()
-  }, [selectedHabit])
+  }, [habits, journalEntries, selectedHabit])
 
   useEffect(() => {
     ;(async () => {
@@ -125,10 +131,13 @@ const Home: NextPage = () => {
 
   return (
     <div className="">
+      <PopUpModal ref={createModalRef}>
+        <JournalEntryForm modalRef={createModalRef} type="create" />
+      </PopUpModal>
       <div className="mx-auto sm:max-w-lg">
-        <div className="max-w-xl mb-4">
+        <div className="max-w-xl">
           <div className="grid grid-cols-2 gap-4 px-6">
-            <div className="w-36 h-36">
+            <div className="w-36 h-32">
               <Image
                 src="/images/illustrations/undraw_personal_notebook_re_d7dc.svg"
                 alt="Personal Journal"
@@ -138,15 +147,18 @@ const Home: NextPage = () => {
               />
             </div>
             <div className="self-center text-right">Your Journal Logs</div>
-          </div>
-          <h2 className="text-2xl font-medium px-6">Logs</h2>
-          <div className="px-4">
             <Select
               name="filterhabit"
               label="Filter by habit"
               options={parseHabitsToSelectOptions()}
               setSelectedValue={setSelectedHabit}
               required={false}
+            />
+            <StyledButton
+              name="+ Add Log Entry"
+              type={StyledButtonType.Primary}
+              onClick={() => createModalRef.current.open()}
+              small
             />
           </div>
         </div>

@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import Cookies from 'js-cookie'
 import getConfig from 'next/config'
 
 const { publicRuntimeConfig: config } = getConfig()
@@ -16,5 +17,10 @@ let Api = Axios.create({
     'Content-Type': 'application/json',
   },
 })
+
+const token = Cookies.get('token')
+if (token) {
+  Api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+}
 
 export default Api
