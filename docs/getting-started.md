@@ -67,8 +67,13 @@ services:
     networks:
       - net
     environment:
-      SPRING_DATASOURCE_PASSWORD: 'changeme'
-      SPRING_FLYWAY_PASSWORD: 'changeme'
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_DATASOURCE_USERNAME: habits
+      SPRING_DATASOURCE_PASSWORD: 'CHANGEME'
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_FLYWAY_USER: habits
+      SPRING_FLYWAY_PASSWORD: 'CHANGEME'
+      ALLOWED_ORIGINS: http://127.0.0.1:3000
 
   frontend:
     image: ghcr.io/bfhmea4/habits-frontend:latest
@@ -90,7 +95,7 @@ services:
     environment:
       POSTGRES_DB: 'habits'
       POSTGRES_USER: 'habits'
-      POSTGRES_PASSWORD: 'changeme'
+      POSTGRES_PASSWORD: 'CHANGEME'
     volumes:
       - db-data:/var/lib/postgresql/data
 
@@ -140,8 +145,13 @@ services:
     networks:
       - net
     environment:
-      SPRING_DATASOURCE_PASSWORD: 'changeme'
-      SPRING_FLYWAY_PASSWORD: 'changeme'
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_DATASOURCE_USERNAME: habits
+      SPRING_DATASOURCE_PASSWORD: 'CHANGEME'
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_FLYWAY_USER: habits
+      SPRING_FLYWAY_PASSWORD: 'CHANGEME'
+      ALLOWED_ORIGINS: http://127.0.0.1:3000
 
   frontend:
     build: ./ui/
@@ -163,7 +173,7 @@ services:
     environment:
       POSTGRES_DB: 'habits'
       POSTGRES_USER: 'habits'
-      POSTGRES_PASSWORD: 'changeme'
+      POSTGRES_PASSWORD: 'CHANGEME'
     volumes:
       - db-data:/var/lib/postgresql/data
 
@@ -192,18 +202,21 @@ You need to set the following environment:
 
 **Backend**
 
-| ENV | Default | Description |
-|-----|---------|-------------|
-| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://localhost:5432/habits` | The JDBC-String of the database |
-| `SPRING_DATASOURCE_USERNAME` | `habits` | The database user |
-| `SPRING_DATASOURCE_PASSWORD` | `habits` | Password of the database user |
-| `SPRING_FLYWAY_URL` | `jdbc:postgresql://localhost:5432/habits` | The JDBC-String of the database |
-| `SPRING_FLYWAY_USER`| `habits` | The flyway database user |
-| `SPRING_FLYWAY_PASSWORD` | `habits` | Password of the flyway database user |
+| ENV                           | Description                                                     |
+|-------------------------------|-----------------------------------------------------------------|
+| `SPRING_DATASOURCE_URL`       | The JDBC-String of the database                                 |
+| `SPRING_DATASOURCE_USERNAME`  | The database user                                               |
+| `SPRING_DATASOURCE_PASSWORD`  | Password of the database user                                   |
+| `SPRING_FLYWAY_URL`           | The JDBC-String of the database                                 |
+| `SPRING_FLYWAY_USER`          | The flyway database user                                        |
+| `SPRING_FLYWAY_PASSWORD`      | Password of the flyway database user                            |
+| `ALLOWED_ORIGINS`             | The allowed origins for CORS, e.g. `https://template.habits.io` |
 
 **UI**
 
-- `ENV_API_URL` - The URL of the API, e.g. `https://template.habits.io` (without trailing slash, must be accessible from the webclient)
+| ENV                | Description                                                                                                           |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------|
+| `ENV_API_URL`      | The URL of the API, e.g. `https://template.habits.io` (without trailing slash, must be accessible from the webclient) |
 
 
 ## Postman

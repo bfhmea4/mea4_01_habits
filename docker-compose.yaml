@@ -11,8 +11,13 @@ services:
     networks:
       - net
     environment:
-      SPRING_DATASOURCE_PASSWORD: 'changeme'
-      SPRING_FLYWAY_PASSWORD: 'changeme'
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_DATASOURCE_USERNAME: habits
+      SPRING_DATASOURCE_PASSWORD: 'CHANGEME'
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_FLYWAY_USER: habits
+      SPRING_FLYWAY_PASSWORD: 'CHANGEME'
+      ALLOWED_ORIGINS: http://127.0.0.1:3000
 
   frontend:
     build: ./ui
@@ -34,7 +39,7 @@ services:
     environment:
       POSTGRES_DB: 'habits'
       POSTGRES_USER: 'habits'
-      POSTGRES_PASSWORD: 'changeme'
+      POSTGRES_PASSWORD: 'CHANGEME'
     volumes:
       - db-data:/var/lib/postgresql/data
 
