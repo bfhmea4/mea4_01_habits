@@ -153,13 +153,17 @@ export const HabitForm = (props: Props) => {
         return
       }
 
+      let groupParse = props.habit?.group?.id ? props.habit?.group?.id : ''
+      let frequencyParse = props.habit?.frequency ? props.habit?.frequency : ''
+      let frequencyValueParseKey = frequencyValue?.value ? frequencyValue?.value : ''
+      let frequencyValueParse = props.habit?.frequencyValue ? props.habit?.frequencyValue : ''
+
       if (
-        // TODO: works only if group AND frequency are set
         title.value === props.habit?.title &&
         description.value === props.habit?.description &&
-        selectedGroup.value === props.habit?.group?.id &&
-        selectedFrequency.value == props.habit?.frequency &&
-        Number(frequencyValue?.value) === props.habit?.frequencyValue
+        selectedGroup.value === groupParse &&
+        selectedFrequency.value === frequencyParse &&
+        frequencyValueParseKey == frequencyValueParse
       ) {
         Toast('No changes made', ToastType.info)
         // close modal
