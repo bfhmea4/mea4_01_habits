@@ -1,3 +1,3 @@
 package ch.bfh.habits.dtos.user
 
-class JwtTokenDTO (val token: String)
+data class JwtTokenDTO (val token: String)

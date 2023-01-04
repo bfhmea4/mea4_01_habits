@@ -1,6 +1,6 @@
 package ch.bfh.habits.dtos.user
 
-class RegisterDTO (
+data class RegisterDTO (
     val password: String,
     val email: String,
     val userName: String,
