@@ -74,6 +74,8 @@ services:
       SPRING_FLYWAY_USER: habits
       SPRING_FLYWAY_PASSWORD: 'CHANGEME'
       ALLOWED_ORIGINS: http://127.0.0.1:3000
+      JWT_SIGNING_KEY: 'CHANGEME'
+      JWT_TOKEN_VALIDITY: 604800
 
   frontend:
     image: ghcr.io/bfhmea4/habits-frontend:latest
@@ -152,6 +154,8 @@ services:
       SPRING_FLYWAY_USER: habits
       SPRING_FLYWAY_PASSWORD: 'CHANGEME'
       ALLOWED_ORIGINS: http://127.0.0.1:3000
+      JWT_SIGNING_KEY: 'CHANGEME'
+      JWT_TOKEN_VALIDITY: 604800
 
   frontend:
     build: ./ui/
@@ -211,6 +215,8 @@ You need to set the following environment:
 | `SPRING_FLYWAY_USER`          | The flyway database user                                        |
 | `SPRING_FLYWAY_PASSWORD`      | Password of the flyway database user                            |
 | `ALLOWED_ORIGINS`             | The allowed origins for CORS, e.g. `https://template.habits.io` |
+| `JWT_SIGNING_KEY`             | Key used to sign JWTs                                           |
+| `JWT_TOKEN_VALIDITY`          | After how many seconds does a token expire                      |
 
 **UI**
 
