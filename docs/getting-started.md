@@ -50,6 +50,8 @@ This will create a file with the required SQL statements on startup to create th
 
 ## Docker
 
+![Docker image](assets/images/Docker.png)
+
 ### Use pre-built docker images
 
 The easiest way to run the application is to use the pre-built docker-images from the GitHub registry.
@@ -230,3 +232,5 @@ You need to set the following environment:
 Have a look at `src/main/resources/postman` for a Postman collection to test the API.
 Import it and run the login request. It will fetch a token and automatically set it for all other requests.
 Also make sure to import the environments to be able to run the requests against local or production.
+
+![Postman image](assets/images/Postman.png)
