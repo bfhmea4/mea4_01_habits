@@ -129,7 +129,10 @@
 - Mowers Anthony Alexander
 
 #### protocol
-- ToDo
+- Short call as we were in the Blockweek
+- Presented UI components for journal entry
+- Presented integration of habit UI components
+- Discussed the next sprint (Frequency feature, input validation and PoC Authentication)
 
 ## 22.11.2022
 ### Backlog Refinement
@@ -138,9 +141,11 @@
 - Mowers Anthony Alexander
 
 #### protocol
-- ToDo
+- Discussed a new feature to group habits
+- Current UI --> Improvements in Navigation
+- Discussion Unit tests and Authentication/Authorization
+- Cleaned up Epics and User Stories
 
-## 22.11.2022
 ### Mid Sprint Meeting
 #### present
 - Bigler Andy
@@ -149,7 +154,8 @@
 - Mowers Anthony Alexander
 
 #### protocol
-- ToDo
+- Show progress of Authentication PoC
+- Show progress of frequency feature
 
 ## 29.11.2022
 ### Sprint Review / Sprint Planning
@@ -160,7 +166,9 @@
 - Mowers Anthony Alexander
 
 #### protocol
-- ToDo
+- Show better input validation, standalone log entry creation
+- Show working Authentication
+- Plan next sprint (Documentation update, navigation, re-enable unit tests, open api documentation)
 
 ## 06.12.2022
 ### Mid Sprint Meeting
@@ -171,7 +179,7 @@
 - Mowers Anthony Alexander
 
 #### protocol
-- ToDo
+- Show progress of sprint
 
 ## 13.12.2022
 ### Sprint Review / Sprint Planning
@@ -180,6 +188,39 @@
 - Fuhrer Jan
 - Lauber Jan
 - Mowers Anthony Alexander
+
+#### protocol
+- Show group habits feature, navigation improvements, open api documentation
+- Finalisation of the whole Auth topic with all Unit tests green again
+- Plan next sprint (Score for habit, documentation, small fixes)
+
+## 20.12.2022
+### Mid Sprint Meeting
+#### present
+- Bigler Andy
+- Fuhrer Jan
+- Lauber Jan
+- Mowers Anthony Alexander
+
+#### protocol
+- Show progress of sprint
+- Agreed to finish on technical tasks and focus on documentation and presentation
+
+## 10.01.2023
+### Sprint Review / Sprint Planning
+#### present
+- Bigler Andy
+- Fuhrer Jan
+- Lauber Jan
+- Mowers Anthony Alexander
+
+#### protocol
+- ToDo
+
+## 17.01.2023
+### Final presentation
+#### present
+- Multiple groups
 
 #### protocol
 - ToDo
@@ -209,15 +250,26 @@
 
 ### 15.11.2022
 #### Retro
-- ToDo
+- Quick round as we were in the Blockweek
+- Finally, stable application that works and that we can use as a foundation
+- Need to make sure we have enough tasks defined to work on now
 
 ### 29.11.2022
 #### Retro
-- ToDO
+- Struggling with the authentication topic
+- Mostly Blockweek in this Sprint
 
 ### 13.12.2022
 #### Retro
-- ToDO
+- Was probably not a good idea to not build Auth from the start
+- Disabling unit tests was also not a good idea
+- After clean up finally back in green everything
+
+### 10.01.2023
+#### Retro
+- Good team work in this sprint
+- We could finish almost all the tasks
+- Should not have planed more technical features as we had to focus on documentation and presentation
 
 ## "Daily"
 ### 29.09.2022
@@ -281,3 +333,16 @@
 ### 10.12.2022
 - Pair programming to refactor backend
 - Work together on auth
+
+### 15.12.2022
+- Split work
+- Discussed hot to implement small fixes
+
+### 21.12.2022
+- Last discussion in this year
+- What did we do and what is still open for the next year
+- Prepare everything to complete the project
+
+### 06.01.2023
+- Short sync of what was done during the holidays
+- Discuss what we want need to do in the next sprint
