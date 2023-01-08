@@ -21,4 +21,4 @@ building good habits and breaking bad habits, and provides a framework for doing
 - The 3rd law (Response): Make it easy. --> Interface as simple as possible, the least amount of clicks to log a habit
 - The 4th law (Reward): Make it satisfying. --> The whole idea of Habit tracking itself
 
-<img alt="Atomic Habits" src="../assets/images/AtomicHabits.png" width="300"/>
+![Atomic Habits](../assets/images/AtomicHabits.png)
