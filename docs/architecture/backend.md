@@ -7,29 +7,35 @@ To secure the endpoints Spring Security in combination with JWTs is used.
 ## Environments
 
 We have three different environments:
+
 - Production
 - Local
 - Test
 
 ### Production
+
 Environment must be set when using this profile.
 More information can be found here: [Getting Started](../getting-started.md)
 
 ### Local
+
 Local is used for development.
 Flyway is enabled and the backend connects to a local PostgreSQL database.
 
 ### Test
+
 Test is used for testing and uses an H2 in-memory database.
 
 ## Folder structure
 
 There are three main folders:
+
 - `main` --> Contains the source code
 - `feature-test` --> Contains the integration tests
 - `test` --> Contains the unit tests
 
 The source code is structured in the following way:
+
 - `config` --> Security and CORS configuration
 - `controllers` --> Spring controllers
 - `dtos` --> Data transfer objects and builders
@@ -43,8 +49,11 @@ The source code is structured in the following way:
 - `HabitsApplication.kt` --> Entry point of the application
 
 ## Authentication and Authorization
+
 ### Configuration
+
 The current security configuration looks like this:
+
 ```kotlin
         http.
             authorizeRequests { authorizeRequests ->
@@ -68,6 +77,7 @@ All other endpoints are protected and require a valid JWT. That is ensured by th
 We also load to CORS configuration from the `WebConfiguration.kt` file.
 
 ### Implementation
+
 The `AuthController` and the `TokenProvider` are responsible to allow login/register and to generate the tokens.
 
 To do authorization the controller passes the current userId to the service.
@@ -85,12 +95,14 @@ For POST requests the userId is used to link the newly created entity to the use
 ## Testing
 
 ### Unit tests
+
 We use `mockk` for mocking classes. Unit tests are used to test our custom/business logic.
 We don't want to test JPA or Spring functionality.
 
 Have a look in the `test` folder for examples.
 
 ### Integration tests
+
 In the `feature-test` folder we have integration tests. Those are run against the h2 in-memory database.
 We use actors that interact with the backend via REST calls. Those actors can and must also register a user and login to fetch a JWT token.
 

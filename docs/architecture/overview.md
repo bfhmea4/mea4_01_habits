@@ -1,6 +1,7 @@
 # Architecture Overview
 
 The application consists of three different parts:
+
 - Next.js/React frontend
 - Kotlin Spring Boot backend
 - PostgreSQL database
@@ -12,7 +13,9 @@ The whole application is dockerized into three different containers.
 Those can then be deployed to a Kubernetes cluster.
 
 ## Component Diagram
+
 ![Component Diagram](../assets/diagrams/ComponentDiagram.png)
 
 ## Database Diagram
+
 ![Database](../assets/diagrams/Database.png)
