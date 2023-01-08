@@ -5,6 +5,7 @@ import { useRef } from 'react'
 import StyledButton, { StyledButtonType } from '../components/general/buttons/StyledButton'
 import { PopUpModal } from '../components/general/modals/PopUpModal'
 import { useUserContext } from '../context/userContext'
+import { Toast, ToastType } from '../components/alerts/Toast'
 
 const Profile = () => {
   const { user, loading, logoutUser }: any = useUserContext()
@@ -70,7 +71,7 @@ const Profile = () => {
             name="Manage Groups"
             icon={Cog6ToothIcon}
             type={StyledButtonType.Primary}
-            onClick={() => {}}
+            onClick={() => Toast('Currently this can only be done in Postman. Sorry.', ToastType.info)}
             className="w-full"
             small
           />

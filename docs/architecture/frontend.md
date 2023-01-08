@@ -8,7 +8,7 @@ Additionally, the app includes a journaling feature that allows users to reflect
 
 Overall, our habit tracking app is designed to be fast, responsive, and easy to use, providing users with the tools they need to build and maintain healthy habits.
 
-## Structure
+## Structure
 
 The frontend architecture of our Next.js app is organized into a hierarchical structure of components. At the top level, we have a root component that acts as the entry point for the app and manages the overall layout and navigation.
 

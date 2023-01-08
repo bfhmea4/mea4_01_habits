@@ -2,7 +2,7 @@
 site_name: Habits Docs
 site_author: Jan Lauber, Jan Fuhrer, Andy Bigler
 site_description: >-
-  Documentation and guides for the BFH Project 1 Habit Journalling Platform.
+  Documentation and guides for the BFH Project 1 Habit Journaling Platform.
 
 # Repository
 repo_url: https://github.com/bfhmea4/mea4_01_habits
@@ -67,9 +67,13 @@ nav:
     - Backend: architecture/backend.md
     - Frontend: architecture/frontend.md
   - Project:
+    - Vision: project/project-vision.md
+    - Setup: project/project-setup.md
     - Decisions: project/project-decisions.md
     - Impediment Backlog: project/impediment-backlog.md
-    - Setup: project/project-setup.md
+    - Meetings: project/project-meetings.md
+  - Features:
+      - How to use: features/how-to-use.md
 
 # Markdown extensions
 markdown_extensions:
