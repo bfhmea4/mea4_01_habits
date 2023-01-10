@@ -2,32 +2,13 @@
 
 This document keeps track of important decisions about this project
 
-## 20.10.2022
+## List of decisions
 
-### present
-- Bigler Andy
-- Fuhrer Jan
-- Lauber Jan
-- Mowers Anthony Alexander
-
-### decisions
-- Use Kotlin instead of Go & the PocketBase framework
-- Rewrite the backend in Kotlin
-- Made a first Figma prototype of the UI
-
-
-## 26.10.2022
-
-### present
-- Bigler Andy
-- Fuhrer Jan
-- Lauber Jan
-- Mowers Anthony Alexander
-
-### decisions
-- Continue with all open stories of Sprint 2 by tuesday, 01.11.2022
-- Develop a first UI version
-- After this one-week sprint, we continue with 2-week sprints
-- In the meeting, we all talk about the sprint goal
-- The students made a proposal for the user stories to be worked on
-- Use "Spring-Data" in the backend
+- Use Kotlin & Spring Boot instead of Go & the PocketBase framework
+- Use Flyway as a database migration tool
+- Use Next.js 12 instead of 13 for now
+- Use Tailwind for styling
+- Write controllers and accept some boilerplate code instead of using Spring Data
+  - More flexibility by doing that
+  - Learn one thing at a time. Too much magic for us now.
+- Use Spring Security and JWT for Authentication/Authorization

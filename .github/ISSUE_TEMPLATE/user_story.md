@@ -1,6 +1,6 @@
 ---
 name: User Story
-about: Add an user story for this project
+about: Add a user story for this project
 title: ''
 labels: ''
 assignees: ''
@@ -9,9 +9,8 @@ assignees: ''
 
 **DoR**
 - [ ] Acceptance criterias are defined
-- [ ] Stakeholders and contact persons are known
 - [ ] Description (scope) is understood by the team
-- [ ] Automation Tests affected, needed or possible
+- [ ] Automation Tests affected or needed
 
 **DoD**
 - [ ] Story is reviewed and accepted by PO
@@ -25,6 +24,9 @@ As a ..., I want ..., so that ...
 
 **Description**
 *business description*
+
+**Sub Tasks**
+- [ ] [Sub][UI/Backend] Title
 
 **Open points**
 

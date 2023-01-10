@@ -1,15 +1,35 @@
-export interface Habit {
-    id: number;
-    title: string;
-    description?: string;
-    created_at: Date;
-    updated_at: Date;
+export enum FrequencyType {
+  NONE = '',
+  DAILY = 'DAILY',
+  WEEKLY = 'WEEKLY',
+  MONTHLY = 'MONTHLY',
 }
 
-export interface JournalEntry {
-    id: number;
-    note: string;
-    belongs_to_id: number;
-    created_at: Date;
-    updated_at: Date;
+export interface BaseRecord {
+  id: number
+  createdAt: Date
+  editedAt: Date
+}
+
+export interface Group extends BaseRecord {
+  title: string
+}
+
+export interface Habit extends BaseRecord {
+  title: string
+  description: string
+  frequency: FrequencyType
+  frequencyValue: number
+  group: Group
+}
+
+export interface JournalEntry extends BaseRecord {
+  description: string
+  habit: Habit
+}
+
+export interface User extends BaseRecord {
+  firstName: string
+  lastName: string
+  userName: string
 }

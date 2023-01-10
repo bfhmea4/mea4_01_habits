@@ -7,4 +7,8 @@ import org.springframework.stereotype.Repository
 
 @RepositoryRestResource(collectionResourceRel = "habits", path = "habits")
 @Repository
-interface HabitDAO : PagingAndSortingRepository<Habit, Long>
+interface HabitDAO : PagingAndSortingRepository<Habit, Long> {
+    fun findAllByGroupIdAndUserId(groupId: Long, userId: Long): List<Habit>
+    fun findAllByUserId(userId: Long): List<Habit>
+    fun findByUserIdAndId(userId: Long, id: Long): Habit?
+}

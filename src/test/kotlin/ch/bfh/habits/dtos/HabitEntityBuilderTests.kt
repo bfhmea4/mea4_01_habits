@@ -10,8 +10,11 @@ class HabitEntityBuilderTests {
 
     @Test
     fun empty_dto_creates_default_habit() {
-        val entity = HabitEntityBuilder.createHabitEntityFromDTO(HabitDTO())
+        val entity = HabitEntityBuilder.createHabitEntityFromDTO(HabitDTO(), 1)
         assertThat(entity.title).isEqualTo("")
         assertThat(entity.description).isEqualTo("")
+        assertThat(entity.frequency).isNull()
+        assertThat(entity.frequencyValue).isNull()
+        assertThat(entity.userId).isEqualTo(1)
     }
 }

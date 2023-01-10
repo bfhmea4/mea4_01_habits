@@ -1,37 +1,44 @@
 package ch.bfh.habits.controllers
 
-import ch.bfh.habits.dtos.ObjectIdDTO
-import ch.bfh.habits.dtos.journalentry.JournalEntryDTO
-import ch.bfh.habits.dtos.journalentry.JournalEntryListDTO
 import ch.bfh.habits.entities.Habit
+import ch.bfh.habits.entities.JournalEntry
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import ch.bfh.habits.services.JournalEntryService
+import ch.bfh.habits.services.UserService
+import ch.bfh.habits.util.TokenProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.http.MediaType
-import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
+import kotlin.test.assertEquals
 
-@ExtendWith(SpringExtension::class)
 @WebMvcTest(JournalEntryController::class)
 internal class JournalEntryControllerTests {
 
     @TestConfiguration
-    class JournalEntryControllerTestsConfig {
+    class HabitControllerTestsConfig {
         @Bean
         fun service() = mockk<JournalEntryService>()
+        @Bean
+        fun tokenProvider() = mockk<TokenProvider> {
+            every { validateToken(any(), any()) } returns true
+            every { extractUsername("correctUser") } returns "correctUser"
+            every { extractUsername("wrongUser") } returns "wrongUser"
+            every { extractId("correctUser") } returns 1
+            every { extractId("wrongUser") } returns 2
+        }
+        @Bean
+        fun userService() = mockk<UserService>()
     }
 
     @Autowired
@@ -43,118 +50,78 @@ internal class JournalEntryControllerTests {
     private val mapper = jacksonObjectMapper()
 
     @Test
-    fun controller_invokes_getAllJournalEntriesForHabit_function() {
-        val habit = Habit("Gym", "Go to the gym",1)
-        val journalEntry = JournalEntryDTO("Done", habit = habit)
+    @WithMockUser(username = "correctUser")
+    fun `getAllJournalEntries return the current users journal entries`() {
+        // given
+        val habit = Habit("Gym", "Go to the gym",1, userId = 1)
+        val journalEntry = JournalEntry("Done", habit, 1)
+        every { service.getAllJournalEntries(1) } returns arrayListOf(journalEntry)
+        val userName = SecurityContextHolder.getContext().authentication.name
 
-        // ToDo test service layer also. This logic is not tested here
-        every { service.getAllJournalEntriesForHabit(1) } returns JournalEntryListDTO(arrayListOf(journalEntry))
+        // when
+        val result = mockMvc.perform(get("/api/journal_entries")
+            .header("Authorization", userName))
+            .andExpect(status().isOk).andReturn()
 
-        val result = mockMvc.perform(get("/api/habit/1/journal_entries"))
-            .andExpect(status().isOk)
-            .andDo(print())
-            .andReturn()
-
-        assertEquals(
-            mapper.writeValueAsString(JournalEntryListDTO(arrayListOf(journalEntry))),
-            result.response.contentAsString
-        )
-        verify { service.getAllJournalEntriesForHabit(1) }
+        // then
+        assertEquals(mapper.writeValueAsString(arrayListOf(journalEntry)), result.response.contentAsString)
+        verify { service.getAllJournalEntries(1) }
     }
 
     @Test
-    fun controller_invokes_getAllJournalEntries_function() {
-        val habit = Habit("Gym", "Go to the gym", 1)
-        val journalEntry = JournalEntryDTO("Done", habit = habit)
+    @WithMockUser(username = "correctUser")
+    fun `getJournalEntry returns the requested journal entry`() {
+        // given
+        val habit = Habit("Gym", "Go to the gym",1, userId = 1)
+        val journalEntry = JournalEntry("Done", habit, 1)
+        every { service.getJournalEntry(1, 1) } returns journalEntry
+        val userName = SecurityContextHolder.getContext().authentication.name
 
-        every { service.getAllJournalEntries() } returns JournalEntryListDTO(arrayListOf(journalEntry))
+        // when
+        val result = mockMvc.perform(get("/api/journal_entry/1")
+            .header("Authorization", userName))
+            .andExpect(status().isOk).andReturn()
 
-        val result = mockMvc.perform(get("/api/journal_entries"))
-            .andExpect(status().isOk)
-            .andDo(print())
-            .andReturn()
-
-        assertEquals(
-            mapper.writeValueAsString(JournalEntryListDTO(arrayListOf(journalEntry))),
-            result.response.contentAsString
-        )
-        verify { service.getAllJournalEntries() }
-    }
-
-    @Test
-    fun controller_invokes_newJournalEntry_function() {
-        val journalEntry = JournalEntryDTO("Done", habitId = 1)
-
-        every { service.newJournalEntry(any()) } returns ObjectIdDTO(1)
-
-        val result = mockMvc.perform(post("/api/journal_entry")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(mapper.writeValueAsString(journalEntry)))
-            .andExpect(status().isCreated)
-            .andDo(print())
-            .andReturn()
-
-        assertEquals(mapper.writeValueAsString(ObjectIdDTO(1)), result.response.contentAsString)
-        verify { service.newJournalEntry(any()) }
-    }
-
-    @Test
-    fun controller_invokes_getJournalEntry_function() {
-        val habit = Habit("Gym", "Go to the gym", 1)
-        val journalEntry = JournalEntryDTO("Done", habit = habit, id = 1)
-
-        every { service.getJournalEntryById(1) } returns journalEntry
-
-        val result = mockMvc.perform(get("/api/journal_entry/1"))
-            .andExpect(status().isOk)
-            .andDo(print())
-            .andReturn()
-
+        // then
         assertEquals(mapper.writeValueAsString(journalEntry), result.response.contentAsString)
-        verify { service.getJournalEntryById(1) }
+        verify { service.getJournalEntry(1, 1) }
     }
 
     @Test
-    fun controller_invokes_deleteJournalEntry_function() {
-        every { service.deleteJournalEntryById(1) } returns Unit
+    @WithMockUser(username = "wrongUser")
+    fun `getJournalEntry returns not found if user is not allowed to access journal entry`() {
+        // given
+        val habit = Habit("Gym", "Go to the gym",1, userId = 1)
+        val journalEntry = JournalEntry("Done", habit, 1)
+        every { service.getJournalEntry(1, 1) } returns journalEntry
+        every { service.getJournalEntry(1, 2) } throws  EntityNotFoundException("")
+        val userName = SecurityContextHolder.getContext().authentication.name
 
-        mockMvc.perform(delete("/api/journal_entry/1"))
-            .andExpect(status().isNoContent)
+        // when
+        mockMvc.perform(get("/api/journal_entry/1")
+            .header("Authorization", userName))
+            .andExpect(status().isNotFound).andReturn()
 
-        verify { service.deleteJournalEntryById(1) }
+        // then
+        verify { service.getJournalEntry(1, 2) }
     }
 
     @Test
-    fun controller_invokes_deleteJournalEntry_function_on_non_existent_id() {
-        every { service.deleteJournalEntryById(2) } throws EntityNotFoundException("Journal Entry not found")
+    @WithMockUser(username = "correctUser")
+    fun `getJournalEntry returns not found if habit does not exist`() {
+        // given
+        val habit = Habit("Gym", "Go to the gym",1, userId = 1)
+        val journalEntry = JournalEntry("Done", habit, 1)
+        every { service.getJournalEntry(1, 1) } returns journalEntry
+        every { service.getJournalEntry(2, 1) } throws  EntityNotFoundException("")
+        val userName = SecurityContextHolder.getContext().authentication.name
 
-        mockMvc.perform(delete("/api/journal_entry/2"))
-            .andExpect(status().is4xxClientError)
+        // when
+        mockMvc.perform(get("/api/journal_entry/2")
+            .header("Authorization", userName))
+            .andExpect(status().isNotFound).andReturn()
 
-        verify { service.deleteJournalEntryById(2) }
-    }
-
-    @Test
-    fun controller_invokes_updateJournalEntry_function() {
-        val habit = Habit("Gym", "Go to the gym", 1)
-        val journalEntry = JournalEntryDTO("Done_Old", habitId = 1)
-        val journalEntryReturned = JournalEntryDTO("Done_Old", habit = habit, id = 1)
-
-        every { service.updateJournalEntryById(1, any()) } returns Unit
-        every { service.getJournalEntryById(1) } returns journalEntryReturned
-
-        mockMvc.perform(put("/api/journal_entry/1")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(mapper.writeValueAsString(journalEntry)))
-            .andExpect(status().isOk)
-
-        val result = mockMvc.perform(get("/api/journal_entry/1"))
-            .andExpect(status().isOk)
-            .andDo(print())
-            .andReturn()
-
-        assertEquals(mapper.writeValueAsString(journalEntryReturned), result.response.contentAsString)
-        verify { service.updateJournalEntryById(1, any()) }
-        verify { service.getJournalEntryById(1) }
+        // then
+        verify { service.getJournalEntry(2, 1) }
     }
 }

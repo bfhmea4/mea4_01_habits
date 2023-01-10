@@ -10,30 +10,40 @@ services:
       - "8080:8080"
     networks:
       - net
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_DATASOURCE_USERNAME: habits
+      SPRING_DATASOURCE_PASSWORD: 'CHANGEME'
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_FLYWAY_USER: habits
+      SPRING_FLYWAY_PASSWORD: 'CHANGEME'
+      ALLOWED_ORIGINS: http://127.0.0.1:3000
+      JWT_SIGNING_KEY: 'CHANGEME'
+      JWT_TOKEN_VALIDITY: 604800
 
   frontend:
-    build: ./ui/app/
+    build: ./ui
     container_name: habits_frontend
     ports:
       - "3000:3000"
     networks:
-    - net
+      - net
     environment:
-      - ENV_API_URL=http://127.0.0.1:8080
+      ENV_API_URL: 'http://127.0.0.1:8080'
 
   postgresql:
     image: postgres:13-alpine
     container_name: postgres
     networks:
-    - net
+      - net
     ports:
-    - '5432:5432'
+      - '5432:5432'
     environment:
       POSTGRES_DB: 'habits'
-      POSTGRES_PASSWORD: 'habits'
       POSTGRES_USER: 'habits'
+      POSTGRES_PASSWORD: 'CHANGEME'
     volumes:
-    - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
 
 volumes:
   db-data: {}

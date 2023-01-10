@@ -1,64 +1,60 @@
 # Getting started
 
-This chapter shows the various ways to run/ deploy the application.
+This chapter shows the various ways to run and deploy the application.
 After the application is running (locally), you can access it under the following URLs:
 
 - Backend: [http://localhost:8080](http://localhost:8080)
 - Frontend: [http://localhost:3000](http://localhost:3000)
 - The REST-API: [http://localhost:8080/api](http://localhost:8080/api)
 
-## Test application locally
-
-### Build Local Image
-
-```bash
-docker build -f ./build/package/habits/Dockerfile . -t habits-backend:local
-```
-
-### Run Local Image
-
-Start docker image of backend:
-
-```bash
-docker run -p 8080:8080 -t habits-backend:local
-```
-
-Run test suite against localhost:
-
-```bash
-mvn test -Dhabits.test.localhost=true
-```
+## Start application locally for development
 
 ### Backend
 
-The application uses kotlin, maven and java version 17.
+The application uses Kotlin and Maven with Java Version 17.
 
-Start application by using maven:
+Start application by using Maven:
 
 ```bash
-mvn spring-boot:run
+mvn clean install
+
+# using in-memory database
+mvn spring-boot:run -Dspring-boot.run.profiles=test
+
+# using locally deployed postgres as database
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
 ### Frontend
 
-Start the frontend directly:
+Start the frontend with yarn:
 
 ```bash
-yarn --cwd ui/app dev
+yarn --cwd ui install
+yarn --cwd ui dev
 ```
 
 ### Database
 
-By default, we use PostgreSQL as our database.
-You have to configure the database connection settings in the following file: `src/main/kotlin/resources/application.properties`.
-The default connection string is `jdbc:postgresql://postgres:5432/habits`, which works with the local docker-compose file (this includes the postgres deployment).
+We use PostgreSQL as our database.
+To get started run the database using Docker
 
+```bash
+docker-compose up -d postgresql
+```
+
+Be aware that you need to delete the database or drop the tables and let it be regenerated on startup by Flyway in case there were changes.
+If you are changing the structure of the database make sure to update or create a migration. You don't need
+to do that manually. In `application-local.properties` you can uncomment the lines regarding `javax.persistence.schema-generation`.
+This will create a file with the required SQL statements on startup to create the database.
 
 ## Docker
 
-### Use pre-builded docker images
+![Docker image](assets/images/Docker.png)
 
-The easiest way to run the application is to use the pre-builed docker-images from the Github registry.
+### Use pre-built docker images
+
+The easiest way to run the application is to use the pre-built docker-images from the GitHub registry.
 To start the application locally, use following docker-compose file:
 
 ```yaml
@@ -72,6 +68,16 @@ services:
       - "8080:8080"
     networks:
       - net
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_DATASOURCE_USERNAME: habits
+      SPRING_DATASOURCE_PASSWORD: 'CHANGEME'
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_FLYWAY_USER: habits
+      SPRING_FLYWAY_PASSWORD: 'CHANGEME'
+      ALLOWED_ORIGINS: http://127.0.0.1:3000
+      JWT_SIGNING_KEY: 'CHANGEME'
+      JWT_TOKEN_VALIDITY: 604800
 
   frontend:
     image: ghcr.io/bfhmea4/habits-frontend:latest
@@ -79,23 +85,23 @@ services:
     ports:
       - "3000:3000"
     networks:
-    - net
+      - net
     environment:
-      - ENV_API_URL=http://127.0.0.1:8080
+      ENV_API_URL: 'http://127.0.0.1:8080'
 
   postgresql:
     image: postgres:13-alpine
     container_name: postgres
     networks:
-    - net
+      - net
     ports:
-    - '5432:5432'
+      - '5432:5432'
     environment:
       POSTGRES_DB: 'habits'
-      POSTGRES_PASSWORD: 'habits'
       POSTGRES_USER: 'habits'
+      POSTGRES_PASSWORD: 'CHANGEME'
     volumes:
-    - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
 
 volumes:
   db-data: {}
@@ -114,15 +120,15 @@ docker-compose up -d
 
 ### Build docker container manually
 
-You can build the docker container images manually with the included Dockerfiles under `./build/package/habits` and `./ui/app`.
-This step can be done automatically through a docker-compose file (see next chaptre).
+You can build the docker container images manually with the included Dockerfiles under `./build/package/habits` and `./ui`.
+This step can be done automatically through a docker-compose file (see next chapter).
 
 ```bash
 ## build backend manually
 docker build -f ./build/package/habits/Dockerfile . -t habits-backend:local
 
 ## build frontend manually
-docker build -f ./ui/app/Dockerfile . -t habits-frontend:local
+docker build -f ./ui/Dockerfile . -t habits-frontend:local
 ```
 
 ### Build docker container using docker-compose
@@ -142,30 +148,40 @@ services:
       - "8080:8080"
     networks:
       - net
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_DATASOURCE_USERNAME: habits
+      SPRING_DATASOURCE_PASSWORD: 'CHANGEME'
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/habits
+      SPRING_FLYWAY_USER: habits
+      SPRING_FLYWAY_PASSWORD: 'CHANGEME'
+      ALLOWED_ORIGINS: http://127.0.0.1:3000
+      JWT_SIGNING_KEY: 'CHANGEME'
+      JWT_TOKEN_VALIDITY: 604800
 
   frontend:
-    build: ./ui/app/
+    build: ./ui/
     container_name: habits_frontend
     ports:
       - "3000:3000"
     networks:
-    - net
+      - net
     environment:
-      - ENV_API_URL=http://127.0.0.1:8080
+      ENV_API_URL: 'http://127.0.0.1:8080'
 
   postgresql:
     image: postgres:13-alpine
     container_name: postgres
     networks:
-    - net
+      - net
     ports:
-    - '5432:5432'
+      - '5432:5432'
     environment:
       POSTGRES_DB: 'habits'
-      POSTGRES_PASSWORD: 'habits'
       POSTGRES_USER: 'habits'
+      POSTGRES_PASSWORD: 'CHANGEME'
     volumes:
-    - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
 
 volumes:
   db-data: {}
@@ -176,7 +192,7 @@ networks:
       com.docker.network.bridge.name: habits
 ```
 
-Build and start container (this take some time):
+Build and start container (this takes some time):
 
 ```bash
 docker-compose up -d
@@ -190,6 +206,31 @@ You can deploy Habits in your Kubernetes cluster, but you have to set all the en
 
 You need to set the following environment:
 
+**Backend**
+
+| ENV                           | Description                                                     |
+|-------------------------------|-----------------------------------------------------------------|
+| `SPRING_DATASOURCE_URL`       | The JDBC-String of the database                                 |
+| `SPRING_DATASOURCE_USERNAME`  | The database user                                               |
+| `SPRING_DATASOURCE_PASSWORD`  | Password of the database user                                   |
+| `SPRING_FLYWAY_URL`           | The JDBC-String of the database                                 |
+| `SPRING_FLYWAY_USER`          | The flyway database user                                        |
+| `SPRING_FLYWAY_PASSWORD`      | Password of the flyway database user                            |
+| `ALLOWED_ORIGINS`             | The allowed origins for CORS, e.g. `https://template.habits.io` |
+| `JWT_SIGNING_KEY`             | Key used to sign JWTs                                           |
+| `JWT_TOKEN_VALIDITY`          | After how many seconds does a token expire                      |
+
 **UI**
 
-- `ENV_API_URL` - The URL of the API, e.g. `https://template.habits.io` (without trailing slash, but /api at the end, must be accessible from the webclient)
+| ENV                | Description                                                                                                           |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------|
+| `ENV_API_URL`      | The URL of the API, e.g. `https://template.habits.io` (without trailing slash, must be accessible from the webclient) |
+
+
+## Postman
+
+Have a look at `src/main/resources/postman` for a Postman collection to test the API.
+Import it and run the login request. It will fetch a token and automatically set it for all other requests.
+Also make sure to import the environments to be able to run the requests against local or production.
+
+![Postman image](assets/images/Postman.png)

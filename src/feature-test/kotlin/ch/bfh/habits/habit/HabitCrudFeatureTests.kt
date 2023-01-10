@@ -1,82 +1,114 @@
 package ch.bfh.habits.habit
 
 import ch.bfh.habits.dtos.habit.HabitDTO
-import ch.bfh.habits.dtos.habit.HabitListDTO
+import ch.bfh.habits.dtos.user.LoginDTO
+import ch.bfh.habits.dtos.user.RegisterDTO
+import ch.bfh.habits.entities.Habit
 import ch.bfh.habits.exceptions.EntityNotFoundException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
 @Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@ActiveProfiles("test")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HabitCrudFeatureTests {
-
     @Autowired
     private lateinit var habitActor: HabitCrudActor
 
     @Nested
     @DisplayName("Given no habits exist THEN we")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     inner class GivenNoHabitExists {
+        @BeforeAll
+        fun setup() {
+            habitActor.register(RegisterDTO("test", "test@test.com", "test", "Test"))
+            habitActor.login(LoginDTO("test", "test"))
+        }
+
         @Test
         fun `get an empty list for get all`() {
-            assertThat(habitActor.getsAllHabits()).isEqualTo(HabitListDTO(arrayListOf()))
+            assertThat(habitActor.getsAllHabits()).isEqualTo(arrayListOf<Habit>())
         }
     }
 
     @Nested
     @DisplayName("Given we have created a habit THEN we ...")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+    @TestMethodOrder(OrderAnnotation::class)
     inner class GivenNewHabitCreated {
-        private var habitId = habitActor.createsHabit(createHabitDTO())
+        private lateinit var habit: Habit
+
+        @BeforeAll
+        fun setup() {
+            habitActor.register(RegisterDTO("test", "test@test.com", "test", "Test"))
+            habitActor.login(LoginDTO("test", "test"))
+            habit = habitActor.createsHabit(createHabitDTO())
+        }
 
         @Test
+        @Order(1)
         fun `can find it amongst all habits`() {
             // when
             habitActor.createsHabit(createHabitDTO("Running", "Go for a run"))
-            val allHabits = habitActor.getsAllHabits().habits
+            val allHabits = habitActor.getsAllHabits()
 
             // then
             assertThat(allHabits.size).isGreaterThan(1)
-            assertThat(allHabits.filter { i -> i.id == habitId }).isNotEmpty
+            assertThat(allHabits.filter { i -> i.id == habit.id }).isNotEmpty
         }
 
         @Test
+        @Order(2)
         fun `can find it`() {
-            assertThat(habitActor.seesHabitExists(habitId)).isTrue
+            assertThat(habitActor.seesHabitExists(habit.id!!)).isTrue
         }
 
         @Test
+        @Order(3)
         fun `can get it`() {
-            assertThat(habitActor.getsHabit(habitId).id).isEqualTo(habitId)
+            assertThat(habitActor.getsHabit(habit.id!!).id).isEqualTo(habit.id)
         }
 
         @Test
-        fun `can delete it`() {
-            habitActor.deletesHabit(habitId)
-            assertThat(habitActor.seesHabitExists(habitId)).isFalse
-        }
-
-        @Test
+        @Order(4)
         fun `can update it`() {
             // given
-            val originalHabit = habitActor.getsHabit(habitId)
+            val newHabit = createHabitDTO("New", "New")
             // when
-            habitActor.updatesHabit(habitId, originalHabit.copy(title = "Gym_Old"))
+            habitActor.updatesHabit(habit.id!!, newHabit)
             // then
-            val updatedHabit = habitActor.getsHabit(habitId)
-            assertThat(updatedHabit.title).isEqualTo("Gym_Old")
+            val updatedHabit = habitActor.getsHabit(habit.id!!)
+            assertThat(updatedHabit.title).isEqualTo("New")
+            assertThat(updatedHabit.description).isEqualTo("New")
+        }
+
+        @Test
+        @Order(5)
+        fun `can delete it`() {
+            habitActor.deletesHabit(habit.id!!)
+            assertThat(habitActor.seesHabitExists(habit.id!!)).isFalse
         }
     }
 
     @Nested
     @DisplayName("Given a non-existing habit id THEN ...")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
     inner class GivenNonExistingHabit {
+        @BeforeAll
+        fun setup() {
+            habitActor.register(RegisterDTO("test", "test@test.com", "test", "Test"))
+            habitActor.login(LoginDTO("test", "test"))
+        }
+
         private val nonExistingHabitId = -1L
 
         @Test
