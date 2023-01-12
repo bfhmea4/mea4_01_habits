@@ -215,7 +215,9 @@
 - Mowers Anthony Alexander
 
 #### protocol
-- ToDo
+- Showed bug fixes, new documentation, lean canvas and habit score
+- Discussed everything to be done before and for the final presentation
+- Planned last stories to complete the project
 
 ## 17.01.2023
 ### Final presentation
@@ -223,7 +225,8 @@
 - Multiple groups
 
 #### protocol
-- ToDo
+- Presented our finished product and scrum process
+- Watched presentations by other teams
 
 # Team Internal
 
@@ -346,3 +349,12 @@
 ### 06.01.2023
 - Short sync of what was done during the holidays
 - Discuss what we want need to do in the next sprint
+
+### 12.01.2023
+- Split work and reserve time for the presentation
+
+### 14.01.2023
+- Co-working day to finish the project
+
+### 17.01.2023
+- Last preparations for presentation
