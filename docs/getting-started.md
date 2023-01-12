@@ -7,7 +7,7 @@ After the application is running (locally), you can access it under the followin
 - Frontend: [http://localhost:3000](http://localhost:3000)
 - The REST-API: [http://localhost:8080/api](http://localhost:8080/api)
 
-## Start application locally for development
+## Start application locally for development (preferred way)
 
 ### Backend
 
@@ -21,7 +21,8 @@ mvn clean install
 # using in-memory database
 mvn spring-boot:run -Dspring-boot.run.profiles=test
 
-# using locally deployed postgres as database
+# using locally deployed postgres as database (Requires a running database. See point Database below)
+# We mostly used this configuration during the development
 mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
@@ -54,7 +55,9 @@ This will create a file with the required SQL statements on startup to create th
 
 ### Use pre-built docker images
 
-The easiest way to run the application is to use the pre-built docker-images from the GitHub registry.
+The easiest way to run the application is to use the [pre-built docker-images](https://github.com/orgs/bfhmea4/packages) from the GitHub registry.
+For this to work you need to log in to the GitHub registry first. See [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry) for how to do this.
+
 To start the application locally, use following docker-compose file:
 
 ```yaml
@@ -75,9 +78,10 @@ services:
       SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/habits
       SPRING_FLYWAY_USER: habits
       SPRING_FLYWAY_PASSWORD: 'CHANGEME'
-      ALLOWED_ORIGINS: http://127.0.0.1:3000
+      ALLOWED_ORIGINS: http://127.0.0.1:3000,http://localhost:3000
       JWT_SIGNING_KEY: 'CHANGEME'
       JWT_TOKEN_VALIDITY: 604800
+      # SPRING_PROFILES_ACTIVE: 'local' # Only for development
 
   frontend:
     image: ghcr.io/bfhmea4/habits-frontend:latest
@@ -118,6 +122,8 @@ Create and start container:
 docker-compose up -d
 ```
 
+`SPRING_PROFILES_ACTIVE: 'local` should not be committed to the repository. It is only used for development. Uncomment it to use it.
+
 ### Build docker container manually
 
 You can build the docker container images manually with the included Dockerfiles under `./build/package/habits` and `./ui`.
@@ -155,12 +161,13 @@ services:
       SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/habits
       SPRING_FLYWAY_USER: habits
       SPRING_FLYWAY_PASSWORD: 'CHANGEME'
-      ALLOWED_ORIGINS: http://127.0.0.1:3000
+      ALLOWED_ORIGINS: http://127.0.0.1:3000,http://localhost:3000
       JWT_SIGNING_KEY: 'CHANGEME'
       JWT_TOKEN_VALIDITY: 604800
+      # SPRING_PROFILES_ACTIVE: 'local' # Only for development
 
   frontend:
-    build: ./ui/
+    build: ./ui
     container_name: habits_frontend
     ports:
       - "3000:3000"
@@ -197,6 +204,8 @@ Build and start container (this takes some time):
 ```bash
 docker-compose up -d
 ```
+
+`SPRING_PROFILES_ACTIVE: 'local` should not be committed to the repository. It is only used for development. Uncomment it to use it.
 
 ### Kubernetes
 

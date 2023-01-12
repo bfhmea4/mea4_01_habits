@@ -52,8 +52,8 @@ extra:
 nav:
   - Home:
     - Index: index.md
-    - Getting Started: getting-started.md
     - Development requirements: requirements.md
+    - Getting Started: getting-started.md
   - Architecture:
     - Overview: architecture/overview.md
     - Backend: architecture/backend.md
