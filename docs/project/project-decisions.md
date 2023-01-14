@@ -10,12 +10,12 @@ This document keeps track of important decisions about this project
 - Use Tailwind for styling
 - Work with 2-week sprints
 - Write controllers and accept some boilerplate code instead of using Spring Data
-  - More flexibility by doing that
-  - Learn one thing at a time. Too much magic for us now.
+    * More flexibility by doing that
+    * Learn one thing at a time. Too much magic for us now.
 - Use Spring Security and JWT for Authentication/Authorization
 - Don't cascade delete data.
-  - Keep it and set the foreign key to null
+    * Keep it and set the foreign key to null
 - Work with Ids
-  - Don't pass whole objects when they are not needed
+    * Don't pass whole objects when they are not needed
 - A story should be presentable after it's done
-  - Use sub-tasks for the different technical tasks
+    * Use sub-tasks for the different technical tasks
