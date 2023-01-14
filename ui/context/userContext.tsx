@@ -49,7 +49,7 @@ export const UserContextProvider = ({ children }: Props) => {
     loadUserFromCookie()
   }, [user, reload])
 
-  const loginUser = async (username: string, password: string, remember: boolean) => {
+  const loginUser = async (username: string, password: string) => {
     const { data: data } = await Api.post('/login', {
       userName: username,
       password: password,
@@ -63,10 +63,7 @@ export const UserContextProvider = ({ children }: Props) => {
         console.log('Logged in as ' + user.userName)
       }
     }
-    Cookies.set('token', data['token'], { secure: true, expires: 1 })
-    if (remember) {
-      Cookies.set('username', username, { secure: true, expires: 31 })
-    }
+    Cookies.set('token', data['token'], { secure: false, expires: 1 })
     Toast('Logged in', ToastType.success)
   }
 
