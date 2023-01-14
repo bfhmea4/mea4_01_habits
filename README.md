@@ -16,9 +16,6 @@
     src="https://img.shields.io/github/license/bfhmea4/mea4_01_habits"
     alt="License"
   /></a>
-  <a href="https://www.codefactor.io/repository/github/bfhmea4/mea4_01_habits">
-    <img src="https://www.codefactor.io/repository/github/bfhmea4/mea4_01_habits/badge" alt="CodeFactor" />
-  </a>
 </p>
 
 <p align="center">

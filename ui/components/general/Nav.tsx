@@ -7,6 +7,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import DescriptionIcon from '@mui/icons-material/Description'
 import PersonIcon from '@mui/icons-material/Person'
 import InfoIcon from '@mui/icons-material/Info'
+import Link from 'next/link'
 
 export const Nav = () => {
   const router = useRouter()
@@ -39,10 +40,18 @@ export const Nav = () => {
           setValue(newValue)
         }}
       >
-        <BottomNavigationAction LinkComponent={'a'} href="/" label="Home" icon={<HomeIcon />} />
-        <BottomNavigationAction LinkComponent={'a'} href="/journal" label="Journal" icon={<DescriptionIcon />} />
-        <BottomNavigationAction LinkComponent={'a'} href="/profile" label="Profile" icon={<PersonIcon />} />
-        <BottomNavigationAction LinkComponent={'a'} href="/info" label="Info" icon={<InfoIcon />} />
+        <Link href="/">
+          <BottomNavigationAction label="Home" showLabel icon={<HomeIcon />} />
+        </Link>
+        <Link href="/journal">
+          <BottomNavigationAction label="Journal" showLabel icon={<DescriptionIcon />} />
+        </Link>
+        <Link href="/profile">
+          <BottomNavigationAction label="Profile" showLabel icon={<PersonIcon />} />
+        </Link>
+        <Link href="/info">
+          <BottomNavigationAction label="Info" showLabel icon={<InfoIcon />} />
+        </Link>
       </BottomNavigation>
     </div>
   )

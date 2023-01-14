@@ -35,12 +35,16 @@ theme:
     - search.suggest
   palette:
     - media: "(prefers-color-scheme: light)"
-      scheme: natron-light
+      scheme: default
+      primary: white
+      accent: pink
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
+      primary: black
+      accent: pink
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
@@ -60,8 +64,8 @@ extra:
 nav:
   - Home:
     - Index: index.md
-    - Getting Started: getting-started.md
     - Development requirements: requirements.md
+    - Getting Started: getting-started.md
   - Architecture:
     - Overview: architecture/overview.md
     - Backend: architecture/backend.md
