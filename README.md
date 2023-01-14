@@ -48,4 +48,3 @@ The data is persisted in a PostgreSQL database.
 
 The frontend is written in TypeScript and uses Next.js.  
 It uses [Tailwind CSS](https://tailwindcss.com/) for designing purposes.  
-There are also some self-written components in the `components` folder.
