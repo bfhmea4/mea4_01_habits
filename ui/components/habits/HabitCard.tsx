@@ -40,6 +40,66 @@ export const HabitCard = (props: HabitCardProps) => {
       })
   }
 
+  const getJournalEntriesCount = () => {
+    if (!props.journalEntries) return 0
+    const journalEntries = props.journalEntries.filter(journalEntry => journalEntry.habit?.id === props.habit.id)
+
+    if (props.habit.frequency === FrequencyType.DAILY) {
+      const today = new Date()
+      const todayEntries = journalEntries.filter(
+        journalEntry =>
+          journalEntry.createdAt.getDate() === today.getDate() &&
+          journalEntry.createdAt.getMonth() === today.getMonth() &&
+          journalEntry.createdAt.getFullYear() === today.getFullYear()
+      )
+      return todayEntries.length
+    }
+
+    if (props.habit.frequency === FrequencyType.WEEKLY) {
+      // get the last 7 days
+      const today = new Date()
+      const last7Days: any = []
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(today)
+        date.setDate(date.getDate() - i)
+        last7Days.push(date)
+      }
+
+      const last7DaysEntries = journalEntries.filter(journalEntry => {
+        return last7Days.some((date: any) => {
+          return (
+            journalEntry.createdAt.getDate() === date.getDate() &&
+            journalEntry.createdAt.getMonth() === date.getMonth() &&
+            journalEntry.createdAt.getFullYear() === date.getFullYear()
+          )
+        })
+      })
+      return last7DaysEntries.length
+    }
+
+    if (props.habit.frequency === FrequencyType.MONTHLY) {
+      // get the last 30 days
+      const today = new Date()
+      const last30Days: any = []
+      for (let i = 0; i < 30; i++) {
+        const date = new Date(today)
+        date.setDate(date.getDate() - i)
+        last30Days.push(date)
+      }
+
+      const last30DaysEntries = journalEntries.filter(journalEntry => {
+        return last30Days.some((date: any) => {
+          return (
+            journalEntry.createdAt.getDate() === date.getDate() &&
+            journalEntry.createdAt.getMonth() === date.getMonth() &&
+            journalEntry.createdAt.getFullYear() === date.getFullYear()
+          )
+        })
+      })
+      return last30DaysEntries.length
+    }
+  }
+
   const getPercentage = () => {
     if (!props.habit.frequency && !props.habit.frequencyValue) return 0
     if (!props.journalEntries) return 0
@@ -166,7 +226,7 @@ export const HabitCard = (props: HabitCardProps) => {
           </h2>
           {(props.habit.frequency && props.habit.frequencyValue && (
             <p className="pl-2 text-sm">
-              {props.journalEntries?.length}/{props.habit.frequencyValue} {props.habit.frequency}
+              {getJournalEntriesCount()}/{props.habit.frequencyValue} {props.habit.frequency}
             </p>
           )) || <p className="pl-2 text-sm">No frequency set</p>}
         </div>
